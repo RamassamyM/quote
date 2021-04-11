@@ -12,14 +12,14 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: 'rgb(255, 200, 67)',
-      light: '#ffffff',
+      lighter: '#ffffff',
     },
     grey: {
       main:'#607d8b',
-      light: '#eceff1',
-      mediuml: '#b0bec5',
-      mediumd:'#455a64',
-      dark: '#263238',
+      lighter: '#eceff1',
+      mediumlighter: '#E0E7EB',
+      mediumdarker:'#455a64',
+      darker: '#263238',
     },
     error: {
       main: red.A400,
