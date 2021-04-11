@@ -1,6 +1,6 @@
 import React from 'react';
 // import { useEffect } from 'react'
-import { Typography, Container, Link } from '@material-ui/core';
+import { Typography, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 

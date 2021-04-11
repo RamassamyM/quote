@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Link, Typography, Toolbar, AppBar, Button, IconButton, MenuIcon } from '@material-ui/core';
+import { Box, Link, Typography, Toolbar, AppBar, Button } from '@material-ui/core';
 import logo from './../../assets/curakit-logo-white.png'; 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,11 +30,6 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     maxHeight: '30px',
   },
-  navbarItems: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }
 }));
 
 export default function Navbar() {
@@ -45,9 +40,6 @@ export default function Navbar() {
     <div className={classes.root}>
     <AppBar position="fixed">
       <Toolbar>
-        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton> */}
         <Box>
           <img src={logo} alt='curakit-logo' className={classes.logo}/>
         </Box>

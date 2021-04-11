@@ -6,7 +6,7 @@ import App from './App';
 import './core/theme/index.css';
 import theme from './theme';
 import reportWebVitals from './reportWebVitals';
-import Navbar from './components/navbar'
+import Navbar from './components/navbar2'
 import Footer from './components/footer'
 
 ReactDOM.render(

@@ -9,11 +9,18 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.secondary.main,
-    marginTop: '64px',
-    padding: theme.spacing(4, 0, 4),
+    marginTop: '56px',
+    padding: theme.spacing(1, 0, 3),
+    [theme.breakpoints.up('sm')]: {
+      marginTop: '64px',
+      padding: theme.spacing(4, 0, 4),
+    },
   },
   heroTitle: {
     color: theme.palette.secondary.light,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '36px',
+    },
   },
   heroButtons: {
     backgroundColor: theme.palette.primary.main,
@@ -73,13 +80,13 @@ export default function BoxBuilderPage() {
           </Grid>
           <Grid item xs={12} md={4}>
             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" >
-                <Button component="a" href="mailto:sales@curakit.com" color="primary" className={classes.heroMail} >
-                    <Icon className={classes.icon} >mail_outline</Icon>
-                    I need a customized box 
-                </Button>
+              <Button component="a" href="mailto:sales@curakit.com" color="primary" className={classes.heroMail} >
+                  <Icon className={classes.icon} >mail_outline</Icon>
+                  I need a customized box 
+              </Button>
               <Paper elevation={0} square="true" display="flex" alignItems="center" className={classes.heroButtons}>
                 <Link href="#" onClick={preventDefault} disabled>
-                {'12'} items | £{'15'}/box 
+                {'12'} ITEMS | £{'15'} / BOX 
                 </Link>
                 <Link href="#" onClick={preventDefault}>
                   VIEW MY BOX {'>'}
