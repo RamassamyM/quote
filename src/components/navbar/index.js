@@ -177,7 +177,7 @@ export default function PrimaryAppBar() {
       </List>
     </div>
   );
-  const anchor = 'right';
+  const anchor = 'top';
   const preventDefault = (event) => event.preventDefault();
   
   return (
