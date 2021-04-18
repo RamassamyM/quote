@@ -6,7 +6,7 @@ import { FormGroup, FormControlLabel, Checkbox, CheckBoxOutlineBlankIcon, CheckB
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ProductCard from './../../components/product-card';
-import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
+import { ExpandMore as ExpandMoreIcon, MailOutline as MailOutlineIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -38,21 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   heroButtons: {
     backgroundColor: theme.palette.primary.main,
-    padding: theme.spacing(2),
-    '& a': {
-      padding: theme.spacing(2),
-      color: theme.palette.secondary.lighter,
-      '&:hover': {
-        textDecoration: 'none',
-      }
-    },
-    // '&:hover': {
-    //   backgroundColor: theme.palette.secondary.light,
-    //   '& a': {
-    //     color: theme.palette.primary.main,
-    //     textDecoration: 'none',
-    //   }
-    // }
+    borderRadius: '5px',
+    padding: theme.spacing(1),
+    color: theme.palette.secondary.lighter,
   },
   heroMail: {
     margin: theme.spacing(1),
@@ -70,7 +58,11 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '200px',
   },
   buttonBoxPanel: {
-    color: 'white',
+    color: theme.palette.white.main,
+    '&:disabled': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.white.main
+    }
   },
   filterPanel: {
     marginRight: theme.spacing(4),
@@ -151,13 +143,19 @@ export default function BoxBuilderPage() {
           <Grid item xs={12} md={5} lg={4} className={classes.grid}>
             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" >
               <Button component="a" href="mailto:sales@curakit.com" color="primary" className={classes.heroMail} >
-                  <Icon className={classes.icon} >mail_outline</Icon>
+                  <MailOutlineIcon className={classes.icon}/>
                   I need a customized box 
               </Button>
-              <Paper elevation={0} display="flex" alignItems="center" className={classes.heroButtons}>
-                <Link href="#" onClick={preventDefault} disabled>
-                {'12'} ITEMS | £{'15'} / BOX 
-                </Link>
+              <Box elevation={0} display="flex" flexDirection="row" alignItems="center" justifyContent="center" className={classes.heroButtons}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  className={classes.buttonBoxPanel}
+                  disabled
+                >
+                {'15'}£&nbsp;&nbsp;|&nbsp;&nbsp;{'12'} ITEMS
+                </Button>
                 <Button
                   variant="contained"
                   color="primary"
@@ -170,7 +168,7 @@ export default function BoxBuilderPage() {
                 >
                   VIEW MY BOX {'>'}
                 </Button>
-              </Paper>
+              </Box>
             </Box>
           </Grid>
         </Grid>

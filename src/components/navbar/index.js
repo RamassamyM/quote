@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
 import { Link, AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
-import { Menu as MenuIcon, AccountCircle, Notifications as NotificationsIcon, Mail as MailIcon } from '@material-ui/icons';
+import { Menu as MenuIcon, LocalAtm as LocalAtmIcon, Inbox as InboxIcon, ListAlt as ListAltIcon, AccountCircle, Notifications as NotificationsIcon, Mail as MailIcon, PlayCircleFilledWhite } from '@material-ui/icons';
 import logo from './../../assets/curakit-logo-white.png'; 
 
 const useStyles = makeStyles((theme) => ({
@@ -12,6 +12,11 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  avatarMenuIcon: {
+    '& span': {
+      color: "#ffffff",
+    }
   },
   link: {
     '& a': {
@@ -22,6 +27,16 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.secondary.main,
       } 
     }
+  },
+  linkWithBadge: {
+    color: theme.palette.white.main,
+    marginRight: '5px',
+    '& span': {
+      color: theme.palette.white.main,
+    }
+  },
+  loginLink: {
+    color: theme.palette.white.main,
   },
   title: {
     display: 'none',
@@ -52,41 +67,48 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     maxHeight: '30px',
   },
+  pro: {
+    color: 'white',
+    marginLeft: '10px',
+    fontWeight: '500',
+    fontSize: '28px',
+    fontFamily: 'montserrat',
+  }
 }));
 
 export default function PrimaryAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
-    isLoggedIn: false,
   });
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
+  const handleProfileMenuOpen = (event) => { setAnchorEl(event.currentTarget); };
+  const handleMenuClose = () => { 
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setState({ ...state, [anchor]: open });
   };
-
-  const menuId = 'primary-search-account-menu';
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    handleMenuClose ();
+  };
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    handleMenuClose ();
+  };
+  // Menu for profile when logged in
+  const menuId = 'loggedin-profile-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -97,61 +119,13 @@ export default function PrimaryAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Quote</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My Quotes</MenuItem>
       <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
     </Menu>
   );
   
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
+  const menuMobileId = 'mobile-menu';
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -162,17 +136,29 @@ export default function PrimaryAppBar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem button key="About">
-          <ListItemText primary={"About"} />
+        <ListItem button key="Box Builder">
+          <ListItemText primary={"Box Builder"} />
+          <Badge badgeContent={4} color="secondary">
+            <InboxIcon />
+          </Badge>
         </ListItem>
-        <ListItem button key="For Business">
-          <ListItemText primary={"For Business"} />
+        <ListItem button key="Quote Builder">
+          <ListItemText primary={"Quote Builder"} />
+          <Badge badgeContent={17} color="secondary">
+            <InboxIcon />
+          </Badge>
         </ListItem>
-        <ListItem button key="Shop">
-          <ListItemText primary={"Shop"} />
+        <ListItem button key="Login" style={{display: isLoggedIn ? 'none' : 'block'  }} onClick={handleLogin}>
+          <ListItemText primary={"Login"} />
         </ListItem>
-        <ListItem button key="Contact">
-          <ListItemText primary={"Contact"} />
+        <ListItem button key="My Quotes" style={{display: isLoggedIn ? 'block' : 'none' }} >
+          <ListItemText primary={"My Quotes"} />
+        </ListItem>
+        <ListItem button key="My Account" style={{display: isLoggedIn ? 'block' : 'none' }}>
+          <ListItemText primary={"My Account"} />
+        </ListItem>
+        <ListItem button key="Log Out" style={{display: isLoggedIn ? 'block' : 'none' }} onClick={handleLogout}>
+          <ListItemText primary={"Log Out"} />
         </ListItem>
       </List>
     </div>
@@ -187,33 +173,29 @@ export default function PrimaryAppBar() {
           <Box>
             <img src={logo} alt='curakit-logo' className={classes.logo}/>
           </Box>
-          <div className={classes.grow} />
+          <Typography component="h1" className={classes.pro}>
+            PRO
+          </Typography>
+          <div className={classes.grow}></div>
           <div className={classes.sectionDesktop}>
-            <Typography className={classes.link}>
-              <Link href="#" onClick={preventDefault}>
-                ABOUT
-              </Link>
-              <Link href="#" onClick={preventDefault}>
-                FOR BUSINESS
-              </Link>
-              <Link href="#" onClick={preventDefault}>
-                SHOP
-              </Link>
-              <Link href="#" onClick={preventDefault}>
-                CONTACT
-              </Link>
-            </Typography>
-            {/* <IconButton aria-label="show 4 new mails" color="inherit">
+            <Button aria-label="show 4 new mails" className={classes.linkWithBadge}>
               <Badge badgeContent={4} color="secondary">
-                <MailIcon />
+                Box Builder<InboxIcon />
               </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            </Button>
+            <Button aria-label="show 17 new notifications" className={classes.linkWithBadge}>
               <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
+                Quote Builder<InboxIcon />
               </Badge>
-            </IconButton> */}
-            <Button color="inherit" disabled style={{display: state['isLoggedIn'] ? 'none' : 'block' }}>Login</Button>
+            </Button>
+            <Button 
+              color="inherit" 
+              style={{display: isLoggedIn ? 'none' : 'block' }} 
+              onClick={handleLogin}
+              className={classes.loginLink}
+            >
+              Login
+            </Button>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -221,7 +203,8 @@ export default function PrimaryAppBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-              style={{display: state['isLoggedIn'] ? 'block' : 'none' }}
+              style={{display: isLoggedIn ? 'block' : 'none' }}
+              className={classes.avatarMenuIcon}
             >
               <AccountCircle />
             </IconButton>
@@ -229,7 +212,7 @@ export default function PrimaryAppBar() {
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
-              aria-controls={mobileMenuId}
+              aria-controls={menuMobileId}
               aria-haspopup="true"
               onClick={toggleDrawer(anchor, true)}
               color="secondary"
@@ -242,7 +225,6 @@ export default function PrimaryAppBar() {
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
       {renderMenu}
     </div>
   );

@@ -61,7 +61,7 @@ export default function ProductCard() {
         >
           <AddCircle fontSize="large"/>
         </IconButton>
-        <div flexGrow={1} className={classes.separator}></div>
+        <div className={classes.separator}></div>
         <Dropdown
           placeholder="Select an option"
           options={options}
