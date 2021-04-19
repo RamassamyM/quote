@@ -2,8 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
-import { Link, AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
-import { Menu as MenuIcon, LocalAtm as LocalAtmIcon, Inbox as InboxIcon, ListAlt as ListAltIcon, AccountCircle, Notifications as NotificationsIcon, Mail as MailIcon, PlayCircleFilledWhite } from '@material-ui/icons';
+import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
+import { Menu as MenuIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
 import logo from './../../assets/curakit-logo-white.png'; 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +79,6 @@ const useStyles = makeStyles((theme) => ({
 export default function PrimaryAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const [state, setState] = React.useState({
     top: false,
@@ -88,7 +87,6 @@ export default function PrimaryAppBar() {
     right: false,
   });
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const handleProfileMenuOpen = (event) => { setAnchorEl(event.currentTarget); };
   const handleMenuClose = () => { 
     setAnchorEl(null);
@@ -109,6 +107,7 @@ export default function PrimaryAppBar() {
   };
   // Menu for profile when logged in
   const menuId = 'loggedin-profile-menu';
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -119,9 +118,9 @@ export default function PrimaryAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Quotes</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
-      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+      <MenuItem key="dropdown my quotes" onClick={handleMenuClose}>My Quotes</MenuItem>
+      <MenuItem key="dropdown my account" onClick={handleMenuClose}>My Account</MenuItem>
+      <MenuItem key="dropdown log out" onClick={handleLogout}>Log Out</MenuItem>
     </Menu>
   );
   

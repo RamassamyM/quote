@@ -1,10 +1,9 @@
 import React from 'react';
-import { IconButton, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { IconButton, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { Dropdown } from 'react-dropdown-now';
 import 'react-dropdown-now/style.css';
-// import Select from 'react-select';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -22,33 +21,40 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ProductCard() {
+export default function ProductCard(props) {
   const classes = useStyles();
   const preventDefault = (event) => event.preventDefault();
-  const options = [
-    { id: 'variant1', value: 'variant1', label: '40cL - 7£' },
-    { id: 'variant2', value: 'variant2', label: '100cL - 10£' },
-  ];
-
+  let variants = [];
+  const product = props.product;
+  if (product && product["variants"]) {
+    variants = product["variants"];
+    variants = variants.map((variant) => {
+      return { 
+        "label": variant.property_value + " " + variant.property_unit + " - " + variant.price +  " " + variant.currency,
+        "id": variant.sku,
+        "value": variant.sku
+      }
+    })
+  }
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           className={classes.cardMedia}
-          image="https://source.unsplash.com/random"
-          title="Image title"
+          image={product["main_picture_url"]}
+          title={product.title}
         />
         <CardContent className={classes.cardContent}>
           <Typography variant="h6" component="h2">
-            ProductName
+            {product.title}
           </Typography>
           <Typography  variant="body2" color="textSecondary" component="p">
-            40cl
+            {product.category}
+          </Typography>
+          <Typography  variant="body2" color="primary" component="p">
+            View
           </Typography>
         </CardContent>
-        <Button size="small" color="primary">
-          View
-        </Button>
       </CardActionArea>
       <CardActions>
         <IconButton
@@ -64,10 +70,10 @@ export default function ProductCard() {
         <div className={classes.separator}></div>
         <Dropdown
           placeholder="Select an option"
-          options={options}
-          value="variant1"
+          options={variants}
+          value={variants[0].value}
           onChange={(value) => console.log('change!', value)}
-          onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
+          // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
           onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
           onOpen={() => console.log('opened!')}
         />

@@ -1,89 +1,39 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Icon, Link, Box, Paper, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
+import { Box, Paper, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
 import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import { FormGroup, FormControlLabel, Checkbox, CheckBoxOutlineBlankIcon, CheckBoxIcon } from '@material-ui/core';
+import { FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import ProductCard from './../../components/product-card';
 import { ExpandMore as ExpandMoreIcon, MailOutline as MailOutlineIcon } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: theme.spacing(1),
-    color: theme.palette.primary.main,
-  },
-  heroContent: {
-    backgroundColor: theme.palette.secondary.main,
-    marginTop: '56px',
-    padding: theme.spacing(0, 0, 2),
-    [theme.breakpoints.up('md')]: {
-      marginTop: '64px',
-      padding: theme.spacing(2, 0, 2),
-    },
-  },
-  heroBoxTitle: {
-    [theme.breakpoints.up('sm')]: {
-      marginTop: '20px',
-    },
-  },
-  heroTitle: {
-    color: theme.palette.secondary.lighter,
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '36px',
-      '& h2': {
-        margin: 'none',
-      }
-    },
-  },
-  heroButtons: {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: '5px',
-    padding: theme.spacing(1),
-    color: theme.palette.secondary.lighter,
-  },
-  heroMail: {
-    margin: theme.spacing(1),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  boxPanel: {
-    width: 250,
-    padding: theme.spacing(2),
-  },
-  fullBoxPanel: {
-    width: 'auto',
-    minHeight: '200px',
-  },
-  buttonBoxPanel: {
-    color: theme.palette.white.main,
-    '&:disabled': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.white.main
-    }
-  },
-  filterPanel: {
-    marginRight: theme.spacing(4),
-    padding: theme.spacing(2),
-    width: '300px',
-    backgroundColor: 'transparent',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  }
-}));
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import fire from './../../fire';
+import useStyles from './style';
 
 export default function BoxBuilderPage() {
-  const classes = useStyles();
-  const preventDefault = (event) => event.preventDefault();
+  // Hooks init (useDispatch, useHistory, useLocation, etc.)
+
+  // App state
+  
+  // Local state
   const [displayBox, setDisplayBox] = React.useState(false)
-  const toggleBoxPanel = (event) => {
-    setDisplayBox(!displayBox);
-  };
+  const [scroll, setScroll] = React.useState('paper');
+  const [products, setProducts] = React.useState({
+    // list: [{
+    //   title: "title",
+    //   description: "",
+    //   category: "",
+    //   main_picture_url: "https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/CURAKIT_Original_2.png?alt=media&token=eb1bbec3-4c36-4d47-a2b6-ecf39f203508",
+    //   variants: [{
+    //     sku: "-",
+    //     price: "",
+    //     price_unit: "",
+    //     property_unit: "",
+    //     property_value: "",
+    //     currency: ""
+    //   }]
+    // }],
+    list: null,
+  })
   const [state, setState] = React.useState({
     checkedA: true,
     checkedB: true,
@@ -98,8 +48,38 @@ export default function BoxBuilderPage() {
     viewProductE: false,
   });
   
-  const [scroll, setScroll] = React.useState('paper');
+  // Other variables declaration(useRef, useStyles...)
+  const classes = useStyles();
+  const preventDefault = (event) => event.preventDefault();
+  const boxPanelPosition = 'bottom'
+  
+  // Effect(s)
+  React.useEffect(() => {
+    // Create an scoped async function in the hook
+    async function handleLoadProducts() {
+      const db = await fire.firestore();
+      let products = [];
+      await db.collection("products").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          products.push({id: doc.id, ...doc.data()});
+        });
+      });
+      return products;
+    }
+    // Execute the created function directly
+    // Set state of list of products
+    (async function () {
+      const loadedProducts = await handleLoadProducts();
+      await setProducts({list: loadedProducts});
+    })();
+    
+  }, []);
 
+
+  // Logic
+  const toggleBoxPanel = (event) => {
+    setDisplayBox(!displayBox);
+  };
   const handleChangeOnCheckbox = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
@@ -112,10 +92,10 @@ export default function BoxBuilderPage() {
   };
   const descriptionElementRef = React.useRef(null);
 
-  const boxPanelContent = (anchor) => (
+  const BoxPanelContent = ({ position }) => (
     <div
       className={clsx(classes.boxPanel, {
-        [classes.fullBoxPanel]: anchor === 'top' || anchor === 'bottom',
+        [classes.fullBoxPanel]: position === 'top' || position === 'bottom',
       })}
       role="presentation"
     >
@@ -124,8 +104,28 @@ export default function BoxBuilderPage() {
       </Typography>
     </div>
   );
-  const boxPanelPosition = 'bottom'
+    
+  const ProductGrid = ({ products }) => {
+    if (products) {
+      return (
+        <Grid container spacing={4}>
+          {products.map((product) => (
+            <Grid item key={product.title} xs={12} sm={6} md={4}>
+              <ProductCard product={product}/>
+            </Grid>
+          ))}
+        </Grid>
+      )
+    } else {
+      return (
+        <Typography component="h4" >
+          No product found yet.
+        </Typography>
+      );
+    }
+  }
 
+  // Return
   return (
     <React.Fragment>
       {/* Hero unit */}
@@ -241,17 +241,11 @@ export default function BoxBuilderPage() {
               </AccordionDetails>
             </Accordion>
           </Paper>
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <ProductCard />
-              </Grid>
-            ))}
-          </Grid>
+          <ProductGrid products={products.list}/>
         </Box>
       </Container>
       <Drawer anchor={boxPanelPosition} open={displayBox} onClose={toggleBoxPanel}>
-        {boxPanelContent(boxPanelPosition)}
+        <BoxPanelContent position={boxPanelPosition} />
       </Drawer>
       <Dialog
         name='viewProductA'

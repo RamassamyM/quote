@@ -8,6 +8,7 @@ import theme from './theme';
 import reportWebVitals from './reportWebVitals';
 import Navbar from './components/navbar'
 import Footer from './components/footer'
+// import seed from './seeder/seed-firestore';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,4 +26,8 @@ ReactDOM.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(console.log);
+// reportWebVitals(console.log);
+
+// if (true) {
+//  seed();
+// }
