@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   cardGrid: {
-    paddingTop: theme.spacing(8),
+    // paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
     minHeight: '100vh'
   },
@@ -57,15 +57,13 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.white.main
     }
   },
-  filterPanel: {
-    marginRight: theme.spacing(4),
-    padding: theme.spacing(2),
-    width: '300px',
-    backgroundColor: 'transparent',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  }
+  filterSection: {
+    // backgroundColor: theme.palette.white.main,
+    minHeight: "80px",
+  },
+  filterChip: {
+    border: "none",
+  },
 }));
 
 export default useStyles;

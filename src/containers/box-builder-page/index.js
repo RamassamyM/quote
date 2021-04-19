@@ -1,13 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Box, Paper, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
-import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import { FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import ProductCard from './../../components/product-card';
-import { ExpandMore as ExpandMoreIcon, MailOutline as MailOutlineIcon } from '@material-ui/icons';
+import { MailOutline as MailOutlineIcon, Clear as ClearIcon } from '@material-ui/icons';
 import fire from './../../fire';
 import useStyles from './style';
+import { arrayRemove } from './../../core/services/utils';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -17,41 +16,21 @@ export default function BoxBuilderPage() {
   // Local state
   const [displayBox, setDisplayBox] = React.useState(false)
   const [scroll, setScroll] = React.useState('paper');
+  const [productViewModal, setProductViewModal] = React.useState({
+    product: null,
+    display: false
+  });
   const [products, setProducts] = React.useState({
-    // list: [{
-    //   title: "title",
-    //   description: "",
-    //   category: "",
-    //   main_picture_url: "https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/CURAKIT_Original_2.png?alt=media&token=eb1bbec3-4c36-4d47-a2b6-ecf39f203508",
-    //   variants: [{
-    //     sku: "-",
-    //     price: "",
-    //     price_unit: "",
-    //     property_unit: "",
-    //     property_value: "",
-    //     currency: ""
-    //   }]
-    // }],
     list: null,
   })
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-    checkedC: true,
-    checkedD: true,
-    checkedE: true,
-    checkedF: true,
-    viewProductA: false,
-    viewProductB: false,
-    viewProductC: false,
-    viewProductD: false,
-    viewProductE: false,
-  });
-  
+  const [categories, setCategories] = React.useState({
+    list: ["Other", "Body", "Food", "Room"],
+    selected: "All"
+  })
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
-  const preventDefault = (event) => event.preventDefault();
   const boxPanelPosition = 'bottom'
+  // const preventDefault = (event) => event.preventDefault();
   
   // Effect(s)
   React.useEffect(() => {
@@ -80,17 +59,19 @@ export default function BoxBuilderPage() {
   const toggleBoxPanel = (event) => {
     setDisplayBox(!displayBox);
   };
-  const handleChangeOnCheckbox = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
   const handleClickOnProductView = (event, scrollType) => () => {
-    setState({ ...state, [event.target.name]: true });
+    setProductViewModal({product: event.target.name, display: true})
     setScroll(scrollType);
   };
   const handleCloseProductView = (event) => {
-    setState({ ...state, [event.target.name]: false });
+    setProductViewModal({ ...productViewModal, display: false });
   };
   const descriptionElementRef = React.useRef(null);
+
+  const handleSelectFilter = (tag) => {
+    setCategories({...categories, selected: tag });
+    console.log("Selected Filter:", categories.selected);
+  };
 
   const BoxPanelContent = ({ position }) => (
     <div
@@ -110,12 +91,12 @@ export default function BoxBuilderPage() {
       return (
         <Grid container spacing={4}>
           {products.map((product) => (
-            <Grid item key={product.title} xs={12} sm={6} md={4}>
+            <Grid item key={product.title} xs={12} sm={6} md={4} lg={3}>
               <ProductCard product={product}/>
             </Grid>
           ))}
         </Grid>
-      )
+      );
     } else {
       return (
         <Typography component="h4" >
@@ -125,6 +106,29 @@ export default function BoxBuilderPage() {
     }
   }
 
+  const CategoryFilterSection = ({ tags }) => {
+    if (tags) {
+      return (
+        <React.Fragment>
+          {tags.map((tag) => {
+            let variant;
+            let color = "secondary"
+            if (categories.selected !== tag) {
+              variant = "outlined";
+              color = undefined;
+            }
+            return (
+              <Chip variant={variant} color={color} key={tag} label={tag} className={classes.filterChip} onClick={() => handleSelectFilter(tag)} ></Chip>
+            );
+          })}
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <div></div>
+      );
+    }
+  }
   // Return
   return (
     <React.Fragment>
@@ -173,74 +177,12 @@ export default function BoxBuilderPage() {
           </Grid>
         </Grid>
       </div>
+      <Box className={classes.filterSection} display="flex" alignItems="center" justifyContent="center">
+        <CategoryFilterSection tags={["All"].concat(categories.list)} />
+      </Box>
       {/* End hero unit */}
       <Container className={classes.cardGrid} maxWidth="lg">
         <Box display="flex" alignItems="flex-start">
-          <Paper className={classes.filterPanel} elevation={0} >
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography className={classes.heading}>Category 1</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={state.checkedA} onChange={handleChangeOnCheckbox} name="checkedA" />}
-                    label="Protections"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={state.checkedB} onChange={handleChangeOnCheckbox} name="checkedB" />}
-                    label="Creams"
-                  />
-                </FormGroup>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
-              >
-                <Typography className={classes.heading}>Category 2</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={state.checkedC} onChange={handleChangeOnCheckbox} name="checkedC" />}
-                    label="Food"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={state.checkedD} onChange={handleChangeOnCheckbox} name="checkedD" />}
-                    label="Drinks"
-                  />
-                </FormGroup>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel3a-content"
-                id="panel3a-header"
-              >
-                <Typography className={classes.heading}>Category 3</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={state.checkedE} onChange={handleChangeOnCheckbox} name="checkedE" />}
-                    label="Oils"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={state.checkedF} onChange={handleChangeOnCheckbox} name="checkedF" />}
-                    label="Therapy"
-                  />
-                </FormGroup>
-              </AccordionDetails>
-            </Accordion>
-          </Paper>
           <ProductGrid products={products.list}/>
         </Box>
       </Container>
@@ -248,8 +190,8 @@ export default function BoxBuilderPage() {
         <BoxPanelContent position={boxPanelPosition} />
       </Drawer>
       <Dialog
-        name='viewProductA'
-        open={state['viewProductA']}
+        name='viewProduct'
+        open={productViewModal['product']}
         onClose={handleCloseProductView}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
