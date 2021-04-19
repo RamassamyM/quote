@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
@@ -56,7 +57,7 @@ export default function ProductCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions disableSpacing>
         <IconButton
           edge="end"
           aria-label="add to box"

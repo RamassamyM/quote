@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Zoom, Fab, useScrollTrigger, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import ProductCard from './../../components/product-card';
-import { MailOutline as MailOutlineIcon, Clear as ClearIcon } from '@material-ui/icons';
+import { MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
 // import fire from './../../fire';
 import useStyles from './style';
 // import { arrayRemove } from './../../core/services/utils';
@@ -35,19 +35,6 @@ export default function BoxBuilderPage() {
   
   // Effect(s)
   React.useEffect(() => {
-    // Create an scoped async function in the hook
-    // async function handleLoadProducts() {
-    //   const db = await fire.firestore();
-    //   let products = [];
-    //   await db.collection("products").get().then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       products.push({id: doc.id, ...doc.data()});
-    //     });
-    //   });
-    //   return products;
-    // }
-    // Execute the created function directly
-    // Set state of list of products
     (async function () {
       const loadedProducts = await loadProducts();
       await setProducts({list: loadedProducts});
@@ -57,6 +44,32 @@ export default function BoxBuilderPage() {
 
 
   // Logic
+  const ScrollTop = () => {
+    const trigger = useScrollTrigger({
+      // target: window(),
+      disableHysteresis: true,
+      threshold: 100,
+    });
+  
+    const handleClick = (event) => {
+      const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
+  
+      if (anchor) {
+        anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
+  
+    return (
+      <Zoom in={trigger}>
+        <div onClick={handleClick} role="presentation" className={classes.backToTopButton}>
+          <Fab color="secondary" size="small" aria-label="scroll back to top">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </div>
+      </Zoom>
+    );
+  }
+
   const toggleBoxPanel = (event) => {
     setDisplayBox(!displayBox);
   };
@@ -147,7 +160,7 @@ export default function BoxBuilderPage() {
   return (
     <React.Fragment>
       {/* Hero unit */}
-      <div className={classes.heroContent}>
+      <div className={classes.heroContent} id="back-to-top-anchor">
         <Grid container spacing={2}>
           <Grid item md={1} lg={4}>
           </Grid>
@@ -237,6 +250,9 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
           </Button>
         </DialogActions>
       </Dialog>
+      <ScrollTop>
+        
+      </ScrollTop>
     </React.Fragment>
   );
 }

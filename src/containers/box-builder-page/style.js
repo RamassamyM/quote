@@ -64,6 +64,11 @@ const useStyles = makeStyles((theme) => ({
   filterChip: {
     border: "none",
   },
+  backToTopButton: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2)
+  }
 }));
 
 export default useStyles;
