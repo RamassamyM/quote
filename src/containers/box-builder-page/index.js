@@ -4,9 +4,10 @@ import { Box, Chip, Drawer, Button, Grid, Typography, Container } from '@materia
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import ProductCard from './../../components/product-card';
 import { MailOutline as MailOutlineIcon, Clear as ClearIcon } from '@material-ui/icons';
-import fire from './../../fire';
+// import fire from './../../fire';
 import useStyles from './style';
-import { arrayRemove } from './../../core/services/utils';
+// import { arrayRemove } from './../../core/services/utils';
+import { loadProducts, loadProductsForCategory } from './../../core/services/firestore-requests';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -35,20 +36,20 @@ export default function BoxBuilderPage() {
   // Effect(s)
   React.useEffect(() => {
     // Create an scoped async function in the hook
-    async function handleLoadProducts() {
-      const db = await fire.firestore();
-      let products = [];
-      await db.collection("products").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          products.push({id: doc.id, ...doc.data()});
-        });
-      });
-      return products;
-    }
+    // async function handleLoadProducts() {
+    //   const db = await fire.firestore();
+    //   let products = [];
+    //   await db.collection("products").get().then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       products.push({id: doc.id, ...doc.data()});
+    //     });
+    //   });
+    //   return products;
+    // }
     // Execute the created function directly
     // Set state of list of products
     (async function () {
-      const loadedProducts = await handleLoadProducts();
+      const loadedProducts = await loadProducts();
       await setProducts({list: loadedProducts});
     })();
     
@@ -69,8 +70,21 @@ export default function BoxBuilderPage() {
   const descriptionElementRef = React.useRef(null);
 
   const handleSelectFilter = (tag) => {
-    setCategories({...categories, selected: tag });
-    console.log("Selected Filter:", categories.selected);
+    if (categories.selected !== tag) {
+      console.log("load");
+      setCategories({...categories, selected: tag });
+      if (tag === "All") {
+        (async function () {
+          const loadedProducts = await loadProducts();
+          await setProducts({list: loadedProducts});
+        })();
+      } else {
+        (async function () {
+          const loadedProducts = await loadProductsForCategory(tag);
+          await setProducts({list: loadedProducts});
+        })();
+      }
+    }
   };
 
   const BoxPanelContent = ({ position }) => (
