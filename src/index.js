@@ -8,6 +8,7 @@ import theme from './theme';
 import reportWebVitals from './reportWebVitals';
 import Navbar from './components/navbar'
 import Footer from './components/footer'
+// uncomment line below for seeding
 // import seed from './seeder/seed-firestore';
 
 ReactDOM.render(
@@ -28,6 +29,8 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals(console.log);
 
+// To seed database: uncomment these lines and the import lines, then launch server on local
+// after comment the lines
 // if (true) {
 //  seed();
 // }
