@@ -1,13 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
+import { IconButton, GridList, GridListTile, Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
 import { Zoom, Fab, useScrollTrigger, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import ProductCard from './../../components/product-card';
-import { MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
-// import fire from './../../fire';
+import { AddCircle, MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
+import { Dropdown } from 'react-dropdown-now';
 import useStyles from './style';
-// import { arrayRemove } from './../../core/services/utils';
 import { loadProducts, loadProductsForCategory } from './../../core/services/firestore-requests';
+// import { arrayRemove } from './../../core/services/utils';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -25,13 +25,13 @@ export default function BoxBuilderPage() {
     list: null,
   })
   const [categories, setCategories] = React.useState({
-    list: ["Other", "Body", "Food", "Room"],
+    list: ["Body", "Food", "Room", "Other"],
     selected: "All"
   })
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
   const boxPanelPosition = 'bottom'
-  // const preventDefault = (event) => event.preventDefault();
+  const preventDefault = (event) => event.preventDefault();
   
   // Effect(s)
   React.useEffect(() => {
@@ -42,7 +42,6 @@ export default function BoxBuilderPage() {
     
   }, []);
 
-
   // Logic
   const ScrollTop = () => {
     const trigger = useScrollTrigger({
@@ -50,15 +49,12 @@ export default function BoxBuilderPage() {
       disableHysteresis: true,
       threshold: 100,
     });
-  
     const handleClick = (event) => {
       const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
-  
       if (anchor) {
         anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     };
-  
     return (
       <Zoom in={trigger}>
         <div onClick={handleClick} role="presentation" className={classes.backToTopButton}>
@@ -73,14 +69,28 @@ export default function BoxBuilderPage() {
   const toggleBoxPanel = (event) => {
     setDisplayBox(!displayBox);
   };
-  const handleClickOnProductView = (event, scrollType) => () => {
-    setProductViewModal({product: event.target.name, display: true})
+  const handleClickOnViewProduct = (product, scrollType) => {
+    console.log(product);
+    const variants = product.variants.map((variant) => {
+      return { 
+        "label": variant.property_value + " " + variant.property_unit + " - " + variant.price +  " " + variant.currency,
+        "id": variant.sku,
+        "value": variant.sku
+      }
+    })
+    setProductViewModal({product: {
+      ...product,
+      variants: variants,
+     },
+     display: true});
     setScroll(scrollType);
   };
   const handleCloseProductView = (event) => {
-    setProductViewModal({ ...productViewModal, display: false });
+    setProductViewModal({ product: null, display: false });
   };
   const descriptionElementRef = React.useRef(null);
+  const modalDropdownRef = React.useRef(null);
+  const modalRef = React.useRef(null);
 
   const handleSelectFilter = (tag) => {
     if (categories.selected !== tag) {
@@ -119,7 +129,7 @@ export default function BoxBuilderPage() {
         <Grid container spacing={4}>
           {products.map((product) => (
             <Grid item key={product.title} xs={12} sm={6} md={4} lg={3}>
-              <ProductCard product={product}/>
+              <ProductCard product={product} handleClickOnViewProduct={() => handleClickOnViewProduct(product, 'paper')}/>
             </Grid>
           ))}
         </Grid>
@@ -217,42 +227,85 @@ export default function BoxBuilderPage() {
         <BoxPanelContent position={boxPanelPosition} />
       </Drawer>
       <Dialog
-        name='viewProduct'
-        open={productViewModal['product']}
+        name='Product View'
+        open={productViewModal.display}
         onClose={handleCloseProductView}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
-      >
-        <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
-          <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
-            tabIndex={-1}
-          >
-            {[...new Array(50)]
-              .map(
-                () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-              )
-              .join('\n')}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button name='viewProductA' onClick={handleCloseProductView} color="primary">
-            Cancel
-          </Button>
-          <Button name='viewProductA' onClick={handleCloseProductView} color="primary">
-            Subscribe
-          </Button>
-        </DialogActions>
+        ref={modalRef}
+        >
+        { productViewModal.display && (
+          <React.Fragment>
+            <DialogTitle id="scroll-dialog-title">{productViewModal.product.title}</DialogTitle>
+            <DialogContent dividers={scroll === 'paper'}>
+                <Grid container spacing={2}>
+                  <Grid item md={6}>
+                  <div className={classes.modalImageWrapper}>
+                    <GridList className={classes.modalImageList} cols={2.5}>
+                      {productViewModal.product.picture_urls.map((picture_url, index) => (
+                        <GridListTile key={productViewModal.product.id + '-image-' + index} cols={2}>
+                          <img src={picture_url} alt={productViewModal.product.id + '-image-' + index} />
+                        </GridListTile>
+                      ))}
+                    </GridList>
+                  </div>
+                  </Grid>
+                  <Grid item md={6}>
+                    <Box m={1} className={classes.modalCategory} display="flex" justifyContent="space-between" alignItems="center">
+                      <Typography component="h3" >
+                        {productViewModal.product.brand}
+                      </Typography>
+                      <Chip variant="outlined" key={"category-chip"} label={productViewModal.product.category} className={classes.modalChip}/>
+                    </Box>
+                    <Box className={classes.modalDescription}>
+                    {productViewModal.product.description}
+                    </Box>
+                    <Box className={classes.modalWrapperChip} display="flex">
+                      {productViewModal.product.tags.map((tag) => (
+                        <Chip size="small" key={"modalChip-" + tag} label={tag} className={classes.modalChip}/>
+                      ))}
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Dropdown
+                        placeholder="Select an option"
+                        options={productViewModal.product.variants}
+                        value={productViewModal.product.variants[0].value}
+                        onChange={(value) => console.log('change!', value)}
+                        // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
+                        onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
+                        onOpen={() => console.log('opened!')}
+                      />
+                      <div className={classes.separator}></div>
+                      <IconButton
+                        edge="end"
+                        aria-label="add to box"
+                        aria-controls={'buttonId'}
+                        aria-haspopup="true"
+                        onClick={preventDefault}
+                        color="primary"
+                      >
+                        <AddCircle fontSize="large"/>
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                </Grid>
+              {/* <DialogContentText
+                id="scroll-dialog-description"
+                ref={descriptionElementRef}
+                tabIndex={-1}
+              >
+              </DialogContentText> */}
+            </DialogContent>
+            <DialogActions>
+              <Button name='Close' onClick={handleCloseProductView} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </React.Fragment>
+        )}
       </Dialog>
-      <ScrollTop>
-        
-      </ScrollTop>
+      <ScrollTop/>
     </React.Fragment>
   );
 }

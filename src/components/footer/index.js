@@ -15,11 +15,13 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://curakit.com/">
+      <Link color="inherit" href="https://curakit.com/" target="_blank">
         Curakit
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+      </Link>
+      {' '}{new Date().getFullYear()}{'. Made with'}
+      <Link color="inherit" href="https://www.cosmike.com/" target="_blank">
+        <FavoriteIcon fontSize="small" color="secondary" />
+      </Link>
     </Typography>
   );
 }
@@ -30,10 +32,6 @@ export default function Footer() {
   return (
     <React.Fragment>
       <footer className={classes.footer}>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Made by cosmike.com with 
-          <FavoriteIcon fontSize="small" color="secondary" />
-        </Typography>
         <Copyright />
       </footer>
     </React.Fragment>

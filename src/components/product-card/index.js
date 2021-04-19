@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
   },
+  cardActions: {
+    padding: theme.spacing(2)
+  },
   separator: {
     flexGrow: '1',
   }
@@ -25,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard(props) {
   const classes = useStyles();
   const preventDefault = (event) => event.preventDefault();
-  let variants = [];
   const product = props.product;
+  let variants = [];
   if (product && product["variants"]) {
     variants = product["variants"];
     variants = variants.map((variant) => {
@@ -37,9 +40,19 @@ export default function ProductCard(props) {
       }
     })
   }
+  // const handleClickOnViewProduct = (event) => {
+  //   preventDefault(event);
+  //   props.handleClickOnViewProduct(product, 'paper');
+  // }
+
   return (
     <Card className={classes.card}>
-      <CardActionArea>
+      <CardActionArea
+        aria-label="View product"
+        aria-controls={'product-content-id'}
+        aria-haspopup="true"
+        onClick={props.handleClickOnViewProduct}
+      >
         <CardMedia
           className={classes.cardMedia}
           image={product["main_picture_url"]}
@@ -57,7 +70,17 @@ export default function ProductCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions disableSpacing>
+      <CardActions className={classes.cardActions}>
+        <Dropdown
+          placeholder="Select an option"
+          options={variants}
+          value={variants[0].value}
+          onChange={(value) => console.log('change!', value)}
+          // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
+          onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
+          onOpen={() => console.log('opened!')}
+        />
+        <div className={classes.separator}></div>
         <IconButton
           edge="end"
           aria-label="add to box"
@@ -68,16 +91,6 @@ export default function ProductCard(props) {
         >
           <AddCircle fontSize="large"/>
         </IconButton>
-        <div className={classes.separator}></div>
-        <Dropdown
-          placeholder="Select an option"
-          options={variants}
-          value={variants[0].value}
-          onChange={(value) => console.log('change!', value)}
-          // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
-          onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
-          onOpen={() => console.log('opened!')}
-        />
       </CardActions>
     </Card>
   )

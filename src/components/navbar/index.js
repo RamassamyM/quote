@@ -163,7 +163,7 @@ export default function PrimaryAppBar() {
     </div>
   );
   const anchor = 'top';
-  const preventDefault = (event) => event.preventDefault();
+  // const preventDefault = (event) => event.preventDefault();
   
   return (
     <div className={classes.grow}>

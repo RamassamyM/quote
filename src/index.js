@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import App from './App';
 import './core/theme/index.css';
 import theme from './theme';
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 // uncomment line below for seeding
