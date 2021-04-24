@@ -1,11 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
-import { IconButton, GridList, GridListTile, Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
-import { Zoom, Fab, useScrollTrigger, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
+import { Zoom, Fab, useScrollTrigger } from '@material-ui/core';
 import ProductCard from './../../components/product-card';
 import ProductModal from './../../components/product-modal';
-import { AddCircle, MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
-import { Dropdown } from 'react-dropdown-now';
+import { MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { loadProducts, loadProductsForCategory } from './../../core/services/firestore-requests';
 // import { arrayRemove } from './../../core/services/utils';
@@ -225,19 +224,13 @@ export default function BoxBuilderPage() {
       <Drawer anchor={boxPanelPosition} open={displayBox} onClose={toggleBoxPanel}>
         <BoxPanelContent position={boxPanelPosition} />
       </Drawer>
-      <Dialog
-        name='Product View'
-        open={productViewModal.display}
-        onClose={handleCloseProductView}
-        scroll={scroll}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
+      <ProductModal 
+        product={productViewModal.product}
+        display={productViewModal.display}
+        handleCloseProductView={handleCloseProductView}
         ref={modalRef}
-        >
-        { productViewModal.display && (
-          <ProductModal product={productViewModal.product} handleCloseProductView={handleCloseProductView} scroll={scroll}/>
-        )}
-      </Dialog>
+        scroll={scroll}
+      />
       <ScrollTop/>
     </React.Fragment>
   );
