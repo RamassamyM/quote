@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { store } from './core/store/store';
+import { Provider } from 'react-redux';
 import App from './App';
 import './core/theme/index.css';
 import theme from './theme';
@@ -10,15 +12,21 @@ import Navbar from './components/navbar'
 import Footer from './components/footer'
 // uncomment line below for seeding
 // import seed from './seeder/seed-firestore';
+import { fetchProductsAsync } from './containers/box-builder-page/productsSlice';
+// import { useDispatch } from 'react-redux';
+
+store.dispatch(fetchProductsAsync());
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <CssBaseline />
-      <Navbar />
-      <App />
-      <Footer />
+      <Provider store={store}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <Navbar />
+        <App />
+        <Footer />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

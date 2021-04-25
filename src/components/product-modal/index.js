@@ -16,7 +16,7 @@ const ProductModal = (props) => {
   const product = props.product;
   const display = props.display;
   const scroll = props.scroll;
-  const ref = props.ref;
+  const reference = props.reference;
   const preventDefault = (event) => event.preventDefault();
   // Effect(s)
   // Logic
@@ -29,7 +29,7 @@ const ProductModal = (props) => {
       scroll={scroll}
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
-      ref={ref}
+      ref={reference}
       >
       { display && (
         <React.Fragment>

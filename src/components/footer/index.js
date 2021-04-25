@@ -1,15 +1,8 @@
 import React from 'react';
 // import { useEffect } from 'react'
 import { Typography, Link } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './style';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
-const useStyles = makeStyles((theme) => ({
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(3),
-  },
-}));
 
 function Copyright() {
   return (

@@ -1,17 +1,22 @@
 import React from 'react';
-import clsx from 'clsx';
 import { Box, Chip, Drawer, Button, Grid, Typography, Container } from '@material-ui/core';
 import { Zoom, Fab, useScrollTrigger } from '@material-ui/core';
 import ProductCard from './../../components/product-card';
 import ProductModal from './../../components/product-modal';
+import BoxView from './../../components/box-view';
 import { MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
 import useStyles from './style';
-import { loadProducts, loadProductsForCategory } from './../../core/services/firestore-requests';
-// import { arrayRemove } from './../../core/services/utils';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchProductsAsync,
+  fetchProductsByCategoryAsync,
+  selectProducts,
+} from './productsSlice';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
-
+  const products = useSelector(selectProducts);
+  const dispatch = useDispatch();
   // App state
   
   // Local state
@@ -21,26 +26,29 @@ export default function BoxBuilderPage() {
     product: null,
     display: false
   });
-  const [products, setProducts] = React.useState({
-    list: null,
-  })
+  // const [products, setProducts] = React.useState({
+  //   list: null,
+  // })
   const [categories, setCategories] = React.useState({
     list: ["Body", "Food", "Room", "Other"],
     selected: "All"
   })
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
-  const boxPanelPosition = 'bottom'
+  const boxPanelPosition = 'right'
   // const preventDefault = (event) => event.preventDefault();
   
   // Effect(s)
-  React.useEffect(() => {
-    (async function () {
-      const loadedProducts = await loadProducts();
-      await setProducts({list: loadedProducts});
-    })();
+  // React.useEffect(() => {
+  //   (async function () {
+  //     const loadedProducts = await loadProducts();
+  //     await setProducts({list: loadedProducts});
+  //   })();
     
-  }, []);
+  // }, []);
+  // React.useEffect(() => {
+  //   dispatch(fetchProductsAsync());
+  // });
 
   // Logic
   const ScrollTop = () => {
@@ -95,33 +103,15 @@ export default function BoxBuilderPage() {
       console.log("load");
       setCategories({...categories, selected: tag });
       if (tag === "All") {
-        (async function () {
-          const loadedProducts = await loadProducts();
-          await setProducts({list: loadedProducts});
-        })();
+        dispatch(fetchProductsAsync());
       } else {
-        (async function () {
-          const loadedProducts = await loadProductsForCategory(tag);
-          await setProducts({list: loadedProducts});
-        })();
+        dispatch(fetchProductsByCategoryAsync(tag));
       }
     }
   };
-
-  const BoxPanelContent = ({ position }) => (
-    <div
-      className={clsx(classes.boxPanel, {
-        [classes.fullBoxPanel]: position === 'top' || position === 'bottom',
-      })}
-      role="presentation"
-    >
-      <Typography component='h1'>
-        My Box
-      </Typography>
-    </div>
-  );
     
   const ProductGrid = ({ products }) => {
+    console.log("products:", products);
     if (products) {
       return (
         <Grid container spacing={4}>
@@ -218,17 +208,17 @@ export default function BoxBuilderPage() {
       {/* End hero unit */}
       <Container className={classes.cardGrid} maxWidth="lg">
         <Box display="flex" alignItems="flex-start">
-          <ProductGrid products={products.list}/>
+          <ProductGrid products={products}/>
         </Box>
       </Container>
       <Drawer anchor={boxPanelPosition} open={displayBox} onClose={toggleBoxPanel}>
-        <BoxPanelContent position={boxPanelPosition} />
+        <BoxView position={boxPanelPosition} />
       </Drawer>
       <ProductModal 
         product={productViewModal.product}
         display={productViewModal.display}
         handleCloseProductView={handleCloseProductView}
-        ref={modalRef}
+        reference={modalRef}
         scroll={scroll}
       />
       <ScrollTop/>

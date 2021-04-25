@@ -1,29 +1,10 @@
 import React from 'react';
 import { IconButton, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
 import { Dropdown } from 'react-dropdown-now';
 import 'react-dropdown-now/style.css';
+import useStyles from './style';
 
-const useStyles = makeStyles((theme) => ({
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-  },
-  cardActions: {
-    padding: theme.spacing(2)
-  },
-  separator: {
-    flexGrow: '1',
-  }
-}));
 
 export default function ProductCard(props) {
   const classes = useStyles();

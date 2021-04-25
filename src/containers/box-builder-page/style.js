@@ -42,14 +42,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(8),
     minHeight: '100vh'
   },
-  boxPanel: {
-    width: 250,
-    padding: theme.spacing(2),
-  },
-  fullBoxPanel: {
-    width: 'auto',
-    minHeight: '200px',
-  },
   buttonBoxPanel: {
     color: theme.palette.white.main,
     '&:disabled': {
