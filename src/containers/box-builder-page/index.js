@@ -7,18 +7,16 @@ import BoxView from './../../components/box-view';
 import { MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchProductsAsync,
-  fetchProductsByCategoryAsync,
-  selectProducts,
-} from './productsSlice';
+import { fetchProductsAsync, fetchProductsByCategoryAsync, selectProducts } from './productsSlice';
+import { selectBoxNumberOfItems, selectBoxTotalCost } from './boxSlice';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
-  const products = useSelector(selectProducts);
   const dispatch = useDispatch();
   // App state
-  
+  const products = useSelector(selectProducts);
+  const boxTotalCost = useSelector(selectBoxTotalCost);
+  const boxNumberOfItems = useSelector(selectBoxNumberOfItems);
   // Local state
   const [displayBox, setDisplayBox] = React.useState(false)
   const [scroll, setScroll] = React.useState('paper');
@@ -26,29 +24,16 @@ export default function BoxBuilderPage() {
     product: null,
     display: false
   });
-  // const [products, setProducts] = React.useState({
-  //   list: null,
-  // })
   const [categories, setCategories] = React.useState({
     list: ["Body", "Food", "Room", "Other"],
     selected: "All"
   })
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
-  const boxPanelPosition = 'right'
+  const boxPanelPosition = 'bottom'
   // const preventDefault = (event) => event.preventDefault();
   
   // Effect(s)
-  // React.useEffect(() => {
-  //   (async function () {
-  //     const loadedProducts = await loadProducts();
-  //     await setProducts({list: loadedProducts});
-  //   })();
-    
-  // }, []);
-  // React.useEffect(() => {
-  //   dispatch(fetchProductsAsync());
-  // });
 
   // Logic
   const ScrollTop = () => {
@@ -79,18 +64,10 @@ export default function BoxBuilderPage() {
   };
   const handleClickOnViewProduct = (product, scrollType) => {
     console.log(product);
-    const variants = product.variants.map((variant) => {
-      return { 
-        "label": variant.property_value + " " + variant.property_unit + " - " + variant.price +  " " + variant.currency,
-        "id": variant.sku,
-        "value": variant.sku
-      }
-    })
-    setProductViewModal({product: {
-      ...product,
-      variants: variants,
-     },
-     display: true});
+    setProductViewModal({
+      product, 
+      display: true
+    });
     setScroll(scrollType);
   };
   const handleCloseProductView = (event) => {
@@ -100,7 +77,6 @@ export default function BoxBuilderPage() {
 
   const handleSelectFilter = (tag) => {
     if (categories.selected !== tag) {
-      console.log("load");
       setCategories({...categories, selected: tag });
       if (tag === "All") {
         dispatch(fetchProductsAsync());
@@ -111,14 +87,16 @@ export default function BoxBuilderPage() {
   };
     
   const ProductGrid = ({ products }) => {
-    console.log("products:", products);
+    console.log("ProductGrid Update!");
     if (products) {
       return (
         <Grid container spacing={4}>
           {products.map((product) => (
-            <Grid item key={product.title} xs={12} sm={6} md={4} lg={3}>
-              <ProductCard product={product} handleClickOnViewProduct={() => handleClickOnViewProduct(product, 'paper')}/>
-            </Grid>
+            <ProductCard
+              key={product.productId}
+              product={product}
+              handleClickOnViewProduct={() => handleClickOnViewProduct(product, 'paper')}
+            />
           ))}
         </Grid>
       );
@@ -183,7 +161,7 @@ export default function BoxBuilderPage() {
                   className={classes.buttonBoxPanel}
                   disabled
                 >
-                {'15'}£&nbsp;&nbsp;|&nbsp;&nbsp;{'12'} ITEMS
+                {boxTotalCost}£&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems} ITEM(S)
                 </Button>
                 <Button
                   variant="contained"
@@ -212,7 +190,7 @@ export default function BoxBuilderPage() {
         </Box>
       </Container>
       <Drawer anchor={boxPanelPosition} open={displayBox} onClose={toggleBoxPanel}>
-        <BoxView position={boxPanelPosition} />
+        <BoxView position={boxPanelPosition} handleCloseBoxPanel={toggleBoxPanel}/>
       </Drawer>
       <ProductModal 
         product={productViewModal.product}

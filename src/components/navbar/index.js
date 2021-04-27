@@ -5,9 +5,12 @@ import { Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/
 import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
 import { Menu as MenuIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
 import logo from './../../assets/curakit-logo-white.png'; 
+import { useSelector } from 'react-redux';
+import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
 
 export default function PrimaryAppBar() {
   const classes = useStyles();
+  const boxNumberOfItems = useSelector(selectBoxNumberOfItems) || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const [state, setState] = React.useState({
@@ -67,7 +70,7 @@ export default function PrimaryAppBar() {
       <List>
         <ListItem button key="Box Builder">
           <ListItemText primary={"Box Builder"} />
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={boxNumberOfItems} color="secondary">
             <InboxIcon />
           </Badge>
         </ListItem>
@@ -108,7 +111,7 @@ export default function PrimaryAppBar() {
           <div className={classes.grow}></div>
           <div className={classes.sectionDesktop}>
             <Button aria-label="show 4 new mails" className={classes.linkWithBadge}>
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={boxNumberOfItems} color="secondary">
                 Box Builder<InboxIcon />
               </Badge>
             </Button>
