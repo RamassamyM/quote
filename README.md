@@ -66,3 +66,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### Serving build
+When the build folder is ready to be deployed, you may serve it with a static server to see folders (?):
+
+  yarn global add serve
+  serve build

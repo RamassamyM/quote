@@ -14,7 +14,7 @@ const ProductModal = (props) => {
   // App state
   // Local state
   const product = props.product;
-  const [variantSelection, setVariantSelection] = React.useState(null)
+  const [variantSelection, setVariantSelection] = React.useState(null);
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
   const display = props.display;
@@ -22,15 +22,23 @@ const ProductModal = (props) => {
   const reference = props.reference;
   // const preventDefault = (event) => event.preventDefault();
   // Effect(s)
-
   // Logic
   const handleSelectVariant = (value) => {
     console.log("Select variant: ", value);
     setVariantSelection(value);
   }
+  // const handleAddToBoxButton = (event) => {
+  //   event.preventDefault();
+  //   dispatch(addProductToBox({ product, variantSelected: variantSelection }))
+  // };
   const handleAddToBoxButton = (event) => {
     event.preventDefault();
-    dispatch(addProductToBox({ product, variantSelected: variantSelection }))
+    dispatch(addProductToBox({ product, variantSelected: product.variants.filter((variant) => {
+      if (!variantSelection) {
+        return variant.id === product.variants[0].id;
+      }
+      return variant.id === variantSelection.id;
+    })[0] }));
   };
   // Return
   return (
