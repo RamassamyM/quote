@@ -102,11 +102,11 @@ const BoxView = (props) => {
       </Box>
       <Box display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap">
         <Box className={classes.boxAnimationWrapper}>
-          <img alt="box-image" src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/box_sm_1024x.png?alt=media&token=4fa9c2cc-e1f6-4102-b2c8-ce1394b62c82"/>
+          <img alt="box" src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/box_sm_1024x.png?alt=media&token=4fa9c2cc-e1f6-4102-b2c8-ce1394b62c82"/>
         </Box>
         <Box className={classes.boxItemsWrapper}>
           {boxItems.map(item => (
-            <ItemCard item={item} />
+            <ItemCard key={item.product.productId} item={item} />
           ))}
         </Box>
       </Box>
