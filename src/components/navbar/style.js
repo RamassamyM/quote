@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   loginLink: {
     color: theme.palette.white.main,
   },
+  navbarLink: {
+    textDecoration: 'none',
+  },
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
