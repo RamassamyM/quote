@@ -7,32 +7,26 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.grey.main,
-    // marginTop: '56px',
-    padding: theme.spacing(0, 0, 2),
-    [theme.breakpoints.up('sm')]: {
-      // marginTop: '64px',
-      padding: theme.spacing(2, 0, 2),
-    },
-  },
-  heroBoxTitle: {
-    [theme.breakpoints.up('sm')]: {
-      marginTop: '20px',
-    },
+    padding: theme.spacing(2, 0, 2),
   },
   heroTitle: {
     color: theme.palette.secondary.lighter,
+    fontSize: '38px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '36px',
-      '& h2': {
-        margin: 'none',
-      }
+      fontSize: '34px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '28px',
     },
   },
-  heroButtons: {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: '5px',
-    padding: theme.spacing(1),
-    color: theme.palette.secondary.lighter,
+  boxGridWrapper: {
+    minHeight: 'calc(100vh - 213px)',
+    [theme.breakpoints.down('sm')]: {
+      minHeight: 'calc(100vh - 209px)',
+    },
+    [theme.breakpoints.down('xs')]: {
+      minHeight: 'calc(100vh - 193px)',
+    },
   },
   backToTopButton: {
     position: 'fixed',

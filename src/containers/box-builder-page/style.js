@@ -7,10 +7,8 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.grey.main,
-    // marginTop: '56px',
     padding: theme.spacing(0, 0, 2),
     [theme.breakpoints.up('md')]: {
-      // marginTop: '64px',
       padding: theme.spacing(2, 0, 2),
     },
   },
@@ -20,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   heroTitle: {
+    fontSize: '40px',
     color: theme.palette.secondary.lighter,
     [theme.breakpoints.down('sm')]: {
       fontSize: '36px',
