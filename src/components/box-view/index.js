@@ -147,7 +147,10 @@ const BoxView = (props) => {
         <Toolbar>
           <div className={classes.grow} />
           <Typography className={classes.boxTotalCostText}>
-            {boxTotalCost}&nbsp;£&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems}&nbsp;ITEM(S)
+            {boxTotalCost}&nbsp;£
+          </Typography>
+          <Typography className={classes.boxTotalCostText}>
+            {boxNumberOfItems}&nbsp;ITEM(S)
           </Typography>
           <Button disabled={boxNumberOfItems === 0} variant="contained" color="secondary" onClick={() => handleClickOnAddBox('paper')}>
             Add box to quote

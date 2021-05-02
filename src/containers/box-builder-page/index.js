@@ -161,7 +161,16 @@ export default function BoxBuilderPage() {
                   className={classes.buttonBoxPanel}
                   disabled
                 >
-                {boxTotalCost}£&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems} ITEM(S)
+                {boxTotalCost}£
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  className={classes.buttonBoxPanel}
+                  disabled
+                >
+                {boxNumberOfItems} ITEM(S)
                 </Button>
                 <Button
                   variant="contained"
