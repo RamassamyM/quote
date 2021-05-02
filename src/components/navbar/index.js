@@ -7,6 +7,7 @@ import { Menu as MenuIcon, Inbox as InboxIcon, AccountCircle } from '@material-u
 import logo from './../../assets/curakit-logo-white.png'; 
 import { useSelector } from 'react-redux';
 import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
+import { Link } from 'react-router-dom'
 import ElevationScroll from './../elevationScroll';
 
 export default function PrimaryAppBar(props) {
@@ -70,19 +71,19 @@ export default function PrimaryAppBar(props) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem button key="Box Builder">
+        <ListItem component={Link} to="/box-builder" key="Box Builder">
           <ListItemText primary={"Box Builder"} />
           <Badge badgeContent={boxNumberOfItems} color="secondary">
             <InboxIcon />
           </Badge>
         </ListItem>
-        <ListItem button key="Quote Builder">
+        <ListItem component={Link} to="/quote-builder" key="Quote Builder">
           <ListItemText primary={"Quote Builder"} />
           <Badge badgeContent={17} color="secondary">
             <InboxIcon />
           </Badge>
         </ListItem>
-        <ListItem button key="Login" style={{display: isLoggedIn ? 'none' : 'block'  }} onClick={handleLogin}>
+        <ListItem button disabled key="Login" style={{display: isLoggedIn ? 'none' : 'block'  }} onClick={handleLogin}>
           <ListItemText primary={"Login"} />
         </ListItem>
         <ListItem button key="My Quotes" style={{display: isLoggedIn ? 'block' : 'none' }} >
@@ -113,12 +114,12 @@ export default function PrimaryAppBar(props) {
             </Typography>
             <div className={classes.grow}></div>
             <div className={classes.sectionDesktop}>
-              <Button aria-label="show 4 new mails" className={classes.linkWithBadge}>
+              <Button component={Link} to="/box-builder" aria-label="show 4 new mails" className={classes.linkWithBadge}>
                 <Badge badgeContent={boxNumberOfItems} color="secondary">
                   Box Builder<InboxIcon />
                 </Badge>
               </Button>
-              <Button aria-label="show 17 new notifications" className={classes.linkWithBadge}>
+              <Button component={Link} to="/quote-builder" aria-label="show 17 new notifications" className={classes.linkWithBadge}>
                 <Badge badgeContent={17} color="secondary">
                   Quote Builder<InboxIcon />
                 </Badge>
@@ -128,6 +129,7 @@ export default function PrimaryAppBar(props) {
                 style={{display: isLoggedIn ? 'none' : 'block' }} 
                 onClick={handleLogin}
                 className={classes.loginLink}
+                disabled
               >
                 Login
               </Button>

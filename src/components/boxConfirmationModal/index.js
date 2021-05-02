@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle, Typography } from '@material-ui/core';
-// import useStyles from './style';
+import { TextField, Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@material-ui/core';
+import useStyles from './style';
 // import { useDispatch } from 'react-redux';
 // import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
 
@@ -11,7 +11,7 @@ const BoxConfirmationModal = (props) => {
   // Local state
   // const box = props.box;
   // Other variables declaration(useRef, useStyles...)
-  // const classes = useStyles();
+  const classes = useStyles();
   const display = props.display;
   const scroll = props.scroll;
   const reference = props.reference;
@@ -37,17 +37,20 @@ const BoxConfirmationModal = (props) => {
       { display && (
         <React.Fragment>
           <DialogTitle id="scroll-dialog-title">Please name your box</DialogTitle>
-          <DialogContent dividers={scroll === 'paper'}>
+          <DialogContent dividers={scroll === 'paper'} className={classes.modalContent}>
             <DialogContentText id="alert-dialog-description">
               To help keep things straight if you need to add more than one
             </DialogContentText>
+            <form className={classes.boxNameField} noValidate autoComplete="off">
+              <TextField id="outlined-basic" label="Name" variant="outlined" />
+            </form>
           </DialogContent>
           <DialogActions>
             <Button name='Close' onClick={handleCloseBoxConfirmationView} color="default">
-              Close
+              Cancel
             </Button>
-            <Button name='AddToQuote' onClick={handleAddBoxToQuote} color="primary" autoFocus>
-              Agree
+            <Button name='AddToQuote' onClick={handleAddBoxToQuote} color="primary" variant="contained" autoFocus>
+              Add to quote
             </Button>
           </DialogActions>
         </React.Fragment>

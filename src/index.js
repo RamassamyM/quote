@@ -14,6 +14,7 @@ import Footer from './components/footer'
 // import seed from './seeder/seed-firestore';
 import { fetchProductsAsync } from './containers/box-builder-page/productsSlice';
 // import { useDispatch } from 'react-redux';
+import { HashRouter } from 'react-router-dom'
 
 store.dispatch(fetchProductsAsync());
 
@@ -21,11 +22,13 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
+        <HashRouter>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Navbar />
         <App />
         <Footer />
+        </HashRouter>
       </Provider>
     </ThemeProvider>
   </React.StrictMode>,
