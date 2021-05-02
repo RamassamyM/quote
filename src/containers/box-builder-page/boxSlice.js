@@ -23,6 +23,9 @@ export const boxSlice = createSlice({
         return item.variantSelected.id !== action.payload.variantSelected.id;
       });
     },
+    resetBox: (state) => {
+      state.items = [];
+    },
     addOneQuantityOfProductInBox: (state, action) => {
       state.items.find(e => e.variantSelected.id === action.payload.variantSelected.id).qty += 1;
     },
@@ -35,7 +38,7 @@ export const boxSlice = createSlice({
   },
 });
 
-export const { addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
+export const { resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
 
 export const selectBoxItems = (state) => state.box.items;
 export const selectBoxTotalCost = (state) => {

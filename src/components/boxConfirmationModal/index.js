@@ -2,8 +2,8 @@ import React from 'react';
 import { TextField, Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@material-ui/core';
 import useStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectBoxItems, selectBoxTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
 import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
-import { selectBoxItems, selectBoxTotalCost } from './../../containers/box-builder-page/boxSlice';
 
 const BoxConfirmationModal = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -14,6 +14,7 @@ const BoxConfirmationModal = (props) => {
   // Local state
   const [boxName, setBoxName] = React.useState(null);
   // Other variables declaration(useRef, useStyles...)
+  const handleAfterAddingBox = props.handleAfterAddingBox;
   const box = {items: boxItems, unitPrice: boxTotalCost }
   const classes = useStyles();
   const display = props.display;
@@ -26,9 +27,12 @@ const BoxConfirmationModal = (props) => {
   const handleAddBoxToQuote = (event, name) => {
     event.preventDefault();
     dispatch(addBoxToQuote({ ...box, name: name }))
+    dispatch(resetBox());
+    setBoxName(null);
+    handleCloseBoxConfirmationView();
+    handleAfterAddingBox();
   };
   const handleChangeOnNameTextField =(event) => {
-    console.log(event.target.value);
     if (event.target.value) {
       setBoxName(event.target.value);
     } else {
@@ -51,7 +55,7 @@ const BoxConfirmationModal = (props) => {
           <DialogTitle id="scroll-dialog-title">Please name your box</DialogTitle>
           <DialogContent dividers={scroll === 'paper'} className={classes.modalContent}>
             <DialogContentText id="alert-dialog-description">
-              To help keep things straight if you need to add more than one
+              To identify this box in your quote
             </DialogContentText>
               <TextField id="outlined-basic" label="Name" variant="outlined" onChange={handleChangeOnNameTextField}/>
           </DialogContent>

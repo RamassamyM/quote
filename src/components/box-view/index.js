@@ -46,7 +46,8 @@ const BoxView = (props) => {
   const handleClearItem = (item) => {
     dispatch(removeProductFromBox(item));
   };
-  
+  const handleCloseBoxPanel = props.handleCloseBoxPanel;
+  const handleAfterAddingBox = handleCloseBoxPanel;
   const ItemsWrapper = (props) => {
     const boxItems = props.boxItems;
     if (boxItems && boxItems.length > 0) {
@@ -128,7 +129,7 @@ const BoxView = (props) => {
               <IconButton
                 aria-label="Close"
                 edge="end"
-                onClick={props.handleCloseBoxPanel}
+                onClick={handleCloseBoxPanel}
                 className={classes.iconClose}
               >
               <ClearIcon fontSize="large"/>
@@ -160,6 +161,7 @@ const BoxView = (props) => {
         handleCloseBoxConfirmationView={handleCloseBoxConfirmationView}
         reference={modalRef}
         scroll={scroll}
+        handleAfterAddingBox={handleAfterAddingBox}
       />
     </React.Fragment>
   );
