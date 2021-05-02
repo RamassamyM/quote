@@ -11,7 +11,7 @@ export const quoteSlice = createSlice({
   reducers: {
     addBoxToQuote(state, action) {
       console.log("addBoxToQuote: ", action.payload);
-      state.boxes.push({box: action.payload.box, name: action.payload.name, qty: 1});
+      state.boxes.push({...action.payload, qty: 1});
     },
     removeBoxFromQuote: (state, action) => {
       console.log("removeBoxFromQuote: ", action.payload);

@@ -1,16 +1,20 @@
 import React from 'react';
 import { TextField, Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@material-ui/core';
 import useStyles from './style';
-// import { useDispatch } from 'react-redux';
-// import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { selectBoxItems, selectBoxTotalCost } from './../../containers/box-builder-page/boxSlice';
 
 const BoxConfirmationModal = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // App state
+  const boxItems = useSelector(selectBoxItems);
+  const boxTotalCost = useSelector(selectBoxTotalCost);
   // Local state
-  // const box = props.box;
+  const [boxName, setBoxName] = React.useState(null);
   // Other variables declaration(useRef, useStyles...)
+  const box = {items: boxItems, unitPrice: boxTotalCost }
   const classes = useStyles();
   const display = props.display;
   const scroll = props.scroll;
@@ -19,10 +23,18 @@ const BoxConfirmationModal = (props) => {
   // Effect(s)
   // Logic
   const handleCloseBoxConfirmationView = props.handleCloseBoxConfirmationView;
-  const handleAddBoxToQuote = (event) => {
+  const handleAddBoxToQuote = (event, name) => {
     event.preventDefault();
+    dispatch(addBoxToQuote({ ...box, name: name }))
   };
-  
+  const handleChangeOnNameTextField =(event) => {
+    console.log(event.target.value);
+    if (event.target.value) {
+      setBoxName(event.target.value);
+    } else {
+      setBoxName(null);
+    }
+  }
   // Return
   return (
     <Dialog
@@ -41,15 +53,13 @@ const BoxConfirmationModal = (props) => {
             <DialogContentText id="alert-dialog-description">
               To help keep things straight if you need to add more than one
             </DialogContentText>
-            <form className={classes.boxNameField} noValidate autoComplete="off">
-              <TextField id="outlined-basic" label="Name" variant="outlined" />
-            </form>
+              <TextField id="outlined-basic" label="Name" variant="outlined" onChange={handleChangeOnNameTextField}/>
           </DialogContent>
           <DialogActions>
             <Button name='Close' onClick={handleCloseBoxConfirmationView} color="default">
               Cancel
             </Button>
-            <Button name='AddToQuote' onClick={handleAddBoxToQuote} color="primary" variant="contained" autoFocus>
+            <Button disabled={boxName === null} name='AddToQuote' onClick={(event) => handleAddBoxToQuote(event, boxName)} color="primary" variant="contained" autoFocus>
               Add to quote
             </Button>
           </DialogActions>
