@@ -1,10 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Toolbar, AppBar, Typography, Box, IconButton, Card, CardActions, CardContent, CardMedia, Button } from '@material-ui/core';
+import { Toolbar, AppBar, Typography, Box, IconButton, Card, CardContent, CardMedia, Button } from '@material-ui/core';
 import { Clear as ClearIcon, AddCircle as AddCircleIcon, RemoveCircle as RemoveCircleIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectBoxItems, selectBoxTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
+import ElevationScroll from './../elevationScroll';
+import BoxConfirmationModal from './../boxConfirmationModal';
 
 const BoxView = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -14,19 +16,27 @@ const BoxView = (props) => {
   const dispatch = useDispatch();
   // App state
   // Local state
-  // const [displayBox, setDisplayBox] = React.useState(false)
+  const [boxConfirmationViewModal, setBoxConfirmationViewModal] = React.useState({
+    display: false
+  });
+  const [scroll, setScroll] = React.useState('paper');
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
   const position = props.position;
   // const preventDefault = (event) => event.preventDefault();
   // Effect(s)
-  // React.useEffect(() => {
-  //   (async function () {
-  //     // todo;
-  //   })(); 
-  // }, []);
   // Logic
-  // const modalRef = React.useRef(null);
+  const handleCloseBoxConfirmationView = (event) => {
+    setBoxConfirmationViewModal({ display: false });
+  };
+  const modalRef = React.useRef(null);
+  const handleClickOnAddBox = (scrollType) => {
+    setBoxConfirmationViewModal({
+      display: true
+    });
+    setScroll(scrollType);
+  };
+
   const handleOneMore = (item) => {
     dispatch(addOneQuantityOfProductInBox(item));
   };
@@ -35,6 +45,27 @@ const BoxView = (props) => {
   };
   const handleClearItem = (item) => {
     dispatch(removeProductFromBox(item));
+  };
+  
+  const ItemsWrapper = (props) => {
+    const boxItems = props.boxItems;
+    if (boxItems && boxItems.length > 0) {
+      return  (
+        <Box className={classes.boxItemsWrapper}>
+          {boxItems.map(item => (
+            <ItemCard key={item.variantSelected.id} item={item} />
+          ))}
+        </Box>
+      );
+    } else {
+      return (
+        <Box className={classes.emptyItems}>
+          <Typography component="p">
+            Your box is empty, please select some products.
+          </Typography>
+        </Box>
+      );
+    }
   };
 
   const ItemCard = (props) => {
@@ -79,50 +110,58 @@ const BoxView = (props) => {
 
   // Return
   return (
-    <Box
-      className={clsx(classes.boxPanel, {
-        [classes.fullBoxPanel]: position === 'top' || position === 'bottom',
-      })}
-      role="presentation"
-    >
-      <Box display="flex" flexDirection="row-reverse">
-        <IconButton
-          aria-label="Close"
-          edge="end"
-          onClick={props.handleCloseBoxPanel}
-          color="secondary"
-          >
-          <ClearIcon fontSize="large"/>
-        </IconButton>
-      </Box>
-      <Box display="flex" justifyContent="center" mb={4}>
-        <Typography variant="h4" component="h2" >
-          My Box
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap">
-        <Box className={classes.boxAnimationWrapper}>
-          <img alt="box" src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/box_sm_1024x.png?alt=media&token=4fa9c2cc-e1f6-4102-b2c8-ce1394b62c82"/>
+    <React.Fragment>
+      <Box
+        className={clsx(classes.boxPanel, {
+          [classes.fullBoxPanel]: position === 'top' || position === 'bottom',
+        })}
+        role="presentation"
+      >
+        <ElevationScroll {...props}>
+          <AppBar position="sticky" className={classes.boxViewHeader}>
+            <Toolbar>
+              <Box className={classes.grow} display="flex" justifyContent="center">
+                <Typography variant="h5" component="h2" >
+                  My Box
+                </Typography>
+              </Box>
+              <IconButton
+                aria-label="Close"
+                edge="end"
+                onClick={props.handleCloseBoxPanel}
+                className={classes.iconClose}
+              >
+              <ClearIcon fontSize="large"/>
+            </IconButton>
+            </Toolbar>
+          </AppBar>
+        </ElevationScroll>
+        <Box display="flex" justifyContent="space-around" flexWrap="wrap" className={classes.boxContentWrapper}>
+          {/* <Box className={classes.boxAnimationWrapper}>
+            <img alt="box" src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/box_sm_1024x.png?alt=media&token=4fa9c2cc-e1f6-4102-b2c8-ce1394b62c82"/>
+          </Box> */}
+          <ItemsWrapper boxItems={boxItems}/>
         </Box>
-        <Box className={classes.boxItemsWrapper}>
-          {boxItems.map(item => (
-            <ItemCard key={item.product.productId} item={item} />
-          ))}
-        </Box>
-      </Box>
-      <AppBar position="fixed" color="primary" className={classes.totalCostBar}>
+      <AppBar color="primary" className={classes.totalCostBar}>
         <Toolbar>
           <div className={classes.grow} />
           <Typography className={classes.boxTotalCostText}>
             {boxTotalCost}&nbsp;£&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems}&nbsp;ITEM(S)
           </Typography>
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" onClick={() => handleClickOnAddBox('paper')}>
             Add box to quote
           </Button>
           <div className={classes.grow} />
         </Toolbar>
       </AppBar>
-    </Box>
+      </Box>
+      <BoxConfirmationModal 
+        display={boxConfirmationViewModal.display}
+        handleCloseBoxConfirmationView={handleCloseBoxConfirmationView}
+        reference={modalRef}
+        scroll={scroll}
+      />
+    </React.Fragment>
   );
 };
 

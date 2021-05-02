@@ -30,7 +30,7 @@ export default function BoxBuilderPage() {
   })
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
-  const boxPanelPosition = 'bottom'
+  const boxPanelPosition = 'right'
   // const preventDefault = (event) => event.preventDefault();
   
   // Effect(s)

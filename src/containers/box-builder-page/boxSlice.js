@@ -20,6 +20,7 @@ export const boxSlice = createSlice({
     removeProductFromBox: (state, action) => {
       console.log("removing: ", action.payload);
       state.items.filter((item) => {
+        console.log("filtering:", item);
         return item.variantSelected.id !== action.payload.variantSelected.id;
       });
     },

@@ -6,11 +6,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   heroContent: {
-    backgroundColor: theme.palette.secondary.main,
-    marginTop: '56px',
+    backgroundColor: theme.palette.grey.main,
+    // marginTop: '56px',
     padding: theme.spacing(0, 0, 2),
     [theme.breakpoints.up('md')]: {
-      marginTop: '64px',
+      // marginTop: '64px',
       padding: theme.spacing(2, 0, 2),
     },
   },

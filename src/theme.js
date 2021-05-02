@@ -8,15 +8,18 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#00b4e6',
+      main: '#0e92c6',
     },
     secondary: {
-      main: 'rgb(255, 200, 67)',
+      // main: 'rgb(255, 200, 67)',
+      main: '#fb6842',
       lighter: '#ffffff',
     },
     grey: {
-      main:'#607d8b',
-      lighter: '#eceff1',
+      // main:'#607d8b',
+      main:'#41565e',
+      // lighter: '#eceff1',
+      lighter: '#f5f6f5',
       mediumlighter: '#E0E7EB',
       mediumdarker:'#455a64',
       darker: '#263238',
@@ -25,7 +28,8 @@ const theme = createMuiTheme({
       main: red.A400,
     },
     background: {
-      default: '#E0E7EB',
+      default: '#f5f6f5',
+      // default: '#ffffff',
     },
     white: {
       main: '#ffffff',
