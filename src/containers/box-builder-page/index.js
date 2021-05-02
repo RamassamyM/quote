@@ -8,6 +8,7 @@ import { MailOutline as MailOutlineIcon, KeyboardArrowUp as KeyboardArrowUpIcon 
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProductsAsync, fetchProductsByCategoryAsync, selectProducts } from './productsSlice';
+import { chooseCategoryFilter, selectCategories } from './categoriesSlice';
 import { selectBoxNumberOfItems, selectBoxTotalCost } from './boxSlice';
 
 export default function BoxBuilderPage() {
@@ -17,6 +18,7 @@ export default function BoxBuilderPage() {
   const products = useSelector(selectProducts);
   const boxTotalCost = useSelector(selectBoxTotalCost);
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems);
+  const categories = useSelector(selectCategories);
   // Local state
   const [displayBox, setDisplayBox] = React.useState(false)
   const [scroll, setScroll] = React.useState('paper');
@@ -24,10 +26,10 @@ export default function BoxBuilderPage() {
     product: null,
     display: false
   });
-  const [categories, setCategories] = React.useState({
-    list: ["Body", "Food", "Room", "Other"],
-    selected: "All"
-  })
+  // const [categories, setCategories] = React.useState({
+  //   list: ["Body", "Food", "Room", "Other"],
+  //   selected: "All"
+  // })
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
   const boxPanelPosition = 'right'
@@ -63,7 +65,6 @@ export default function BoxBuilderPage() {
     setDisplayBox(!displayBox);
   };
   const handleClickOnViewProduct = (product, scrollType) => {
-    console.log(product);
     setProductViewModal({
       product, 
       display: true
@@ -77,7 +78,7 @@ export default function BoxBuilderPage() {
 
   const handleSelectFilter = (tag) => {
     if (categories.selected !== tag) {
-      setCategories({...categories, selected: tag });
+      dispatch(chooseCategoryFilter(tag));
       if (tag === "All") {
         dispatch(fetchProductsAsync());
       } else {
@@ -87,7 +88,6 @@ export default function BoxBuilderPage() {
   };
     
   const ProductGrid = ({ products }) => {
-    console.log("ProductGrid Update!");
     if (products) {
       return (
         <Grid container spacing={4}>

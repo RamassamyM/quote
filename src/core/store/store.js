@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import productsReducer from '../../containers/box-builder-page/productsSlice';
+import categoriesReducer from '../../containers/box-builder-page/categoriesSlice';
 import boxReducer from '../../containers/box-builder-page/boxSlice';
 import quoteReducer from '../../containers/quote-builder-page/quoteSlice';
 
@@ -8,5 +9,6 @@ export const store = configureStore({
     products: productsReducer,
     box: boxReducer,
     quote: quoteReducer,
+    categories: categoriesReducer
   },
 });

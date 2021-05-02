@@ -4,13 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   items: [],
 };
-
 export const boxSlice = createSlice({
   name: 'box',
   initialState,
   reducers: {
     addProductToBox(state, action) {
-      console.log("addProductToBox:", action.payload);
       if (state.items.find(e => e.variantSelected.id === action.payload.variantSelected.id)) {
         state.items.find(e => e.variantSelected.id === action.payload.variantSelected.id).qty += 1;
       } else {
@@ -18,7 +16,6 @@ export const boxSlice = createSlice({
       }
     },
     removeProductFromBox: (state, action) => {
-      console.log("removing: ", action.payload);
       state.items = state.items.filter((item) => {
         return item.variantSelected.id !== action.payload.variantSelected.id;
       });
@@ -37,9 +34,7 @@ export const boxSlice = createSlice({
     },
   },
 });
-
 export const { resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
-
 export const selectBoxItems = (state) => state.box.items;
 export const selectBoxTotalCost = (state) => {
   if (state.box.items.length === 0) {
@@ -57,8 +52,5 @@ export const selectBoxNumberOfItems = (state) => {
   }
   return calculateTotalQtyOfItems(state.box.items);
 };
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
 
 export default boxSlice.reducer;

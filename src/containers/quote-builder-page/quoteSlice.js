@@ -10,11 +10,9 @@ export const quoteSlice = createSlice({
   initialState,
   reducers: {
     addBoxToQuote(state, action) {
-      console.log("addBoxToQuote: ", action.payload);
       state.boxes.push({...action.payload, qty: 1});
     },
     removeBoxFromQuote: (state, action) => {
-      console.log("removeBoxFromQuote: ", action.payload);
       state.boxes = state.boxes.filter((box) => {
         return box.name !== action.payload.name;
       });

@@ -14,7 +14,6 @@ export default function ProductCard(props) {
   const product = props.product;
   const [variantSelection, setVariantSelection] = React.useState(product.variants[0]);
   const handleSelectVariant = (value) => {
-    console.log("Select variant: ", value);
     setVariantSelection(value);
   }
 
