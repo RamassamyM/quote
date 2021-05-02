@@ -7,12 +7,14 @@ import { Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, Accou
 import logo from './../../assets/curakit-logo-white.png'; 
 import { useSelector } from 'react-redux';
 import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
+import { selectNumberOfBoxesInQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { Link as RouterLink } from 'react-router-dom'
 import ElevationScroll from './../elevationScroll';
 
 export default function PrimaryAppBar(props) {
   const classes = useStyles();
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems) || 0;
+  const quoteNumberOfBoxes = useSelector(selectNumberOfBoxesInQuote) || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [state, setState] = React.useState({
@@ -81,7 +83,7 @@ export default function PrimaryAppBar(props) {
         </ListItem>
         <ListItem component={RouterLink} to="/quote-builder" key="Quote Builder">
           <ListItemText primary={"Quote Builder"} />
-          <Badge badgeContent={17} color="secondary">
+          <Badge badgeContent={quoteNumberOfBoxes} color="secondary">
             <InboxIcon />
           </Badge>
         </ListItem>
@@ -128,7 +130,7 @@ export default function PrimaryAppBar(props) {
                 </Badge>
               </Button>
               <Button component={RouterLink} to="/quote-builder" aria-label="show 17 new notifications" className={classes.linkWithBadge}>
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={quoteNumberOfBoxes} color="secondary">
                   Quote Builder<InboxIcon />
                 </Badge>
               </Button>
