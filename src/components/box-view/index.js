@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Toolbar, AppBar, Typography, Box, IconButton, Card, CardContent, CardMedia, Button } from '@material-ui/core';
-import { Clear as ClearIcon, AddCircle as AddCircleIcon, RemoveCircle as RemoveCircleIcon } from '@material-ui/icons';
+import { Clear as ClearIcon, Delete as DeleteIcon, AddCircle as AddCircleIcon, RemoveCircle as RemoveCircleIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectBoxItems, selectBoxTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
@@ -100,7 +100,7 @@ const BoxView = (props) => {
         </div>
         <div className={classes.boxItemCardControls}>
           <IconButton aria-label="Remove Item" onClick={() => handleClearItem(item)}>
-            <ClearIcon className={classes.playIcon} />
+            <DeleteIcon className={classes.playIcon} />
           </IconButton>
 
         </div>
