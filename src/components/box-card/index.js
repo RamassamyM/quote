@@ -1,17 +1,18 @@
 import React from 'react';
-import { Slider, Input, Link, TextField, Box, Button, Grid, IconButton, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
-import { Delete as DeleteIcon, Edit as EditIcon, AddCircle as AddCircleIcon, RemoveCircle as RemoveCircleIcon } from '@material-ui/icons';
+import { Slider, Input, Box, Grid, IconButton, Card, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 // import { Dropdown } from 'react-dropdown-now';
 // import 'react-dropdown-now/style.css';
 import useStyles from './style';
 import { useDispatch } from 'react-redux';
+import { setQuantityOfBoxesInQuote } from './../../containers/quote-builder-page/quoteSlice';
 
 export default function BoxCard(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [value, setValue] = React.useState(1);
-  const preventDefault = (event) => event.preventDefault();
   const box = props.box;
+  const [value, setValue] = React.useState(box.qty);
+  const preventDefault = (event) => event.preventDefault();
   const marks = [
     {
       value: 0,
@@ -30,21 +31,25 @@ export default function BoxCard(props) {
       label: '1000',
     }
   ];
-  const handleSetQuantity = (event) => {
-    event.preventDefault();
-    // dispatch(setQuantityOfBox({name: box.name, qty: event.target.value}))
+  const setQuantity = (event, value) => {
+    dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: value}))
   };
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
+    // setQuantity(newValue);
   };
   const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+    const value = event.target.value === '' ? 0 : Number(event.target.value);
+    setValue(value);
+    dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: value}))
   };
   const handleBlur = () => {
     if (value < 0) {
       setValue(0);
+      // setQuantity(value);
     } else if (value > 1000) {
       setValue(1000);
+      // setQuantity(1000);
     }
   };
   return (
@@ -56,9 +61,12 @@ export default function BoxCard(props) {
       <Box  flexGrow={1}>
         <CardContent>
           <Box display="flex" alignItems="center">
-            <Box flexGrow={1}>
+            <Box flexGrow={1} display="flex" justifyContent="space-between">
               <Typography align="left" component="h5" variant="subtitle1" className={classes.boxCardContentTitle}>
                 {box.name}
+              </Typography>
+              <Typography align="left" component="h5" variant="subtitle1" className={classes.boxCardContentTitle}>
+               Unit price: £{box.unitPrice}&nbsp;&nbsp;&nbsp;
               </Typography>
             </Box>
             <Box display="flex" alignItems="center">
@@ -80,6 +88,7 @@ export default function BoxCard(props) {
                 <Slider
                   value={typeof value === 'number' ? value : 0}
                   onChange={handleSliderChange}
+                  onChangeCommitted={setQuantity}
                   aria-labelledby="input-slider"
                   marks={marks}
                   step={10}
@@ -103,6 +112,17 @@ export default function BoxCard(props) {
                   />
               </Grid>
             </Grid>
+          </Box>
+          <Box flexGrow={1} display="flex" justifyContent="space-around">
+            <Typography align="left" component="h5" variant="subtitle1" className={classes.boxCardContentTitle}>
+              Total: £ {box.unitPrice * box.qty}
+            </Typography>
+            <Typography align="left" component="h5" variant="subtitle1" className={classes.boxCardContentTitle}>
+              Discount: £ {Math.round(box.unitPrice * box.qty * 0.1)}
+            </Typography>
+            <Typography align="left" component="h5" variant="subtitle1" className={classes.boxCardContentTitle}>
+              Net: £ {Math.round(box.unitPrice * box.qty * 0.9)}
+            </Typography>
           </Box>
         </CardContent>
       </Box>

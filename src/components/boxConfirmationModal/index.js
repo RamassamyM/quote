@@ -4,6 +4,7 @@ import useStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBoxItems, selectBoxTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
 import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { useHistory } from "react-router-dom";
 
 const BoxConfirmationModal = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -14,6 +15,7 @@ const BoxConfirmationModal = (props) => {
   // Local state
   const [boxName, setBoxName] = React.useState(null);
   // Other variables declaration(useRef, useStyles...)
+  let history = useHistory();
   const handleAfterAddingBox = props.handleAfterAddingBox;
   const box = {items: boxItems, unitPrice: boxTotalCost }
   const classes = useStyles();
@@ -31,6 +33,7 @@ const BoxConfirmationModal = (props) => {
     setBoxName(null);
     handleCloseBoxConfirmationView();
     handleAfterAddingBox();
+    history.push("/");
   };
   const handleChangeOnNameTextField =(event) => {
     if (event.target.value) {

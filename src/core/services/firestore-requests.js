@@ -6,7 +6,7 @@ const addDisplayVariantsToProducts = (data) => {
     data["variants"] = data["variants"].map((variant) => {
       return {
         ...variant, 
-        label: variant.property_value + " " + variant.property_unit + " - " + variant.price +  " " + variant.currency,
+        label: variant.property_value + " " + variant.property_unit + " - " + variant.currency +  " " + variant.price,
         id: variant.sku,
         value: variant.sku
       }

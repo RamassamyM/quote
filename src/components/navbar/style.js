@@ -27,7 +27,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '5px',
     '& span': {
       color: theme.palette.white.main,
+      '& .MuiBadge-badge': {
+        color: theme.palette.white.main,
+      }
     }
+  },
+  linkSelected: {
+    border: "1px solid white",
   },
   loginLink: {
     color: theme.palette.white.main,

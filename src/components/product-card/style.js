@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
   separator: {
     flexGrow: '1',
-  }
+  },
+  snackbar: {
+    [theme.breakpoints.down('xs')]: {
+      bottom: 90,
+    },
+  },
 }));
 export default useStyles;

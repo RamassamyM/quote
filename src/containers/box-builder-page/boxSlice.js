@@ -3,11 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 // Structure for item in items : { product: {}, displayedVariantSelected: {}, qty: 2 }
 const initialState = {
   items: [],
+  display: false,
 };
+
 export const boxSlice = createSlice({
   name: 'box',
   initialState,
   reducers: {
+    toggleBoxPanel(state, action) {
+      state.display = !state.display;
+    },
     addProductToBox(state, action) {
       if (state.items.find(e => e.variantSelected.id === action.payload.variantSelected.id)) {
         state.items.find(e => e.variantSelected.id === action.payload.variantSelected.id).qty += 1;
@@ -34,8 +39,9 @@ export const boxSlice = createSlice({
     },
   },
 });
-export const { resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
+export const { toggleBoxPanel, resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
 export const selectBoxItems = (state) => state.box.items;
+export const selectDisplayBoxPanel = (state) => state.box.display;
 export const selectBoxTotalCost = (state) => {
   if (state.box.items.length === 0) {
     return 0;

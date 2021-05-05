@@ -6,7 +6,7 @@ import { AddCircle } from "@material-ui/icons";
 import useStyles from './style';
 import { Dropdown } from 'react-dropdown-now';
 import { useDispatch } from 'react-redux';
-import { addProductToBox } from './../../containers/box-builder-page/boxSlice';
+import { addProductToBox, toggleBoxPanel } from './../../containers/box-builder-page/boxSlice';
 
 const ProductModal = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -27,10 +27,6 @@ const ProductModal = (props) => {
     console.log("Select variant: ", value);
     setVariantSelection(value);
   }
-  // const handleAddToBoxButton = (event) => {
-  //   event.preventDefault();
-  //   dispatch(addProductToBox({ product, variantSelected: variantSelection }))
-  // };
   const handleAddToBoxButton = (event) => {
     event.preventDefault();
     dispatch(addProductToBox({ product, variantSelected: product.variants.filter((variant) => {
@@ -39,6 +35,10 @@ const ProductModal = (props) => {
       }
       return variant.id === variantSelection.id;
     })[0] }));
+    dispatch(toggleBoxPanel());
+    setTimeout(() => {
+      dispatch(toggleBoxPanel());
+    }, 800);
   };
   // Return
   return (

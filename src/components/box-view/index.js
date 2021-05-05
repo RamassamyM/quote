@@ -147,7 +147,7 @@ const BoxView = (props) => {
         <Toolbar>
           <div className={classes.grow} />
           <Typography className={classes.boxTotalCostText}>
-            {boxTotalCost}&nbsp;£
+            £&nbsp;{boxTotalCost}
           </Typography>
           <Typography className={classes.boxTotalCostText}>
             {boxNumberOfItems}&nbsp;ITEM(S)

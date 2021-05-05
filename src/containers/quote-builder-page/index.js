@@ -3,14 +3,14 @@ import { Box } from '@material-ui/core';
 import { AppBar, Toolbar, Button, Grid, Zoom, Fab, useScrollTrigger, Typography } from '@material-ui/core';
 import { KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
 import useStyles from './style';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectBoxesInQuote, selectQuoteTotalCost, selectNumberOfBoxesInQuote } from './quoteSlice';
 import { Link as RouterLink } from 'react-router-dom'
 import BoxCard from './../../components/box-card';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // App state
   const boxes = useSelector(selectBoxesInQuote);
   const quoteTotalCost = useSelector(selectQuoteTotalCost);
@@ -111,11 +111,14 @@ export default function BoxBuilderPage() {
       <AppBar color="primary" className={classes.totalCostBar}>
         <Toolbar>
           <div className={classes.grow} />
-          <Typography className={classes.quoteTotalCostText}>
-            {quoteTotalCost}&nbsp;£
-          </Typography>
-          <Typography className={classes.quoteTotalCostText}>
+          <Typography variant="h6" className={classes.quoteTotalCostText}>
             {NumberOfBoxesInQuote}&nbsp;Boxes
+          </Typography>
+          <Typography variant="h6"  className={classes.quoteTotalCostText}>
+            Total £&nbsp;{Math.round(quoteTotalCost * 0.9)}
+          </Typography>
+          <Typography variant="h7" className={classes.quoteTotalCostText} >
+            Discount £&nbsp;{Math.round(quoteTotalCost * 0.1)}
           </Typography>
           <Button disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={preventDefault}>
             Request Quote

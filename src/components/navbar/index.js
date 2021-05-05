@@ -1,20 +1,23 @@
 import React from 'react';
 import clsx from 'clsx';
 import useStyles from './style';
+import { useLocation } from "react-router-dom";
 import { Link, Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
 import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
 import { Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
 import logo from './../../assets/curakit-logo-white.png'; 
 import { useSelector } from 'react-redux';
 import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
-import { selectNumberOfBoxesInQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { selectNumberOfBoxTypesInQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { Link as RouterLink } from 'react-router-dom'
 import ElevationScroll from './../elevationScroll';
 
 export default function PrimaryAppBar(props) {
   const classes = useStyles();
+  const location = useLocation().pathname;
+  console.log('location:', location);
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems) || 0;
-  const quoteNumberOfBoxes = useSelector(selectNumberOfBoxesInQuote) || 0;
+  const quoteNumberOfBoxTypes = useSelector(selectNumberOfBoxTypesInQuote) || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [state, setState] = React.useState({
@@ -83,7 +86,7 @@ export default function PrimaryAppBar(props) {
         </ListItem>
         <ListItem component={RouterLink} to="/quote-builder" key="Quote Builder">
           <ListItemText primary={"Quote Builder"} />
-          <Badge badgeContent={quoteNumberOfBoxes} color="secondary">
+          <Badge badgeContent={quoteNumberOfBoxTypes} color="secondary">
             <InboxIcon />
           </Badge>
         </ListItem>
@@ -124,13 +127,27 @@ export default function PrimaryAppBar(props) {
               </Typography>
             <div className={classes.grow}></div>
             <div className={classes.sectionDesktop}>
-              <Button component={RouterLink} to="/box-builder" aria-label="show 4 new mails" className={classes.linkWithBadge}>
+              <Button 
+                component={RouterLink} 
+                to="/box-builder" 
+                aria-label="show 4 new mails" 
+                className={clsx(classes.linkWithBadge, {
+                  [classes.linkSelected]: location === "/box-builder",
+                })}
+              >
                 <Badge badgeContent={boxNumberOfItems} color="secondary">
                   Box Builder<InboxIcon />
                 </Badge>
               </Button>
-              <Button component={RouterLink} to="/quote-builder" aria-label="show 17 new notifications" className={classes.linkWithBadge}>
-                <Badge badgeContent={quoteNumberOfBoxes} color="secondary">
+              <Button 
+                component={RouterLink} 
+                to="/quote-builder" 
+                aria-label="show 17 new notifications" 
+                className={clsx(classes.linkWithBadge, {
+                  [classes.linkSelected]: location !== "/box-builder",
+                })}
+              >
+                <Badge badgeContent={quoteNumberOfBoxTypes} color="secondary">
                   Quote Builder<InboxIcon />
                 </Badge>
               </Button>

@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   quoteTotalCostText: {
-    fontWeight: '700',
     color: theme.palette.white.main,
     marginRight: '20px',
   },

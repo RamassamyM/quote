@@ -9,7 +9,7 @@ import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProductsAsync, fetchProductsByCategoryAsync, selectProducts } from './productsSlice';
 import { chooseCategoryFilter, selectCategories } from './categoriesSlice';
-import { selectBoxNumberOfItems, selectBoxTotalCost } from './boxSlice';
+import { toggleBoxPanel, selectDisplayBoxPanel, selectBoxNumberOfItems, selectBoxTotalCost } from './boxSlice';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -19,8 +19,9 @@ export default function BoxBuilderPage() {
   const boxTotalCost = useSelector(selectBoxTotalCost);
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems);
   const categories = useSelector(selectCategories);
+  const displayBox = useSelector(selectDisplayBoxPanel)
   // Local state
-  const [displayBox, setDisplayBox] = React.useState(false)
+  // const [displayBox, setDisplayBox] = React.useState(false)
   const [scroll, setScroll] = React.useState('paper');
   const [productViewModal, setProductViewModal] = React.useState({
     product: null,
@@ -61,8 +62,9 @@ export default function BoxBuilderPage() {
     );
   }
 
-  const toggleBoxPanel = (event) => {
-    setDisplayBox(!displayBox);
+  const toggleBoxView = (event) => {
+    // setDisplayBox(!displayBox);
+    dispatch(toggleBoxPanel());
   };
   const handleClickOnViewProduct = (product, scrollType) => {
     setProductViewModal({
@@ -161,7 +163,7 @@ export default function BoxBuilderPage() {
                   className={classes.buttonBoxPanel}
                   disabled
                 >
-                {boxTotalCost}£
+                £{boxTotalCost}
                 </Button>
                 <Button
                   variant="contained"
@@ -178,7 +180,7 @@ export default function BoxBuilderPage() {
                   aria-label="show box content"
                   aria-controls={'boxShow'}
                   aria-haspopup="true"
-                  onClick={toggleBoxPanel}
+                  onClick={toggleBoxView}
                   disableElevation
                   className={classes.buttonBoxPanel}
                 >
@@ -198,8 +200,8 @@ export default function BoxBuilderPage() {
           <ProductGrid products={products}/>
         </Box>
       </Container>
-      <Drawer anchor={boxPanelPosition} open={displayBox} onClose={toggleBoxPanel}>
-        <BoxView position={boxPanelPosition} handleCloseBoxPanel={toggleBoxPanel}/>
+      <Drawer anchor={boxPanelPosition} open={displayBox} onClose={toggleBoxView}>
+        <BoxView position={boxPanelPosition} handleCloseBoxPanel={toggleBoxView}/>
       </Drawer>
       <ProductModal 
         product={productViewModal.product}
