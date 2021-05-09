@@ -89,7 +89,7 @@ export default function BoxCard(props) {
         image="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/emptybox.png?alt=media&token=bcb553c5-add3-4bbe-8b36-32f583e338e3"
       />
       <Box flexGrow={1}>
-        <CardContent>
+        <CardContent className={classes.cardContentArea}>
           <Box display="flex" alignItems="center">
             <Box flexGrow={1} display="flex" justifyContent="space-between">
               <Box display="flex" alignItems="center" className={classes.boxCardHeader}>

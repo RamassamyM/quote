@@ -15,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid',
     borderColor: theme.palette.surface.border,
   },
+  cardContentArea: {
+    '&:last-child': {
+      paddingBottom: theme.spacing(1),
+    }
+  },
   iconClose: {
     color: theme.palette.text.reverted,
   },
@@ -61,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
   boxContent: {
     textAlign: "right",
     fontWeight: '700',
+    margin: '0px',
   },
   boxExpanded: {
     paddingRight: '20px',
