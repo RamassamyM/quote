@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // Structure for item in items : { products: [], name: "", unitPrice: 245, currency: "£", qty: 2 }
 const initialState = {
   boxes: [],
+  next_index: 0,
 };
 
 export const quoteSlice = createSlice({
@@ -10,11 +11,12 @@ export const quoteSlice = createSlice({
   initialState,
   reducers: {
     addBoxToQuote(state, action) {
-      state.boxes.push({...action.payload, qty: 1});
+      state.boxes.push({...action.payload, qty: 1, id: state.next_index});
+      state.next_index = state.next_index + 1;
     },
     removeBoxFromQuote: (state, action) => {
       state.boxes = state.boxes.filter((box) => {
-        return box.name !== action.payload.name;
+        return box.id !== action.payload.id;
       });
     },
     setQuantityOfBoxesInQuote: (state, action) => {

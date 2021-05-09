@@ -10,9 +10,13 @@ const useStyles = makeStyles((theme) => ({
   boxCard: {
     display: 'flex',
     marginBottom: '10px',
+    backgroundColor: theme.palette.surface.main,
+    borderRadius: '3px',
+    border: '1px solid',
+    borderColor: theme.palette.surface.border,
   },
   iconClose: {
-    color: theme.palette.white.main,
+    color: theme.palette.text.reverted,
   },
   boxCardDetails: {
     display: 'flex',
@@ -23,10 +27,27 @@ const useStyles = makeStyles((theme) => ({
   boxCardContentTitle: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    color: theme.palette.primary.main,
   },
   boxCardCover: {
-    minWidth: 100,
-    width: 100,
+    minWidth: 150,
+    width: 150,
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
+  boxCardHeader: {
+    '& .rdn-drop': {
+      top: '0',
+      bottom: 'auto',
+    }
+  },
+  boxIcon: {
+    marginRight: '5px',
+    display: 'none',
+    [theme.breakpoints.down('xs')]: {
+      display: 'block',
+    },
   },
   boxCardControls: {
     display: 'flex',
@@ -36,6 +57,13 @@ const useStyles = makeStyles((theme) => ({
   boxCardIcon: {
     height: 38,
     width: 38,
+  },
+  boxContent: {
+    textAlign: "right",
+    fontWeight: '700',
+  },
+  boxExpanded: {
+    paddingRight: '20px',
   },
   separator: {
     flexGrow: '1',

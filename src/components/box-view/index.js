@@ -60,10 +60,13 @@ const BoxView = (props) => {
       );
     } else {
       return (
-        <Box className={classes.emptyItems}>
+        <Box className={classes.emptyItems} display="flex" flexDirection="column" alignItems="center" justifyContent="space-around">
           <Typography component="p">
             Your box is empty, please select some products.
           </Typography>
+          <Box m={3}>
+            <img alt="empty box" className={classes.emptyBoximage} src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/emptybox.png?alt=media&token=bcb553c5-add3-4bbe-8b36-32f583e338e3"></img>
+          </Box>
         </Box>
       );
     }
@@ -72,7 +75,7 @@ const BoxView = (props) => {
   const ItemCard = (props) => {
     const item = props.item
     return (
-      <Card className={classes.boxItemCard}>
+      <Card className={classes.boxItemCard} elevation={0}>
         <CardMedia
           className={classes.boxItemCardCover}
           image={item.product.main_picture_url}
@@ -90,18 +93,18 @@ const BoxView = (props) => {
         </div>
         <div className={classes.boxItemCardControls}>
           <IconButton aria-label="Add one" onClick={() => handleOneMore(item)}>
-            <AddCircleIcon className={classes.playIcon} />
+            <AddCircleIcon className={classes.quantityIcon} />
           </IconButton>
           <Typography>
             {item.qty}
           </Typography>
           <IconButton aria-label="Remove one" onClick={() => handleOneLess(item)}>
-            <RemoveCircleIcon className={classes.playIcon} />
+            <RemoveCircleIcon className={classes.quantityIcon} />
           </IconButton>
         </div>
         <div className={classes.boxItemCardControls}>
           <IconButton aria-label="Remove Item" onClick={() => handleClearItem(item)}>
-            <DeleteIcon className={classes.playIcon} />
+            <DeleteIcon className={classes.deleteIcon} />
           </IconButton>
 
         </div>

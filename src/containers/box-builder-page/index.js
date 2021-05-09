@@ -143,50 +143,41 @@ export default function BoxBuilderPage() {
           <Grid item md={1} lg={4}>
           </Grid>
           <Grid item xs={12} md={6} lg={4} className={classes.grid}>
-            <Box className={classes.heroBoxTitle}>
-              <Typography component="h1" variant="h3" align="center" className={classes.heroTitle}>
+            <Box className={classes.heroBoxTitle} display="flex" alignItems="center" justifyContent="center">
+              <Typography component="h1" variant="h4" align="center" className={classes.heroTitle}>
                 Build your box
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={5} lg={4} className={classes.grid}>
             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" >
-              <Button component="a" href="mailto:sales@curakit.com" color="primary" className={classes.heroMail} >
-                  <MailOutlineIcon className={classes.icon}/>
-                  I need a customized box 
-              </Button>
-              <Box elevation={0} display="flex" flexDirection="row" alignItems="center" justifyContent="center" className={classes.heroButtons}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  className={classes.buttonBoxPanel}
-                  disabled
+              <Box elevation={0} display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                <Typography
+                  className={classes.costText}
                 >
-                £{boxTotalCost}
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  className={classes.buttonBoxPanel}
-                  disabled
+                £&nbsp;{boxTotalCost}
+                </Typography>
+                <Typography
+                  className={classes.nbItemsText}
                 >
-                {boxNumberOfItems} ITEM(S)
-                </Button>
+                &nbsp;&nbsp;{boxNumberOfItems} ITEM(S)
+                </Typography>
                 <Button
                   variant="contained"
-                  color="primary"
                   aria-label="show box content"
                   aria-controls={'boxShow'}
                   aria-haspopup="true"
                   onClick={toggleBoxView}
                   disableElevation
-                  className={classes.buttonBoxPanel}
+                  className={classes.viewBoxbutton}
                 >
-                  VIEW MY BOX {'>'}
+                  VIEW MY BOX
                 </Button>
               </Box>
+              <Button component="a" href="mailto:sales@curakit.com" className={classes.heroMail} >
+                  <MailOutlineIcon className={classes.heroMailIcon}/>
+                  I need a customized box 
+              </Button>
             </Box>
           </Grid>
         </Grid>
@@ -195,7 +186,7 @@ export default function BoxBuilderPage() {
         <CategoryFilterSection tags={["All"].concat(categories.list)} />
       </Box>
       {/* End hero unit */}
-      <Container className={classes.cardGrid} maxWidth="lg">
+      <Container className={classes.cardGrid} maxWidth="md">
         <Box display="flex" alignItems="flex-start">
           <ProductGrid products={products}/>
         </Box>

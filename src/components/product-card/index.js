@@ -32,12 +32,13 @@ export default function ProductCard(props) {
   return (
     <React.Fragment>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Card className={classes.card}>
+        <Card className={classes.card} elevation={0}>
           <CardActionArea
             aria-label="View product"
             aria-controls={'product-content-id'}
             aria-haspopup="true"
             onClick={props.handleClickOnViewProduct}
+            className={classes.cardActionClick}
           >
             <CardMedia
               className={classes.cardMedia}
@@ -45,7 +46,7 @@ export default function ProductCard(props) {
               title={product.title}
             />
             <CardContent className={classes.cardContent}>
-              <Typography variant="h6" component="h2">
+              <Typography variant="h6" color="textPrimary" component="h2">
                 {product.title}
               </Typography>
               <Typography  variant="body2" color="textSecondary" component="p">

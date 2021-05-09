@@ -9,37 +9,52 @@ const useStyles = makeStyles((theme) => ({
   },
   avatarMenuIcon: {
     '& span': {
-      color: "#ffffff",
+      color: theme.palette.primary.main,
     }
   },
   link: {
     '& a': {
-      color: '#FFF',
+      color: theme.palette.text.reverted,
       marginRight: '20px',
       '&:hover': {
         textDecoration: 'none',
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.main,
       } 
     }
   },
   linkWithBadge: {
-    color: theme.palette.white.main,
+    color: theme.palette.text.secondary,
     marginRight: '5px',
     '& span': {
-      color: theme.palette.white.main,
+      color: theme.palette.text.secondary,
       '& .MuiBadge-badge': {
-        color: theme.palette.white.main,
+        color: theme.palette.text.reverted,
       }
     }
   },
   linkSelected: {
-    border: "1px solid white",
+    '& span': {
+      color: theme.palette.primary.main,
+    },
+    color: theme.palette.primary.main,
   },
   loginLink: {
-    color: theme.palette.white.main,
+    color: theme.palette.text.reverted,
   },
   navbarLink: {
     textDecoration: 'none',
+  },
+  linkInMenu: {
+    color: theme.palette.primary.main,
+    '& span': {
+      color: theme.palette.primary.main,
+    },
+    '&:hover': {
+      color: theme.palette.secondary.main,
+    }
+  },
+  iconClose: {
+    color: theme.palette.primary.main,
   },
   title: {
     display: 'none',
@@ -67,15 +82,15 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
   },
   logo: {
-    height: '100%',
-    maxHeight: '30px',
+    // height: '100%',
+    maxHeight: '24px',
   },
   pro: {
-    color: 'white',
+    fontFamily: 'Montserrat',
+    color: theme.palette.text.primary,
     marginLeft: '10px',
-    fontWeight: '500',
-    fontSize: '28px',
-    fontFamily: 'montserrat',
+    fontWeight: '600',
+    fontSize: '26px',
   }
 }));
 

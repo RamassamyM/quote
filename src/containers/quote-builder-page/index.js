@@ -50,24 +50,24 @@ export default function BoxBuilderPage() {
     if (boxes && boxes.length > 0) {
       return (
         <Grid container>
-          <Grid xs={1} sm={2} md={3}></Grid>
-          <Grid xs={10} sm={8} md={6} align="center">
+          <Grid item xs={1} sm={2} md={3}></Grid>
+          <Grid item xs={10} sm={8} md={6} align="center">
             <Box>
             {boxes.map((box) => (
               <BoxCard key={box.name} box={box}/>
               ))}
             </Box>
-            <Button className={classes.addABoxButton} size="large" fullWidth="true" variant="contained" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
+            <Button className={classes.addABoxButton} size="large" fullWidth={true} variant="contained" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
               Add a box
             </Button>
           </Grid>
-          <Grid xs={1} sm={2} md={3}></Grid>
+          <Grid item xs={1} sm={2} md={3}></Grid>
         </Grid>
       );
     } else {
       return (
         <Grid container>
-          <Grid xs={12}  align="center">
+          <Grid item xs={12}  align="center">
             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" className={classes.emptyContent}>
               <Box mb={4} mt={6}>
                 <Typography component="h4">
@@ -93,37 +93,37 @@ export default function BoxBuilderPage() {
   return (
     <React.Fragment>
       {/* Hero unit */}
-      <div className={classes.heroContent} id="back-to-top-anchor">
+      <Box className={classes.heroContent} id="back-to-top-anchor" display="flex" alignItems="center">
         <Grid container spacing={2}>
           <Grid item xs={12} className={classes.grid}>
             <Box className={classes.heroBoxTitle}>
-              <Typography component="h1" variant="h3" align="center" className={classes.heroTitle}>
-                Build your Quote
+              <Typography component="h1" variant="h4" align="center" className={classes.heroTitle}>
+                Build your quote
               </Typography>
             </Box>
           </Grid>
         </Grid>
-      </div>
+      </Box>
       {/* End hero unit */}
       <Box className={classes.quoteContentWrapper}>
         <BoxesWrapper boxes={boxes}/>
       </Box>
       <AppBar color="primary" className={classes.totalCostBar}>
         <Toolbar>
-          <div className={classes.grow} />
+          <div className={classes.separator} />
           <Typography variant="h6" className={classes.quoteTotalCostText}>
             {NumberOfBoxesInQuote}&nbsp;Boxes
           </Typography>
-          <Typography variant="h6"  className={classes.quoteTotalCostText}>
-            Total £&nbsp;{Math.round(quoteTotalCost * 0.9)}
+          <Typography variant="h6" className={classes.quoteTotalCostText} >
+            <del>£&nbsp;{Math.round(quoteTotalCost)}</del>
           </Typography>
-          <Typography variant="h7" className={classes.quoteTotalCostText} >
-            Discount £&nbsp;{Math.round(quoteTotalCost * 0.1)}
+          <Typography variant="h6"  className={classes.quoteTotalCostText}>
+            £&nbsp;{Math.round(quoteTotalCost * 0.9)}
           </Typography>
           <Button disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={preventDefault}>
             Request Quote
           </Button>
-          <div className={classes.grow} />
+          <div className={classes.separator} />
         </Toolbar>
       </AppBar>
       <ScrollTop/>

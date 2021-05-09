@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
   boxPanel: {
     width: 500,
     maxWidth: '100vw',
-    backgroundColor: theme.palette.grey.lighter,
+    // backgroundColor: theme.palette.background.main,
   },
   fullBoxPanel: {
     width: 'auto',
@@ -32,9 +32,16 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     maxWidth: 400,
     marginBottom: '10px',
+    borderRadius: '3px',
+    border: '1px solid',
+    borderColor: theme.palette.surface.border,
+    backgroundColor: theme.palette.surface.main,
   },
   iconClose: {
-    color: theme.palette.white.main,
+    color: theme.palette.text.reverted,
+  },
+  emptyBoximage: {
+    maxHeight: '200px',
   },
   boxItemCardDetails: {
     display: 'flex',
@@ -60,13 +67,19 @@ const useStyles = makeStyles((theme) => ({
     height: 38,
     width: 38,
   },
+  quantityIcon: {
+    color: theme.palette.primary.main,
+  },
+  deleteIcon: {
+    color: theme.palette.text.secondary,
+  },
   boxAnimationWrapper: {
     // width: '500px',
     // height: '400px',
     // marginBottom: '64px',
   },
   totalCostBar: {
-    backgroundColor: theme.palette.grey.main,
+    backgroundColor: theme.palette.background.variant,
     position: 'sticky',
     top: 'auto',
     bottom: 0,
@@ -77,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
   boxTotalCostText: {
     fontWeight: '700',
-    color: theme.palette.white.main,
+    color: theme.palette.text.reverted,
     marginRight: '20px',
   },
   boxItemsWrapper: {

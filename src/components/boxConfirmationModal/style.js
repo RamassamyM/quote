@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: '1',
   },
   boxNameField: {
-// 
+    minWidth: '300px',
   },
 }));
 

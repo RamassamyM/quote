@@ -1,52 +1,68 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
+  heroMailIcon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.primary.main,
+    color: theme.palette.text.reverted,
   },
   heroContent: {
-    backgroundColor: theme.palette.grey.main,
-    padding: theme.spacing(0, 0, 2),
+    backgroundColor: theme.palette.primary.main,
+    padding: theme.spacing(2, 0, 2),
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(2, 0, 2),
     },
   },
   heroBoxTitle: {
-    [theme.breakpoints.up('sm')]: {
-      marginTop: '20px',
-    },
+    height: '100%',
+    // [theme.breakpoints.up('sm')]: {
+    //   marginTop: '20px',
+    // },
   },
   heroTitle: {
-    fontSize: '40px',
-    color: theme.palette.secondary.lighter,
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '36px',
-      '& h2': {
-        margin: 'none',
-      }
-    },
-  },
-  heroButtons: {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: '5px',
-    padding: theme.spacing(1),
-    color: theme.palette.secondary.lighter,
+    fontWeight: '700',
+    color: theme.palette.text.reverted,
+    // [theme.breakpoints.down('sm')]: {
+    //   fontSize: '36px',
+    //   '& h2': {
+    //     margin: 'none',
+    //   }
+    // },
   },
   heroMail: {
-    margin: theme.spacing(1),
+    color: theme.palette.text.reverted,
+    // margin: theme.spacing(1),
+  },
+  heroInfos: {
+    // 
   },
   cardGrid: {
     // paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
-    minHeight: '100vh'
+    minHeight: '100vh',
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(2, 8, 2),
+    },
   },
-  buttonBoxPanel: {
-    color: theme.palette.white.main,
+  viewBoxbutton: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.text.primary,
     '&:disabled': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.white.main
+      backgroundColor: theme.palette.text.disabled,
+      color: theme.palette.text.secondary,
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.variant,
     }
+  },
+  costText: {
+    color: theme.palette.text.reverted,
+    fontWeight: '700',
+    marginRight: '10px',
+  },
+  nbItemsText: {
+    color: theme.palette.text.reverted,
+    marginRight: '10px',
+    fontWeight: '500',
   },
   filterSection: {
     // backgroundColor: theme.palette.white.main,
@@ -65,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.surface.main,
   },
   modalImageList: {
     flexWrap: 'nowrap',

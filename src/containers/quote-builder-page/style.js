@@ -6,20 +6,16 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   heroContent: {
-    backgroundColor: theme.palette.grey.main,
+    backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(2, 0, 2),
+    minHeight: '98px',
   },
   heroTitle: {
-    color: theme.palette.secondary.lighter,
-    fontSize: '38px',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '34px',
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '28px',
-    },
+    color: theme.palette.text.reverted,
+    fontWeight: '700',
   },
   quoteContentWrapper: {
+    backgroundColor: theme.palette.background.main,
     paddingTop: theme.spacing(2),
     minHeight: 'calc(100vh - 212px)',
     [theme.breakpoints.down('sm')]: {
@@ -41,18 +37,18 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '200px',
   },
   totalCostBar: {
-    backgroundColor: theme.palette.grey.main,
+    backgroundColor: theme.palette.background.variant,
     position: 'fixed',
     top: 'auto',
     bottom: 0,
     width: '100%',
     height: '74px',
   },
-  grow: {
+  separator: {
     flexGrow: 1,
   },
   quoteTotalCostText: {
-    color: theme.palette.white.main,
+    color: theme.palette.text.reverted,
     marginRight: '20px',
   },
   addABoxButton: {

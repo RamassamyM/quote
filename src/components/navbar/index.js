@@ -4,8 +4,8 @@ import useStyles from './style';
 import { useLocation } from "react-router-dom";
 import { Link, Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
 import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
-import { Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
-import logo from './../../assets/curakit-logo-white.png'; 
+import { Home as HomeIcon, Clear as ClearIcon, Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
+import logo from './../../assets/curakit-logo-blue.png'; 
 import { useSelector } from 'react-redux';
 import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
 import { selectNumberOfBoxTypesInQuote } from './../../containers/quote-builder-page/quoteSlice';
@@ -77,18 +77,32 @@ export default function PrimaryAppBar(props) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+      <Box display="flex" justifyContent="flex-end" mr={2}>
+        <IconButton
+          aria-label="Close"
+          edge="end"
+          onClick={() => toggleDrawer(anchor, false)}
+          className={classes.iconClose}
+        >
+          <ClearIcon fontSize="large"/>
+        </IconButton>
+      </Box>
       <List>
-        <ListItem component={RouterLink} to="/box-builder" key="Box Builder">
-          <ListItemText primary={"Box Builder"} />
-          <Badge badgeContent={boxNumberOfItems} color="secondary">
-            <InboxIcon />
+        <ListItem button component={RouterLink} to="/box-builder" key="Box Builder">
+          <ListItemText primary={"Box Builder"} className={classes.linkInMenu}/>
+          <Badge badgeContent={boxNumberOfItems} color="error">
+            <InboxIcon color="primary"/>
           </Badge>
         </ListItem>
-        <ListItem component={RouterLink} to="/quote-builder" key="Quote Builder">
-          <ListItemText primary={"Quote Builder"} />
-          <Badge badgeContent={quoteNumberOfBoxTypes} color="secondary">
-            <InboxIcon />
+        <ListItem button component={RouterLink} to="/quote-builder" key="Quote Builder">
+          <ListItemText primary={"Quote Builder"} className={classes.linkInMenu}/>
+          <Badge badgeContent={quoteNumberOfBoxTypes} color="error">
+            <InboxIcon color="primary"/>
           </Badge>
+        </ListItem>
+        <ListItem button href="https://www.curakit.com" key="Back to Curakit Website" onClick={handleRedirectToWebsite}>
+          <ListItemText primary={"Back to Curakit website"} className={classes.linkInMenu}/>
+          <ExitToAppIcon color="primary"/>
         </ListItem>
         <ListItem button disabled key="Login" style={{display: isLoggedIn ? 'none' : 'block'  }} onClick={handleLogin}>
           <ListItemText primary={"Login"} />
@@ -102,10 +116,6 @@ export default function PrimaryAppBar(props) {
         <ListItem button key="Log Out" style={{display: isLoggedIn ? 'block' : 'none' }} onClick={handleLogout}>
           <ListItemText primary={"Log Out"} />
         </ListItem>
-        <ListItem button href="https://www.curakit.com" key="Back to Curakit Website" onClick={handleRedirectToWebsite}>
-          <ListItemText primary={"Back to Curakit website"} />
-          <ExitToAppIcon />
-        </ListItem>
       </List>
     </div>
   );
@@ -115,7 +125,7 @@ export default function PrimaryAppBar(props) {
   return (
     <React.Fragment>
       <ElevationScroll {...props}>
-        <AppBar position="fixed">
+        <AppBar position="fixed" color="inherit">
           <Toolbar>
             <Link href="https://www.curakit.com">
               <Box>
@@ -135,8 +145,8 @@ export default function PrimaryAppBar(props) {
                   [classes.linkSelected]: location === "/box-builder",
                 })}
               >
-                <Badge badgeContent={boxNumberOfItems} color="secondary">
-                  Box Builder<InboxIcon />
+                <Badge badgeContent={boxNumberOfItems} color="error">
+                  Box Builder&nbsp;&nbsp;
                 </Badge>
               </Button>
               <Button 
@@ -147,8 +157,8 @@ export default function PrimaryAppBar(props) {
                   [classes.linkSelected]: location !== "/box-builder",
                 })}
               >
-                <Badge badgeContent={quoteNumberOfBoxTypes} color="secondary">
-                  Quote Builder<InboxIcon />
+                <Badge badgeContent={quoteNumberOfBoxTypes} color="error">
+                  Quote Builder&nbsp;&nbsp;
                 </Badge>
               </Button>
               <Button 
@@ -177,9 +187,9 @@ export default function PrimaryAppBar(props) {
                 aria-label="Exit builder"
                 onClick={handleRedirectToWebsite}
                 color="inherit"
-                className={classes.avatarMenuIcon}
+                className={clsx(classes.linkWithBadge)}
               >
-                <ExitToAppIcon/>
+                <HomeIcon/>
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>

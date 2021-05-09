@@ -60,7 +60,7 @@ const BoxConfirmationModal = (props) => {
             <DialogContentText id="alert-dialog-description">
               To identify this box in your quote
             </DialogContentText>
-              <TextField id="outlined-basic" label="Name" variant="outlined" onChange={handleChangeOnNameTextField}/>
+              <TextField className={classes.boxNameField} id="outlined-basic" label="Name" placeholder="ex: Box1, ChristmasBox, MenBox..." variant="outlined" onChange={handleChangeOnNameTextField}/>
           </DialogContent>
           <DialogActions>
             <Button name='Close' onClick={handleCloseBoxConfirmationView} color="default">

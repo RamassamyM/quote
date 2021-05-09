@@ -1,39 +1,62 @@
-import { red } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
+const brandColors = {
+  white: '#FFFFFF',
+  darkgrey: '#42575F',
+  grey: '#888888',
+  lightgrey: '#F5F7F7',
+  mediumlightgrey: '#efefef',
+  limegreen: '#81FF90',
+  green: '3EC64E',
+  purple: '#171446',
+  red: '#EF4648',
+  orange: '#FE6843',
+  blue: '#0094CA',
+  cyan: '#26BCF3',
+}
 // A custom theme for this app
 const theme = createMuiTheme({
   typography: {
-    fontFamily: 'Montserrat, Roboto, Arial, sans-serif',
+    fontFamily: 'DM+Sans, Montserrat, Arial, sans-serif',
+    fontSize: 12,
   },
   palette: {
     primary: {
-      main: '#0e92c6',
+      main: brandColors.blue,
+      variant: brandColors.cyan,
     },
     secondary: {
-      // main: 'rgb(255, 200, 67)',
-      main: '#fb6842',
-      lighter: '#ffffff',
-    },
-    grey: {
-      // main:'#607d8b',
-      main:'#41565e',
-      // lighter: '#eceff1',
-      lighter: '#f5f6f5',
-      mediumlighter: '#E0E7EB',
-      mediumdarker:'#455a64',
-      darker: '#263238',
+      main: brandColors.limegreen,
+      variant: brandColors.green,
     },
     error: {
-      main: red.A400,
+      main: brandColors.red,
+    },
+    success: {
+      main: brandColors.limegreen,
+    },
+    warning: {
+      main: brandColors.orange,
+    },
+    surface: {
+      main: brandColors.lightgrey,
+      border: brandColors.mediumlightgrey,
+    },
+    info: {
+      main: brandColors.blue,
     },
     background: {
-      default: '#f5f6f5',
-      // default: '#ffffff',
+      main: brandColors.white,
+      variant: brandColors.darkgrey
     },
-    white: {
-      main: '#ffffff',
-    }
+    text: {
+      reverted: brandColors.white,
+      primary: brandColors.darkgrey,
+      secondary: brandColors.grey,
+      disabled: brandColors.lightgrey,
+      link: brandColors.cyan,
+      hoverlink: brandColors.blue,
+    },
   },
 });
 
