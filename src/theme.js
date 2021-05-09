@@ -7,7 +7,7 @@ const brandColors = {
   lightgrey: '#F5F7F7',
   mediumlightgrey: '#efefef',
   limegreen: '#81FF90',
-  green: '3EC64E',
+  green: '#55f168',
   purple: '#171446',
   red: '#EF4648',
   orange: '#FE6843',

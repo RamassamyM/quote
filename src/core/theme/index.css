@@ -12,3 +12,8 @@ body {
   bottom: 100%;
 }
 
+.rdn-control {
+  padding: 8px 25px 8px 10px;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+}

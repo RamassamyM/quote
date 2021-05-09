@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.surface.border,
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
+    margin: '10px',
+    paddingTop: '60%', // 16:9
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -21,11 +22,15 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   productTitle: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    // overflow: 'hidden',
+    // textOverflow: 'ellipsis',
+  },
+  variantList: {
+    fontSize: '11px',
+    fontWeight: '500',
   },
   cardActions: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(0,2,0)
   },
   separator: {
     flexGrow: '1',

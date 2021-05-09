@@ -46,12 +46,9 @@ const useStyles = makeStyles((theme) => ({
   viewBoxbutton: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.text.primary,
-    '&:disabled': {
-      backgroundColor: theme.palette.text.disabled,
-      color: theme.palette.text.secondary,
-    },
     '&:hover': {
       backgroundColor: theme.palette.secondary.variant,
+      // color: theme.palette.text.reverted,
     }
   },
   costText: {

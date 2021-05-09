@@ -146,14 +146,14 @@ export default function BoxCard(props) {
             </Grid>
           </Box>
           <Box flexGrow={1} display="flex" justifyContent="space-around">
-            <Typography align="left" component="h5" variant="subtitle1">
-              Total: £ {calculatedPrice}
+            <Typography align="left" component="h5" variant="subtitle1" color="error">
+              <del>£ {calculatedPrice}</del>
             </Typography>
-            <Typography align="left" component="h5" variant="subtitle1">
-            Discount: £ {discount}
+            <Typography align="left" component="h5" variant="subtitle1" color="primary">
+            Save £ {discount} !
             </Typography>
-            <Typography align="left" component="h5" variant="subtitle1">
-              Net: £ {netPrice}
+            <Typography align="left" component="h5" variant="subtitle1" color="primary">
+            Pay £ {netPrice}
             </Typography>
           </Box>
           <ContentList/>

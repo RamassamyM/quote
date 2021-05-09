@@ -46,7 +46,7 @@ export default function ProductCard(props) {
               title={product.title}
             />
             <CardContent className={classes.cardContent}>
-              <Typography variant="h6" color="textPrimary" component="h2">
+              <Typography noWrap variant="h6" color="textPrimary" component="h2" className={classes.productTitle}>
                 {product.title}
               </Typography>
               <Typography  variant="body2" color="textSecondary" component="p">
@@ -63,6 +63,7 @@ export default function ProductCard(props) {
               options={product.variants}
               value={product.variants[0].value}
               onChange={(value) => handleSelectVariant(value)}
+              className={classes.variantList}
               // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
               // onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
               // onOpen={(value) => handleSelectVariant(value)}
