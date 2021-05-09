@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectBoxesInQuote, selectQuoteTotalCost, selectNumberOfBoxesInQuote } from './quoteSlice';
 import { Link as RouterLink } from 'react-router-dom'
 import BoxCard from './../../components/box-card';
+import QuoteDetailsModal from './../../components/quoteDetailsModal';
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -16,9 +17,13 @@ export default function BoxBuilderPage() {
   const quoteTotalCost = useSelector(selectQuoteTotalCost);
   const NumberOfBoxesInQuote = useSelector(selectNumberOfBoxesInQuote);
   // Local state
+  const [scroll, setScroll] = React.useState('paper');
+  const [quoteDetailsViewModal, setQuoteDetailsViewModal] = React.useState({
+    display: false
+  });
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
-  const preventDefault = (event) => event.preventDefault();
+  // const preventDefault = (event) => event.preventDefault();
   
   // Effect(s)
 
@@ -45,6 +50,20 @@ export default function BoxBuilderPage() {
       </Zoom>
     );
   }
+
+  const handleClickOnRequestQuote = (product, scrollType) => {
+    setQuoteDetailsViewModal({
+      display: true
+    });
+    setScroll(scrollType);
+  };
+  const handleCloseDetailsView = (event) => {
+    setQuoteDetailsViewModal({ display: false });
+  };
+  const handleGenerateAndSendQuote = (details) => {
+    console.log("Details:", details);
+  };
+  const modalRef = React.useRef(null);
 
   const BoxesWrapper = ({ boxes }) => {
     if (boxes && boxes.length > 0) {
@@ -120,12 +139,19 @@ export default function BoxBuilderPage() {
           <Typography variant="h6"  className={classes.quoteTotalCostText}>
             £&nbsp;{Math.round(quoteTotalCost * 0.9)}
           </Typography>
-          <Button disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={preventDefault}>
+          <Button disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={handleClickOnRequestQuote}>
             Request Quote
           </Button>
           <div className={classes.separator} />
         </Toolbar>
       </AppBar>
+      <QuoteDetailsModal 
+        display={quoteDetailsViewModal.display}
+        handleCloseDetailsView={handleCloseDetailsView}
+        reference={modalRef}
+        scroll={scroll}
+        handleGenerateAndSendQuote={handleGenerateAndSendQuote}
+      />
       <ScrollTop/>
     </React.Fragment>
   );
