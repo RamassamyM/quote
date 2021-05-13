@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  list: ["Body", "Food", "Room", "Other"],
+  list: ["Body", "Food & Drink", "Books & Journals", "Room", "Other"],
   selected: "All"
 };
 export const categoriesSlice = createSlice({

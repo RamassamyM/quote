@@ -1,10 +1,9 @@
 import fire from './../fire';
-// import seeds from './seed';
-import fs from 'fs';
-
-const jsonFilepath = './seed.json';
-const data=fs.readFileSync(jsonFilepath, 'utf8');
-const seeds=JSON.parse(data);
+import seeds from './seed';
+// import fs from 'fs';
+// const jsonFilepath = './seed.json';
+// const data = fs.readFileSync(jsonFilepath, 'utf8');
+// const seeds = JSON.parse(data);
 
 const seed = () => {
   const db = fire.firestore();
