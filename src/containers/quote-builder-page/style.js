@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '400px',
   },
   emptyBoximage: {
-    maxHeight: '200px',
+    maxHeight: '300px',
   },
   totalCostBar: {
     backgroundColor: theme.palette.background.variant,

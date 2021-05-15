@@ -3,13 +3,21 @@ import { Divider, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle
 import { Radio, RadioGroup, FormLabel, FormControl, FormControlLabel, FormHelperText } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import useStyles from './style';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectQuoteInfos, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuoteTotalCost } from './../../containers/quote-builder-page/quoteSlice';
+import GeneratePdf from './../../core/services/generatePdf';
 
 const QuoteDetailsModal = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const display = props.display;
   const scroll = props.scroll;
   const reference = props.reference;
-  const handleGenerateAndSendQuote = props.handleGenerateAndSendQuote;
+  const closeDetailsView = props.handleCloseDetailsView;
+  const quoteInfos = useSelector(selectQuoteInfos);
+  const quoteTotalCost = useSelector(selectQuoteTotalCost);
+  const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
+  const [pdfShow, setPdfShow] = React.useState(false);
   const [formInput, setFormInput] = React.useState(
     {
       firstName: "",
@@ -22,14 +30,65 @@ const QuoteDetailsModal = (props) => {
       errors: {},
     }
   );
+  const data = {
+    ...quoteInfos,
+    totalDiscount: quoteTotalDiscount,
+    preDiscountedCost: quoteTotalCost
+  };
+  const closeDownloadView = (event) => {
+    event.preventDefault();
+    setPdfShow(false);
+    closeDetailsView();
+  };
+  const handleAfterDownload = () => {
+    dispatch(deleteQuote(null));
+    setPdfShow(false);
+    closeDetailsView();
+  };
   const handleChangeDelivery = (event) => {
     setFormInput({ ...formInput, delivery: event.target.value });
   };
+
+  const PdfSection = () => {
+    if (pdfShow) {
+      return (
+        <React.Fragment>
+          <DialogTitle id="quote-download-modal-title">YOUR QUOTE IS READY</DialogTitle>
+          <Divider/>
+          <DialogContent>
+            <Box p={1} textAlign="center" display="flex" flexDirection="column" alignItems="center" justifyContent="center" className={classes.imageWrapper}>
+              <img alt="congratulations" className={classes.image} src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/trophy.png?alt=media&token=0208bffb-fcbb-48e8-bafa-f1573a02d319"></img>
+              <Typography variant="h6">
+                Congratulations !
+              </Typography>
+              <Typography  variant="h6">
+                Our Team will contact you shortly to discuss your needs.
+              </Typography>
+            </Box>
+            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="space-around" p={3} className={classes.downloadSection}>
+                <GeneratePdf template="quote" pdfAccess="download" data={data}/>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+                <Button name='Close' onClick={closeDownloadView} >
+                  Edit quote
+                </Button>
+                <Button name='Close' variant="contained" color="primary" onClick={handleAfterDownload} >
+                  Close
+                </Button>
+          </DialogActions>
+        </React.Fragment>
+      );
+    }
+    return null;
+  }
   const handleGenerateQuote = (event) => {
     event.preventDefault();
-    handleGenerateAndSendQuote(formInput);
-    props.handleCloseDetailsView();
+    dispatch(setQuoteDetails({ customerDetails: formInput }))
+    console.log("quoteInfos:", quoteInfos);
+    setPdfShow(true);
   };
+
   const validate = ({ name, value }) => {
     const errors = formInput.errors;
     if (
@@ -42,12 +101,14 @@ const QuoteDetailsModal = (props) => {
     }
     return errors
   };
+
   const handleInput = evt => {
     const name = evt.target.name;
     const value = evt.target.value;
     const errors = validate({ name, value });
     setFormInput({ ...formInput, [name]: value, errors });
   };
+
   const emailError = formInput.errors.hasOwnProperty("email");
   const emailErrorText = formInput.errors.hasOwnProperty("email") ? formInput.errors.email : "";
 
@@ -55,15 +116,15 @@ const QuoteDetailsModal = (props) => {
     <Dialog
       name='Details and options view'
       open={display}
-      onClose={props.handleCloseDetailsView}
+      onClose={closeDetailsView}
       scroll={scroll}
       aria-labelledby="quote-details-modal"
       aria-describedby="quote-details-modal-description"
       ref={reference}
       >
-      { display && (
+      { display && !pdfShow && (
         <React.Fragment>
-          <DialogTitle id="quote-details-modal-title">DETAILS FOR THE QUOTE</DialogTitle>
+          <DialogTitle id="quote-details-modal-title">YOUR QUOTE DETAILS</DialogTitle>
           <Divider/>
           <form onSubmit={handleGenerateQuote}>
           <DialogContent dividers={scroll === 'paper'}>
@@ -98,8 +159,8 @@ const QuoteDetailsModal = (props) => {
             </DialogContent>
           <Divider />
           <DialogActions>
-            <Button name='Close' onClick={props.handleCloseDetailsView} >
-              Close
+            <Button name='Close' onClick={closeDetailsView} >
+              Cancel
             </Button>
             <Button type="submit" disabled={emailError} name='Generate' variant="contained" color="primary">
               Generate my quote
@@ -107,6 +168,9 @@ const QuoteDetailsModal = (props) => {
           </DialogActions>
           </form>
         </React.Fragment>
+      )}
+      { display && pdfShow && (
+        <PdfSection />
       )}
     </Dialog>
   );

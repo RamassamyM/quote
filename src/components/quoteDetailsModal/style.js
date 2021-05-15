@@ -11,6 +11,16 @@ const useStyles = makeStyles((theme) => ({
       width: '45%',
     },
   },
+  downloadSection: {
+    minHeight: "200px",
+    width: "100%",
+  },
+  image: {
+    width: "100px",
+  },
+  imageWrapper: {
+    // maxWidth: "300px",
+  }
 }));
 
 export default useStyles;

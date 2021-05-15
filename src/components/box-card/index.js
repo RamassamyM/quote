@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, CardMedia, Typography } from '@material-ui/core';
-import { Delete as DeleteIcon, ExpandLess, ExpandMore, Edit as EditIcon, Inbox as InboxIcon } from '@material-ui/icons';
+import { Delete as DeleteIcon, ExpandLess, ExpandMore, Inbox as InboxIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useDispatch } from 'react-redux';
 import { setQuantityOfBoxesInQuote, removeBoxFromQuote } from './../../containers/quote-builder-page/quoteSlice';
@@ -45,16 +45,8 @@ export default function BoxCard(props) {
     preventDefault(event);
     dispatch(removeBoxFromQuote({id: box.id}))
   }
-  let calculatedPrice, discount, netPrice;
-  if (box.unitPrice * box.qty > 30) {
-    calculatedPrice = Math.round(box.unitPrice * box.qty);
-    discount = Math.round(calculatedPrice * 0.1);
-    netPrice = calculatedPrice - discount;
-  } else {
-    calculatedPrice = box.unitPrice * box.qty;
-    discount = Math.floor(calculatedPrice * 10 / 100);
-    netPrice = calculatedPrice - discount;
-  }
+  const preDiscountPrice = box.unitPrice * box.qty;
+  const netPrice = preDiscountPrice - box.discount;
 
   const handleExpandBoxContent = () => {
     setOpenBoxContent(!openBoxContent);
@@ -147,10 +139,10 @@ export default function BoxCard(props) {
           </Box>
           <Box flexGrow={1} display="flex" justifyContent="space-around">
             <Typography align="left" component="h5" variant="subtitle1" color="error">
-              <del>£ {calculatedPrice}</del>
+              <del>£ {preDiscountPrice}</del>
             </Typography>
             <Typography align="left" component="h5" variant="subtitle1" color="primary">
-            Save £ {discount} !
+            Save £ {box.discount} !
             </Typography>
             <Typography align="left" component="h5" variant="subtitle1" color="primary">
             Pay £ {netPrice}
