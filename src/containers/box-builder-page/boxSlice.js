@@ -49,6 +49,13 @@ export const selectBoxTotalCost = (state) => {
     return state.box.items.map((item) => item.qty * item.variantSelected.price).reduce((e,v) => e + v);
   }
 };
+export const selectBoxMinTotalCost = (state) => {
+  if (state.box.items.length === 0) {
+    return 0;
+  } else {
+    return state.box.items.map((item) => item.qty * item.variantSelected.min_price).reduce((e,v) => e + v);
+  }
+};
 const calculateTotalQtyOfItems = (items) => {
   return items.map(item => item.qty).reduce((e,v) => e + v);
 };

@@ -26,7 +26,7 @@ export default function ProductCard(props) {
     dispatch(toggleBoxPanel());
     setTimeout(() => {
       dispatch(toggleBoxPanel());
-    }, 800);
+    }, 3000);
   };
   
   return (

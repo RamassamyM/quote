@@ -37,22 +37,38 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '300px',
   },
   totalCostBar: {
-    backgroundColor: theme.palette.background.variant,
+    backgroundColor: theme.palette.surface.main,
     position: 'fixed',
     top: 'auto',
     bottom: 0,
     width: '100%',
-    height: '74px',
+    // height: '74px',
+    padding: theme.spacing(3),
   },
   separator: {
     flexGrow: 1,
   },
   quoteTotalCostText: {
-    color: theme.palette.text.reverted,
+    color: theme.palette.text.secondary,
     marginRight: '20px',
   },
+  quoteTotalCostTextBold: {
+    color: theme.palette.primary.main,
+    fontWeight: '700',
+    marginRight: '20px',
+  },
+  totalCostInfosWrapper: {
+    width: "200px",
+  },
   addABoxButton: {
-    marginBottom: '10px',
+    marginTop: '20px',
+    marginBottom: '60px',
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+  },
+  requestQuoteButton: {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
   },
 }));
 

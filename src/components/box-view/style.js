@@ -4,22 +4,12 @@ const useStyles = makeStyles((theme) => ({
   boxPanel: {
     width: 500,
     maxWidth: '100vw',
-    // backgroundColor: theme.palette.background.main,
   },
   fullBoxPanel: {
     width: 'auto',
     minHeight: '200px',
   },
   boxViewHeader: {
-    // backgroundColor: theme.palette.white.main,
-    // color: theme.palette.grey.main,
-    // width: 500,
-    // maxWidth: '100vw',
-    // height: "64px",
-    // zIndex: "10",
-    // position: "fixed",
-    // padding: theme.spacing(1),
-    // top: 0,
   },
   boxContentWrapper: {
     minHeight: 'calc(100vh - 128px)',
@@ -74,31 +64,36 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   boxAnimationWrapper: {
-    // width: '500px',
-    // height: '400px',
-    // marginBottom: '64px',
   },
   totalCostBar: {
-    backgroundColor: theme.palette.background.variant,
+    backgroundColor: theme.palette.surface.main,
     position: 'sticky',
     top: 'auto',
     bottom: 0,
     width: '100%',
+    padding: theme.spacing(2),
   },
   grow: {
     flexGrow: 1,
   },
   boxTotalCostText: {
-    fontWeight: '700',
-    color: theme.palette.text.reverted,
-    marginRight: '20px',
+    fontWeight: '500',
+    color: theme.palette.text.main + '!important',
   },
   boxItemsWrapper: {
     // marginBottom: '64px',
   },
   emptyItems: {
     paddingTop: theme.spacing(4),
-  }
+  },
+  addToQuoteButton: {
+    fontSize: '13px',
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+  },
+  bottomBarContentWrapper: {
+    margin: 'auto',
+  },
 }));
 
 export default useStyles;

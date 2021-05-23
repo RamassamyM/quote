@@ -4,7 +4,7 @@ import { Toolbar, AppBar, Typography, Box, IconButton, Card, CardContent, CardMe
 import { Clear as ClearIcon, Delete as DeleteIcon, AddCircle as AddCircleIcon, RemoveCircle as RemoveCircleIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectBoxItems, selectBoxTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
+import { selectBoxItems, selectBoxMinTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
 import ElevationScroll from './../elevationScroll';
 import BoxConfirmationModal from './../boxConfirmationModal';
 
@@ -12,7 +12,8 @@ const BoxView = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
   const boxItems = useSelector(selectBoxItems);
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems);
-  const boxTotalCost = useSelector(selectBoxTotalCost);
+  // const boxTotalCost = useSelector(selectBoxTotalCost);
+  const boxMinTotalCost = useSelector(selectBoxMinTotalCost);
   const dispatch = useDispatch();
   // App state
   // Local state
@@ -126,7 +127,7 @@ const BoxView = (props) => {
             <Toolbar>
               <Box className={classes.grow} display="flex" justifyContent="center">
                 <Typography variant="h5" component="h2" >
-                  My Box
+                  <strong>My Box</strong>
                 </Typography>
               </Box>
               <IconButton
@@ -148,17 +149,18 @@ const BoxView = (props) => {
         </Box>
       <AppBar color="primary" className={classes.totalCostBar}>
         <Toolbar>
-          <div className={classes.grow} />
-          <Typography className={classes.boxTotalCostText}>
-            £&nbsp;{boxTotalCost}
-          </Typography>
-          <Typography className={classes.boxTotalCostText}>
-            {boxNumberOfItems}&nbsp;ITEM(S)
-          </Typography>
-          <Button disabled={boxNumberOfItems === 0} variant="contained" color="secondary" onClick={() => handleClickOnAddBox('paper')}>
-            Add box to quote
-          </Button>
-          <div className={classes.grow} />
+          {/* <div className={classes.grow} /> */}
+          <Box className={classes.bottomBarContentWrapper}>
+            <Box display="flex" alignItems="center" justifyContent="space-around">
+              <Typography color="primary" className={classes.boxTotalCostText} paragraph>
+                min&nbsp;£&nbsp;{boxMinTotalCost}&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems}&nbsp;ITEM(S)
+              </Typography>
+            </Box>
+            <Button disableElevation className={classes.addToQuoteButton} disabled={boxNumberOfItems === 0} variant="contained" color="secondary" onClick={() => handleClickOnAddBox('paper')}>
+              Add box to quote
+            </Button>
+          </Box>
+          {/* <div className={classes.grow} /> */}
         </Toolbar>
       </AppBar>
       </Box>

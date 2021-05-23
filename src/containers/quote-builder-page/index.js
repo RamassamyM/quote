@@ -76,8 +76,8 @@ export default function BoxBuilderPage() {
               <BoxCard key={box.name} box={box}/>
               ))}
             </Box>
-            <Button className={classes.addABoxButton} size="large" fullWidth={true} variant="contained" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-              Add a box
+            <Button disableElevation className={classes.addABoxButton} size="large" fullWidth={false} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
+              Build another box
             </Button>
           </Grid>
           <Grid item xs={1} sm={2} md={3}></Grid>
@@ -94,8 +94,8 @@ export default function BoxBuilderPage() {
                 </Typography>
               </Box>
               <Box mb={4}>
-              <Button variant="contained" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-                Add a box
+              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
+                Build a box
               </Button>
               </Box>
               <Box mb={4}>
@@ -117,7 +117,7 @@ export default function BoxBuilderPage() {
           <Grid item xs={12} className={classes.grid}>
             <Box className={classes.heroBoxTitle}>
               <Typography component="h1" variant="h4" align="center" className={classes.heroTitle}>
-                Build your quote
+                Request a quote
               </Typography>
             </Box>
           </Grid>
@@ -131,18 +131,33 @@ export default function BoxBuilderPage() {
         <AppBar color="primary" className={classes.totalCostBar}>
           <Toolbar>
             <div className={classes.separator} />
-            <Typography variant="h6" className={classes.quoteTotalCostText}>
-              {NumberOfBoxesInQuote}&nbsp;Boxes
-            </Typography>
-            { quoteNetCost !== quoteTotalCost && (
-              <Typography variant="h6" className={classes.quoteTotalCostText} >
-                <del>£&nbsp;{quoteTotalCost}</del>
-              </Typography>
-            )}           
-            <Typography variant="h6"  className={classes.quoteTotalCostText}>
-              £&nbsp;{quoteNetCost}
-            </Typography>
-            <Button disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={handleClickOnRequestQuote}>
+            <Box className={classes.totalCostInfosWrapper}>
+              <Box flexGrow={1} display="flex" aligntItems="center" justifyContent="space-between">
+                <Typography variant="subtitle2" className={classes.quoteTotalCostText}>
+                  Boxes
+                </Typography>
+                <Typography variant="subtitle2" className={classes.quoteTotalCostText}>
+                  {NumberOfBoxesInQuote}
+                </Typography>
+              </Box>
+              <Box flexGrow={1} display="flex" aligntItems="center" justifyContent="space-between">
+                <Typography variant="subtitle1" color="primary" className={classes.quoteTotalCostTextBold}>
+                  Total
+                </Typography>
+                <Typography variant="subtitle1" color="primary" className={classes.quoteTotalCostTextBold}>
+                  £&nbsp;{Math.round(quoteNetCost)}
+                </Typography>
+              </Box>
+              {/* { quoteNetCost !== quoteTotalCost && (
+                <Typography variant="h6" className={classes.quoteTotalCostText} >
+                  <del>£&nbsp;{quoteTotalCost}</del>
+                </Typography>
+              )}           
+              <Typography variant="h6"  className={classes.quoteTotalCostText}>
+                £&nbsp;{quoteNetCost}
+              </Typography> */}
+            </Box>
+            <Button className={classes.requestQuoteButton} disableElevation disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={handleClickOnRequestQuote}>
               Request Quote
             </Button>
             <div className={classes.separator} />

@@ -38,7 +38,7 @@ const ProductModal = (props) => {
     dispatch(toggleBoxPanel());
     setTimeout(() => {
       dispatch(toggleBoxPanel());
-    }, 800);
+    }, 3000);
   };
   // Return
   return (

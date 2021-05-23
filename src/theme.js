@@ -3,9 +3,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const brandColors = {
   white: '#FFFFFF',
   darkgrey: '#42575F',
-  grey: '#888888',
+  grey: '#A4B0B5',
   lightgrey: '#F5F7F7',
   mediumlightgrey: '#efefef',
+  softgrey: '#A4B0B5',
   limegreen: '#81FF90',
   green: '#55f168',
   purple: '#171446',
@@ -18,8 +19,15 @@ const brandColors = {
 const theme = createMuiTheme({
   typography: {
     fontFamily: 'DM+Sans, Montserrat, Arial, sans-serif',
-    fontSize: 12,
+    fontSize: 14,
   },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 25,
+      }, 
+    }, 
+  }, 
   palette: {
     primary: {
       main: brandColors.blue,
@@ -52,6 +60,7 @@ const theme = createMuiTheme({
     text: {
       reverted: brandColors.white,
       primary: brandColors.darkgrey,
+      soft: brandColors.softgrey,
       secondary: brandColors.grey,
       disabled: brandColors.lightgrey,
       link: brandColors.cyan,
