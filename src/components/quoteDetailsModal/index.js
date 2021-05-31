@@ -1,10 +1,11 @@
 import React from 'react';
 import { Divider, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
-import { Radio, RadioGroup, FormLabel, FormControl, FormControlLabel, FormHelperText } from '@material-ui/core';
+import { Checkbox, Radio, RadioGroup, FormLabel, FormControl, FormControlLabel, FormHelperText } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
+import { MailOutline as MailOutlineIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectQuoteInfos, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuoteTotalCost } from './../../containers/quote-builder-page/quoteSlice';
+import { selectQuote, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuoteTotalCost } from './../../containers/quote-builder-page/quoteSlice';
 import GeneratePdf from './../../core/services/generatePdf';
 
 const QuoteDetailsModal = (props) => {
@@ -14,7 +15,7 @@ const QuoteDetailsModal = (props) => {
   const scroll = props.scroll;
   const reference = props.reference;
   const closeDetailsView = props.handleCloseDetailsView;
-  const quoteInfos = useSelector(selectQuoteInfos);
+  const quote = useSelector(selectQuote);
   const quoteTotalCost = useSelector(selectQuoteTotalCost);
   const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
   const [pdfShow, setPdfShow] = React.useState(false);
@@ -28,10 +29,12 @@ const QuoteDetailsModal = (props) => {
       email: "",
       delivery: "company",
       errors: {},
+      addCompanyLogo: false,
+      addCustomMessage: false,
     }
   );
   const data = {
-    ...quoteInfos,
+    ...quote,
     totalDiscount: quoteTotalDiscount,
     preDiscountedCost: quoteTotalCost
   };
@@ -47,6 +50,12 @@ const QuoteDetailsModal = (props) => {
   };
   const handleChangeDelivery = (event) => {
     setFormInput({ ...formInput, delivery: event.target.value });
+  };
+  const handleChangeOptionCompanyLogo = (event) => {
+    setFormInput({ ...formInput, addCompanyLogo: !formInput.addCompanyLogo });
+  };
+  const handleChangeOptionCustomMessage = (event) => {
+    setFormInput({ ...formInput, addCustomMessage: !formInput.addCustomMessage });
   };
 
   const PdfSection = () => {
@@ -84,8 +93,7 @@ const QuoteDetailsModal = (props) => {
   }
   const handleGenerateQuote = (event) => {
     event.preventDefault();
-    dispatch(setQuoteDetails({ customerDetails: formInput }))
-    console.log("quoteInfos:", quoteInfos);
+    dispatch(setQuoteDetails({ quoteDetails: formInput }))
     setPdfShow(true);
   };
 
@@ -124,48 +132,60 @@ const QuoteDetailsModal = (props) => {
       >
       { display && !pdfShow && (
         <React.Fragment>
-          <DialogTitle id="quote-details-modal-title">YOUR QUOTE DETAILS</DialogTitle>
+          <DialogTitle id="quote-details-modal-title">REQUEST YOUR QUOTE - STEP 2</DialogTitle>
           <Divider/>
           <form onSubmit={handleGenerateQuote}>
-          <DialogContent dividers={scroll === 'paper'}>
-            <Box align="center" mb={2}>
-              <Typography component="h4" variant="h6">
-                Contact us to use your company logo and add a custom message inside the box.
-              </Typography>
-            </Box>
+            <DialogContent dividers={scroll === 'paper'}>
               <Box display="flex" justifyContent="center" className={classes.detailsFormContent}>
                 <Box>
-                  <Box mb={3}>
+                  <Box mb={4}>
                     <FormControl component="fieldset">
-                      <FormLabel component="legend">OPTIONS</FormLabel>
+                      <FormLabel component="legend">DELIVERY</FormLabel>
                       <RadioGroup aria-label="delivery" name="delivery" value={formInput.delivery} onChange={handleChangeDelivery}>
                         <FormControlLabel value="company" control={<Radio />} label="Company delivery (one drop-off)" />
                         <FormControlLabel value="individual" control={<Radio />} label="Individual deliveries" />
                       </RadioGroup>
-                      <FormHelperText>Contact us for mixed deliveries</FormHelperText>
+                      <FormHelperText>
+                        <Button size="small" component="a" href="mailto:sales@curakit.com" className={classes.contactLink} startIcon={<MailOutlineIcon />}>
+                          Contact us for mixed deliveries 
+                        </Button>
+                      </FormHelperText>
+                    </FormControl>
+                  </Box>
+                  <Box mb={4}>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">CUSTOMIZATION</FormLabel>
+                        <FormControlLabel
+                          control={<Checkbox checked={formInput.addCompanyLogo} onChange={handleChangeOptionCompanyLogo} name="Company Logo Option" />}
+                          label="Add my company logo"
+                          />
+                        <FormControlLabel
+                          control={<Checkbox checked={formInput.addCustomMessage} onChange={handleChangeOptionCustomMessage} name="Custom Message Option" />}
+                          label="Add a custom message in each box"
+                          />
                     </FormControl>
                   </Box>
                   <Box mb={3}>
-                    <FormLabel color="primary" component="legend">CONTACT</FormLabel>
-                    <TextField fullWidth name="firstName" onChange={handleInput} required id="first-name-required" label="First name"/>
-                    <TextField fullWidth name="lastName" onChange={handleInput} required id="last-name-required" label="Last name"/>
-                    <TextField fullWidth name="companyName" onChange={handleInput} required id="company-name-required" label="Company name"/>
-                    <TextField fullWidth name="jobTitle" onChange={handleInput} required id="job-title-required" label="Job title"/>
-                    <TextField fullWidth name="email" helperText={emailErrorText} error={emailError} onChange={handleInput} required id="email-required" label="Email"/>
-                    <TextField fullWidth name="phone" onChange={handleInput} required id="phone-required" label="Phone"/>
+                    <FormLabel color="primary" component="legend">CONTACT INFOS</FormLabel>
+                    <TextField fullWidth name="firstName" value={formInput.firstName} onChange={handleInput} required id="first-name-required" label="First name"/>
+                    <TextField fullWidth name="lastName" value={formInput.lastName} onChange={handleInput} required id="last-name-required" label="Last name"/>
+                    <TextField fullWidth name="companyName" value={formInput.companyName} onChange={handleInput} required id="company-name-required" label="Company name"/>
+                    <TextField fullWidth name="jobTitle" value={formInput.jobTitle} onChange={handleInput} required id="job-title-required" label="Job title"/>
+                    <TextField fullWidth name="email" value={formInput.email} helperText={emailErrorText} error={emailError} onChange={handleInput} required id="email-required" label="Email"/>
+                    <TextField fullWidth name="phone" value={formInput.phone} onChange={handleInput} required id="phone-required" label="Phone"/>
                   </Box>
                 </Box>
               </Box>
             </DialogContent>
-          <Divider />
-          <DialogActions>
-            <Button name='Close' onClick={closeDetailsView} >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={emailError} name='Generate' variant="contained" color="primary">
-              Generate my quote
-            </Button>
-          </DialogActions>
+            <Divider />
+            <DialogActions>
+              <Button name='Close' onClick={closeDetailsView} >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={emailError} name='Generate' variant="contained" color="primary">
+                Generate my quote
+              </Button>
+            </DialogActions>
           </form>
         </React.Fragment>
       )}

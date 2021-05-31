@@ -82,7 +82,7 @@ export default function BoxCard(props) {
           <Box display="flex" alignItems="center" className={classes.boxCardHeaderBar}>
             <Box flexGrow={1} display="flex" justifyContent="space-between">
               <Box p={1} display="flex" alignItems="center" className={classes.boxCardHeader}>
-                <InboxIcon fontSize="large" color="primary" className={classes.boxIcon} />
+                {/* <InboxIcon fontSize="large" color="primary" className={classes.boxIcon} /> */}
                 <Typography align="left" component="h3" variant="h5" className={classes.boxCardContentTitle}>
                   {box.name}
                 </Typography>

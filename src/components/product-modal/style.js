@@ -17,6 +17,18 @@ const useStyles = makeStyles((theme) => ({
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
+  productImage: {
+    height: '100%',
+    maxWidth: '100%',
+    overflow: 'hidden',
+  },
+  productImageWrapper: {
+    maxWidth: '100%',
+    height: '300px',
+  },
+  productImageColumn: {
+    margin: 'auto',
+  },
   modalChip: {
     marginRight: theme.spacing(1),
   },

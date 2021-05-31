@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   boxes: [],
   next_index: 0,
-  customerDetails: {},
+  quoteDetails: {},
 };
 
 const calculateDiscount = (unitPrice, qty) => {
@@ -39,7 +39,7 @@ export const quoteSlice = createSlice({
       box.discount = calculateDiscount(box.unitPrice, action.payload.qty);
     },
     setQuoteDetails: (state, action) => {
-      state.customerDetails = action.payload.customerDetails;
+      state.quoteDetails = action.payload.quoteDetails;
     },
     deleteQuote: (state, action) => {
       state = initialState;
@@ -51,7 +51,7 @@ export const quoteSlice = createSlice({
 export const { addBoxToQuote, removeBoxFromQuote, setQuantityOfBoxesInQuote, setQuoteDetails, deleteQuote } = quoteSlice.actions;
 
 export const selectBoxesInQuote = (state) => state.quote.boxes;
-export const selectQuoteInfos = (state) => state.quote;
+export const selectQuote = (state) => state.quote;
 export const selectNumberOfBoxTypesInQuote = (state) => state.quote.boxes.length;
 export const selectQuoteTotalCost = (state) => {
   if (state.quote.boxes.length === 0) {

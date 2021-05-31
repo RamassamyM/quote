@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
   imageWrapper: {
     // maxWidth: "300px",
+  },
+  contactLink: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   }
 }));
 

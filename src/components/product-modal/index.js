@@ -1,8 +1,9 @@
 import React from 'react';
 // import clsx from 'clsx';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { MobileStepper, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 import { Chip, Box, Grid, GridList, GridListTile, } from '@material-ui/core';
-import { AddCircle } from "@material-ui/icons";
+import { KeyboardArrowLeft, KeyboardArrowRight, AddCircle } from "@material-ui/icons";
 import useStyles from './style';
 import { Dropdown } from 'react-dropdown-now';
 import { useDispatch } from 'react-redux';
@@ -15,11 +16,14 @@ const ProductModal = (props) => {
   // Local state
   const product = props.product;
   const [variantSelection, setVariantSelection] = React.useState(null);
+  const [activeStep, setActiveStep] = React.useState(0);
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
+  const theme = useTheme();
   const display = props.display;
   const scroll = props.scroll;
   const reference = props.reference;
+  const maxSteps = product && product.picture_urls.length || 0;
   // const preventDefault = (event) => event.preventDefault();
   // Effect(s)
   // Logic
@@ -40,10 +44,19 @@ const ProductModal = (props) => {
       dispatch(toggleBoxPanel());
     }, 3000);
   };
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   // Return
   return (
     <Dialog
       name='Product View'
+      maxWidth='md'
       open={display}
       onClose={props.handleCloseProductView}
       scroll={scroll}
@@ -56,19 +69,37 @@ const ProductModal = (props) => {
           <DialogTitle id="scroll-dialog-title">{product.title}</DialogTitle>
           <DialogContent dividers={scroll === 'paper'}>
               <Grid container spacing={2}>
-                <Grid item md={6}>
-                <div className={classes.modalImageWrapper}>
-                  <GridList className={classes.modalImageList} cols={3}>
-                    {product.picture_urls.map((picture_url, index) => (
-                      <GridListTile key={product.productId + '-image-' + index} cols={3}>
-                        <img src={picture_url} alt={product.productId + '-image-' + index} />
-                      </GridListTile>
-                    ))}
-                  </GridList>
-                </div>
+                <Grid item sm={6} className={classes.productImageColumn}>
+                  <Box display="flex" alignItems="center" justifyContent="center" pb={4} className={classes.productImageBlockWrapper}>
+                    <Box className={classes.productImageWrapper}>
+                      <img
+                        className={classes.productImage}
+                        src={product.picture_urls[activeStep]}
+                        alt={product.productId + '-image-' + activeStep}
+                      />
+                    <MobileStepper
+                      steps={maxSteps}
+                      position="static"
+                      variant="text"
+                      activeStep={activeStep}
+                      nextButton={
+                        <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                          Next
+                          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                        </Button>
+                      }
+                      backButton={
+                        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                          Back
+                        </Button>
+                      }
+                      />
+                      </Box>
+                  </Box>
                 </Grid>
-                <Grid item md={6}>
-                  <Box m={1} className={classes.modalCategory} display="flex" justifyContent="space-between" alignItems="center">
+                <Grid item sm={6}>
+                  <Box m={2} className={classes.modalCategory} display="flex" justifyContent="space-between" alignItems="center">
                     <Typography component="h3" >
                       {product.brand}
                     </Typography>
