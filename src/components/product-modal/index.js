@@ -2,7 +2,7 @@ import React from 'react';
 // import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
 import { MobileStepper, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
-import { Chip, Box, Grid, GridList, GridListTile, } from '@material-ui/core';
+import { Chip, Box, Grid } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight, AddCircle } from "@material-ui/icons";
 import useStyles from './style';
 import { Dropdown } from 'react-dropdown-now';
@@ -16,14 +16,17 @@ const ProductModal = (props) => {
   // Local state
   const product = props.product;
   const [variantSelection, setVariantSelection] = React.useState(null);
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(1);
   // Other variables declaration(useRef, useStyles...)
   const classes = useStyles();
   const theme = useTheme();
   const display = props.display;
   const scroll = props.scroll;
   const reference = props.reference;
-  const maxSteps = product && product.picture_urls.length || 0;
+  let maxSteps = 1;
+  if (product && product.picture_urls && product.picture_urls.length > 1) {
+    maxSteps = product.picture_urls.length;
+  } ;
   // const preventDefault = (event) => event.preventDefault();
   // Effect(s)
   // Logic
