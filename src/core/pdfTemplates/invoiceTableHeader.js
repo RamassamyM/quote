@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View, StyleSheet } from '@react-pdf/renderer';
 
-const borderColor = '#0094CA'
+const borderColor = '#42575F';
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         backgroundColor: borderColor,
         borderBottomWidth: 1,
         alignItems: 'center',
-        height: 24,
+        height: 26,
         textAlign: 'center',
         fontStyle: 'bold',
         flexGrow: 1,
@@ -17,27 +17,27 @@ const styles = StyleSheet.create({
     },
     description: {
         width: '50%',
-        borderRightColor: 'white',
+        borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     qty: {
         width: '10%',
-        borderRightColor: 'white',
+        borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     preDiscountedCost: {
         width: '10%',
-        borderRightColor: 'white',
+        borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     unitPrice: {
         width: '10%',
-        borderRightColor: 'white',
+        borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     discount: {
         width: '10%',
-        borderRightColor: 'white',
+        borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     amount: {

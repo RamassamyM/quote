@@ -93,7 +93,7 @@ const QuoteDetailsModal = (props) => {
   }
   const handleGenerateQuote = (event) => {
     event.preventDefault();
-    dispatch(setQuoteDetails({ quoteDetails: formInput }))
+    dispatch(setQuoteDetails({ quoteDetails: formInput }));
     setPdfShow(true);
   };
 

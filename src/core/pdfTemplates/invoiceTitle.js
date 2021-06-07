@@ -5,14 +5,15 @@ const styles = StyleSheet.create({
    
     titleContainer:{
         flexDirection: 'row',
-        marginTop: 24,
+        marginTop: 20,
+        backgroundColor: '#0094CA',
+        padding: 15,
     },
     reportTitle:{
-        color: '#0094CA',
-        letterSpacing: 4,
-        fontSize: 25,
+        color: '#FFFFFF',
+        // letterSpacing: 2,
+        fontSize: 22,
         textAlign: 'center',
-        textTransform: 'uppercase',
     }
   });
 

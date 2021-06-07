@@ -4,19 +4,22 @@ import {Text, View, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
     invoiceNoContainer: {
         flexDirection: 'row',
-        marginTop: 36,
+        marginTop: 8,
         justifyContent: 'flex-end'
     },
     invoiceDateContainer: {
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'space-between'
     },
-    invoiceDate: {
-            fontSize: 12,
-            fontStyle: 'bold',
+    textContent: {
+        fontSize: 10,
+        fontStyle: 'bold',
+        marginRight: 10,
+        color: '#42575F',
     },
     label: {
-        width: 60
+        color: '#0094CA',
+        fontSize: 10,
     }
     
   });
@@ -25,13 +28,13 @@ const styles = StyleSheet.create({
   const InvoiceNo = ({invoice}) => (
         <Fragment>
             <View style={styles.invoiceNoContainer}>
-                <Text style={styles.label}>Quote No:</Text>
-                <Text style={styles.invoiceDate}>{invoice.invoice_no}</Text>
-            </View >
-            <View style={styles.invoiceDateContainer}>
+                <Text style={styles.label}>Quote ID </Text>
+                <Text style={styles.textContent}>{invoice.invoice_no}</Text>
                 <Text style={styles.label}>Date: </Text>
-                <Text >{invoice.trans_date}</Text>
+                <Text style={styles.textContent}>{invoice.trans_date}</Text>
             </View >
+            {/* <View style={styles.invoiceDateContainer}>
+            </View > */}
         </Fragment>
   );
   

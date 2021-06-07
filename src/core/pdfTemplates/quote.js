@@ -6,6 +6,7 @@ import BillTo from './billTo'
 import InvoiceNo from './invoiceNo'
 import InvoiceItemsTable from './invoiceItemsTable'
 import InvoiceThankYouMsg from './invoiceThankYouMsg'
+import InvoiceItemsDescription from './invoiceItemsDescription'
 
 const styles = StyleSheet.create({
     page: {
@@ -19,9 +20,6 @@ const styles = StyleSheet.create({
     }, 
     logo: {
         width: 90,
-        // height: 66,
-        marginLeft: 'auto',
-        marginRight: 'auto'
     }
 });
 
@@ -33,6 +31,7 @@ export default function Quote(props) {
     const today = new Date(Date.now());
     const date = today.toLocaleDateString('en-EN', { year: 'numeric', month: 'long', day: 'numeric' });
     const number = today.toLocaleDateString('en-EN', {year: 'numeric', month: 'numeric', day: 'numeric'}).split('/').join('');
+    const totalQtyOfBoxes = data.boxes.map((box) => box.qty ).reduce((a, b)=> a + b,0);
     const invoice = {
         id: '001',
         invoice_no: number,
@@ -42,11 +41,14 @@ export default function Quote(props) {
         company: data.quoteDetails.companyName,
         email: data.quoteDetails.email,
         phone: data.quoteDetails.phone,
+        delivery: data.quoteDetails.delivery,
         address: 'no address',
         trans_date: date,
-        items: data.boxes
+        items: data.boxes,
+        totalQty: totalQtyOfBoxes,
     }
     console.log("pdf props:", data);
+    console.log("totalQty:", totalQtyOfBoxes);
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -55,6 +57,7 @@ export default function Quote(props) {
                 <InvoiceNo invoice={invoice}/>
                 <BillTo invoice={invoice}/>
                 <InvoiceItemsTable invoice={invoice}/>
+                <InvoiceItemsDescription boxes={invoice.items} />
                 <InvoiceThankYouMsg />
             </Page>
         </Document>

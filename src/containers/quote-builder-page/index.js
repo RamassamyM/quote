@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import { AppBar, Toolbar, Button, Grid, Zoom, Fab, useScrollTrigger, Typography } from '@material-ui/core';
-import { KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
+import { AppBar, Link, Toolbar, Button, Grid, Zoom, Fab, useScrollTrigger, Typography } from '@material-ui/core';
+import { KeyboardArrowUp as KeyboardArrowUpIcon, MailOutline as MailOutlineIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector } from 'react-redux';
 import { selectBoxesInQuote, selectQuoteTotalDiscount, selectQuoteTotalCost, selectNumberOfBoxesInQuote } from './quoteSlice';
@@ -157,9 +157,15 @@ export default function BoxBuilderPage() {
                 £&nbsp;{quoteNetCost}
               </Typography> */}
             </Box>
-            <Button className={classes.requestQuoteButton} disableElevation disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={handleClickOnRequestQuote}>
-              Request Quote
-            </Button>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Button className={classes.requestQuoteButton} disableElevation disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={handleClickOnRequestQuote}>
+                Request Quote
+              </Button>
+              <Button size="small" component="a" href="mailto:sales@curakit.com" className={classes.heroMail} >
+                <MailOutlineIcon className={classes.heroMailIcon}/>
+                Contact us
+              </Button>
+            </Box>
             <div className={classes.separator} />
           </Toolbar>
         </AppBar>

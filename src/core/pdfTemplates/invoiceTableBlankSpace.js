@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {Text, View, StyleSheet } from '@react-pdf/renderer';
 
-const borderColor = '#0094CA'
+const borderColor = '#EF4648';
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',

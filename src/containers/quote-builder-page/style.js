@@ -14,6 +14,15 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.reverted,
     fontWeight: '700',
   },
+  heroMail: {
+    color: theme.palette.primary.main,
+    fontSize: 12,
+    marginTop: '5px',
+  },
+  heroMailIcon: {
+    fontSize: 14,
+    marginRight: '5px',
+  },
   quoteContentWrapper: {
     backgroundColor: theme.palette.background.main,
     paddingTop: theme.spacing(2),
