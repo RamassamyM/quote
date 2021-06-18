@@ -1,0 +1,65 @@
+[debug] [2021-06-18T22:31:09.177Z] ----------------------------------------------------------------------
+[debug] [2021-06-18T22:31:09.180Z] Command:       /Users/michaelr/.nvm/versions/node/v14.15.1/bin/node /Users/michaelr/.nvm/versions/node/v14.15.1/bin/firebase init functions
+[debug] [2021-06-18T22:31:09.180Z] CLI Version:   9.10.0
+[debug] [2021-06-18T22:31:09.181Z] Platform:      darwin
+[debug] [2021-06-18T22:31:09.181Z] Node Version:  v14.15.1
+[debug] [2021-06-18T22:31:09.193Z] Time:          Sat Jun 19 2021 00:31:09 GMT+0200 (Central European Summer Time)
+[debug] [2021-06-18T22:31:09.194Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-06-18T22:31:09.198Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2021-06-18T22:31:09.233Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-06-18T22:31:09.234Z] > authorizing via signed-in user (ramassamymichael@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/michaelr/Documents/CODE/CURAKIT_CODE/quote-curakit
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  .firebaserc already has a default project, using curakit-7e00d. 
+[debug] [2021-06-18T22:31:09.247Z] > refreshing access token with scopes: []
+[debug] [2021-06-18T22:31:09.248Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-06-18T22:31:09.528Z] <<< HTTP RESPONSE 200 {"date":"Fri, 18 Jun 2021 22:31:09 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-06-18T22:31:09.575Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/curakit-7e00d [none]
+[debug] [2021-06-18T22:31:09.818Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2021-06-18T22:31:09.819Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2021-06-18T22:31:09.939Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/curakit-7e00d 200
+[debug] [2021-06-18T22:31:09.939Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/curakit-7e00d {"projectId":"curakit-7e00d","projectNumber":"25609787038","displayName":"curakit","name":"projects/curakit-7e00d","resources":{"hostingSite":"curakit-7e00d","storageBucket":"curakit-7e00d.appspot.com","locationId":"europe-west2"},"state":"ACTIVE"}
+[info] 
+=== Functions Setup
+[info] 
+[info] A functions directory will be created in your project with a Node.js
+[info] package pre-configured. Functions can be deployed with firebase deploy.
+[info] 
+[debug] [2021-06-18T22:31:09.942Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-06-18T22:31:09.943Z] > authorizing via signed-in user (ramassamymichael@gmail.com)
+[debug] [2021-06-18T22:31:09.943Z] [iam] checking project curakit-7e00d for permissions ["firebase.projects.get"]
+[debug] [2021-06-18T22:31:09.945Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-06-18T22:31:09.945Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-06-18T22:31:10.187Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Fri, 18 Jun 2021 22:31:10 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-06-18T22:31:10.219Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/curakit-7e00d:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2021-06-18T22:31:11.392Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 18 Jun 2021 22:31:10 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=566","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-06-18T22:31:11.395Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/curakit-7e00d/services/cloudfunctions.googleapis.com:enable  
+ 
+[debug] [2021-06-18T22:31:11.396Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/curakit-7e00d/services/runtimeconfig.googleapis.com:enable  
+ 
+[debug] [2021-06-18T22:31:12.821Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 18 Jun 2021 22:31:12 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-06-18T22:31:12.823Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 18 Jun 2021 22:31:12 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
