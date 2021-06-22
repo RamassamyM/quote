@@ -3,7 +3,6 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import pdfDocuments from './../pdfTemplates/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import { storeQuoteToDb } from '../../core/services/firestore-requests';
 
 const useStyles = makeStyles((theme) => ({
   downloadButton: {
@@ -23,10 +22,6 @@ const GeneratePdf = (props) =>  {
   const data = props.data;
   const template = props.template;
   const pdfAccess = props.pdfAccess;
-  const today = new Date(Date.now());
-  if (data) {
-    storeQuoteToDb(data)
-  }
   const Document = (props) => {
     const template = props.template;
     if (template) {

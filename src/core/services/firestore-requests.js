@@ -44,7 +44,7 @@ export const fetchProductsByCategory = async (category) => {
   return results;
 }
 
-export const storeQuoteToDb = async (data) => {
+export const storeQuoteToDb = async ({ boxes, quoteDetails }) => {
   console.log("Posting Quote to Firestore...")
   const db = fire.firestore();
   await db.collection("quotes").add({ boxes, quoteDetails })
@@ -54,5 +54,4 @@ export const storeQuoteToDb = async (data) => {
   .catch((error) => {
       console.error("Error adding quote document: ", error);
   });
-  return;
 }

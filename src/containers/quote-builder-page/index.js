@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import { AppBar, Link, Toolbar, Button, Grid, Zoom, Fab, useScrollTrigger, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Grid, Zoom, Fab, useScrollTrigger, Typography } from '@material-ui/core';
 import { KeyboardArrowUp as KeyboardArrowUpIcon, MailOutline as MailOutlineIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector } from 'react-redux';
@@ -132,7 +132,7 @@ export default function BoxBuilderPage() {
           <Toolbar>
             <div className={classes.separator} />
             <Box className={classes.totalCostInfosWrapper}>
-              <Box flexGrow={1} display="flex" aligntItems="center" justifyContent="space-between">
+              <Box flexGrow={1} display="flex" justifyContent="space-between">
                 <Typography variant="subtitle2" className={classes.quoteTotalCostText}>
                   Boxes
                 </Typography>
@@ -140,7 +140,7 @@ export default function BoxBuilderPage() {
                   {NumberOfBoxesInQuote}
                 </Typography>
               </Box>
-              <Box flexGrow={1} display="flex" aligntItems="center" justifyContent="space-between">
+              <Box flexGrow={1} display="flex" justifyContent="space-between">
                 <Typography variant="subtitle1" color="primary" className={classes.quoteTotalCostTextBold}>
                   Total
                 </Typography>

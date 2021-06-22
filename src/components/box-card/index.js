@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
-import { DeleteOutline as DeleteIcon, Help as HelpIcon, ExpandLess, ExpandMore, Inbox as InboxIcon } from '@material-ui/icons';
+import { DeleteOutline as DeleteIcon, Help as HelpIcon, ExpandLess, ExpandMore } from '@material-ui/icons';
 import useStyles from './style';
 import { useDispatch } from 'react-redux';
 import { setQuantityOfBoxesInQuote, removeBoxFromQuote } from './../../containers/quote-builder-page/quoteSlice';
@@ -61,15 +61,13 @@ export default function BoxCard(props) {
           {openBoxContent ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openBoxContent} timeout="auto" unmountOnExit>
-          <Box className={classes.boxExpanded}>
+          <List component="div" disablePadding className={classes.boxExpanded}>
             {items.map(item => (
-              <Box align="right">
-                <Typography variant="subtitle2" color="textSecondary">
-                  {item}
-                </Typography>
-              </Box>
+              <ListItem key={item}>
+                <ListItemText align="right" secondary={item} />
+              </ListItem>
             ))}
-          </Box>
+          </List>
         </Collapse>
       </List>
     );

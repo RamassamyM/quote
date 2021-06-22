@@ -7,6 +7,7 @@ import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectQuote, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuoteTotalCost } from './../../containers/quote-builder-page/quoteSlice';
 import GeneratePdf from './../../core/services/generatePdf';
+import { storeQuoteToDb } from './../../core/services/firestore-requests';
 
 const QuoteDetailsModal = (props) => {
   const classes = useStyles();
@@ -19,6 +20,7 @@ const QuoteDetailsModal = (props) => {
   const quoteTotalCost = useSelector(selectQuoteTotalCost);
   const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
   const [pdfShow, setPdfShow] = React.useState(false);
+  const [storedToFirestore, setStoredToFirestore] = React.useState(false);
   const [formInput, setFormInput] = React.useState(
     {
       firstName: "",
@@ -41,11 +43,13 @@ const QuoteDetailsModal = (props) => {
   const closeDownloadView = (event) => {
     event.preventDefault();
     setPdfShow(false);
+    setStoredToFirestore(false);
     closeDetailsView();
   };
   const handleAfterDownload = () => {
     dispatch(deleteQuote(null));
     setPdfShow(false);
+    setStoredToFirestore(false);
     closeDetailsView();
   };
   const handleChangeDelivery = (event) => {
@@ -91,9 +95,13 @@ const QuoteDetailsModal = (props) => {
     }
     return null;
   }
-  const handleGenerateQuote = (event) => {
+  const handleGenerateQuote = async (event) => {
     event.preventDefault();
     dispatch(setQuoteDetails({ quoteDetails: formInput }));
+    if (data && !storedToFirestore) {
+      setStoredToFirestore(true);
+      await storeQuoteToDb(data);
+    }
     setPdfShow(true);
   };
 
