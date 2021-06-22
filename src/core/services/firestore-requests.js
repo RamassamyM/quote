@@ -45,8 +45,8 @@ export const fetchProductsByCategory = async (category) => {
 }
 
 export const storeQuoteToDb = async (data) => {
+  console.log("Posting Quote to Firestore...")
   const db = fire.firestore();
-  let response;
   await db.collection("quotes").add({ boxes, quoteDetails })
   .then((docRef) => {
       console.log("Document Quote written with ID: ", docRef.id);
