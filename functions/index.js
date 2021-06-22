@@ -19,6 +19,15 @@ const sendEmail = ({to, from, templatId, dynamicTemplateData}) => {
 
 app.post("/", (req, res) => res.send(sendEmail(req.body)));
 
-exports.sendQuoteEmailToSales = functions.https.onRequest(app);
+// exports.sendQuoteEmailToSales = functions.https.onRequest(app);
 
-
+exports.sendQuoteEmailToSales = functions.firestore
+  .document('quotes/{docId}')
+  .onCreate((snap, context) => { 
+    const {to, from, templatId, dynamicTemplateData} = snap.data();
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.send({to, from, templatId, dynamicTemplateData})
+    .then(() => {}, error => {
+      console.error("Error when sending email: ", error);
+    })
+  });
