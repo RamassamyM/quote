@@ -1,9 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-// const { configureStore } = require("@reduxjs/toolkit");
 admin.initializeApp();
 const sgMail = require("@sendgrid/mail");
-const { AssignmentReturn } = require("@material-ui/icons");
 const firestore = admin.firestore();
 
 const CLIENT_EMAIL_TEMPLATE_ID = "d-8ff0ad311b074b85ade899f727c95374";
