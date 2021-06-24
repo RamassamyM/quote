@@ -4,9 +4,10 @@ import seeds from './seed';
 // const jsonFilepath = './seed.json';
 // const data = fs.readFileSync(jsonFilepath, 'utf8');
 // const seeds = JSON.parse(data);
+const db = fire.firestore();
+// db.useEmulator("localhost", 8080);
 
 const seed = () => {
-  const db = fire.firestore();
   seeds.forEach(element => {
     console.log("Adding product to Firestore: ", element.title)
     db.collection("products").add(element).then((docRef) => {

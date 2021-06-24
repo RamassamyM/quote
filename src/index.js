@@ -8,13 +8,17 @@ import App from './App';
 import './core/theme/index.css';
 import theme from './theme';
 // import reportWebVitals from './reportWebVitals';
-import Navbar from './components/navbar'
-import Footer from './components/footer'
+import Navbar from './components/navbar';
+import Footer from './components/footer';
 // uncomment line below for seeding
-// import seed from './seeder/seed-firestore';
 import { fetchProductsAsync } from './containers/box-builder-page/productsSlice';
 // import { useDispatch } from 'react-redux';
-import { HashRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom';
+
+// To seed database: uncomment these lines and the import lines, then launch server on local
+// after comment the lines
+// import seed from './seeder/seed-firestore';
+// seed();
 
 store.dispatch(fetchProductsAsync());
 
@@ -39,9 +43,3 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals(console.log);
-
-// To seed database: uncomment these lines and the import lines, then launch server on local
-// after comment the lines
-// if (true) {
-//  seed();
-// }

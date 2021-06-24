@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     description: {
-        width: '50%',
+        width: '30%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
@@ -26,33 +26,33 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
     },
     preDiscountedCost: {
-        width: '10%',
+        width: '15%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     unitPrice: {
-        width: '10%',
+        width: '15%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     discount: {
-        width: '10%',
+        width: '15%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     amount: {
-        width: '10%'
+        width: '15%'
     },
   });
 
   const InvoiceTableHeader = () => (
     <View style={styles.container}>
         <Text style={styles.description}>Box Description</Text>
-        <Text style={styles.unitPrice}>U.P.</Text>
-        <Text style={styles.qty}>Qty</Text>
+        <Text style={styles.unitPrice}>Unit Price</Text>
+        <Text style={styles.qty}>Amount</Text>
         <Text style={styles.preDiscountedCost}>Cost</Text>
         <Text style={styles.discount}>Discount</Text>
-        <Text style={styles.amount}>Amount</Text>
+        <Text style={styles.amount}>Total</Text>
     </View>
   );
   

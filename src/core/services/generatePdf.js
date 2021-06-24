@@ -27,7 +27,7 @@ const GeneratePdf = (props) =>  {
     if (template) {
       const Component = pdfDocuments[template];
       return (
-        <Component data={data}/>
+        <Component data={data} quoteRef={props.quoteRef}/>
       );
     }
     return null;
@@ -36,7 +36,7 @@ const GeneratePdf = (props) =>  {
     case "download":
       return (
         <PDFDownloadLink
-          document={<Document data={data} template={template}/>}
+          document={<Document data={data} quoteRef={props.quoteRef} template={template}/>}
           filename="Curakit_Quote"
           className={classes.downloadButton}
         >

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 
-const InvoiceItemsDescription = ({boxes}) => {
+const InvoiceItemsDescription = ({boxes, addCompanyLogo, addCustomMessage}) => {
     const Items = ({items}) => {
         return items.map(item => 
             <View style={styles.itemsContainer} key={`item_${item.variantSelected.sku}`}>
@@ -37,6 +37,15 @@ const InvoiceItemsDescription = ({boxes}) => {
                     <Text style={styles.title}>Content of boxes:</Text>
                 </View>
                 {rows}
+                <View style={styles.container}>
+                    <Text style={styles.title}>Selected Options (price not included, ask our sales team):</Text>
+                </View>
+                <View>
+                    <Text style={styles.boxName}>Add the Company Logo on boxes : {addCompanyLogo}</Text>       
+                </View>
+                <View>
+                    <Text style={styles.boxName}>Add a custom message in boxes : {addCustomMessage}</Text>         
+                </View>
             </Fragment>
     );
 };

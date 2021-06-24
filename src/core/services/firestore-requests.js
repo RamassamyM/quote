@@ -1,5 +1,8 @@
 import fire from './../../fire';
 
+const db = fire.firestore();
+// uncomment this line to use online firebase
+// db.useEmulator("localhost", 8080);
 
 const addDisplayVariantsToProducts = (data) => {
   if (data && data["variants"]) {
@@ -19,7 +22,6 @@ const addDisplayVariantsToProducts = (data) => {
 };
 
 export const fetchProducts = async () => {
-  const db = fire.firestore();
   let results = [];
   await db.collection("products").get().then((querySnapshot) => {
     console.log("Firestore fetched!");
@@ -32,7 +34,6 @@ export const fetchProducts = async () => {
 }
 
 export const fetchProductsByCategory = async (category) => {
-  const db = fire.firestore();
   let results = [];
   await db.collection("products").where("category", "==", category).get().then((querySnapshot) => {
     console.log("Firestore fetched for category!");
@@ -44,14 +45,16 @@ export const fetchProductsByCategory = async (category) => {
   return results;
 }
 
-export const storeQuoteToDb = async ({ boxes, quoteDetails }) => {
+export const storeQuoteToDb = async ({ boxes, quoteDetails, totalDiscount, preDiscountedCost }) => {
   console.log("Posting Quote to Firestore...")
-  const db = fire.firestore();
-  await db.collection("quotes").add({ boxes, quoteDetails })
+  let refId = "";
+  await db.collection("quotes").add({ boxes, quoteDetails, totalDiscount, preDiscountedCost })
   .then((docRef) => {
       console.log("Document Quote written with ID: ", docRef.id);
+      refId = docRef.id;
   })
   .catch((error) => {
       console.error("Error adding quote document: ", error);
   });
+  return refId;
 }

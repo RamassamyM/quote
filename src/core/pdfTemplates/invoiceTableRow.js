@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     description: {
-        width: '50%',
+        width: '30%',
         textAlign: 'left',
         borderRightColor: '#FFFFFF',
         borderRightWidth: 1,
         paddingLeft: 8,
     },
     unitPrice: {
-        width: '10%',
+        width: '15%',
         borderRightColor: '#FFFFFF',
         borderRightWidth: 1,
         textAlign: 'right',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
     },
     preDiscountedCost: {
-        width: '10%',
+        width: '15%',
         borderRightColor: '#FFFFFF',
         borderRightWidth: 1,
         textAlign: 'right',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
     },
     discount: {
-        width: '10%',
+        width: '15%',
         borderRightColor: '#FFFFFF',
         borderRightWidth: 1,
         textAlign: 'right',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
     },
     amount: {
-        width: '10%',
+        width: '15%',
         textAlign: 'right',
         paddingRight: 6,
         fontSize: 10,
@@ -73,11 +73,11 @@ const InvoiceTableRow = ({items}) => {
     const rows = items.map( box => 
         <View style={styles.container} key={`box_${box.id}`}>
             <Text style={styles.description}>{box.name}</Text>
-            <Text style={styles.unitPrice}>{box.unitPrice}</Text>
+            <Text style={styles.unitPrice}>{Number.parseFloat(box.unitPrice).toFixed(2)}</Text>
             <Text style={styles.qty}>{box.qty}</Text>
-            <Text style={styles.preDiscountedCost}>{ box.qty * box.unitPrice }</Text>
-            <Text style={styles.discount}>{box.discount}</Text>
-            <Text style={styles.amount}>{(box.qty * box.unitPrice) - box.discount}</Text>
+            <Text style={styles.preDiscountedCost}>{Number.parseFloat(box.qty * box.unitPrice).toFixed(2)}</Text>
+            <Text style={styles.discount}>{Number.parseFloat(box.discount).toFixed(2)}</Text>
+            <Text style={styles.amount}>{Number.parseFloat((box.qty * box.unitPrice) - box.discount).toFixed(2)}</Text>
         </View>
     );
     return (<Fragment>{rows}</Fragment> );

@@ -11,6 +11,7 @@ import "firebase/auth";
 import "firebase/firestore";
 // Add appcheck with recaptchaV3
 import 'firebase/app-check';
+// import { debounce } from "@material-ui/core";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,

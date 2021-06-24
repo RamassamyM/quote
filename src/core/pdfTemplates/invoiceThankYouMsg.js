@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
     line: {
         marginTop: 50,
-        height: 5,
+        height: 10,
         backgroundColor: '#0094CA',
     }
 });

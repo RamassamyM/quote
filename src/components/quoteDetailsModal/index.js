@@ -20,6 +20,7 @@ const QuoteDetailsModal = (props) => {
   const quoteTotalCost = useSelector(selectQuoteTotalCost);
   const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
   const [pdfShow, setPdfShow] = React.useState(false);
+  const [quoteRef, setQuoteRef] = React.useState(null);
   const [storedToFirestore, setStoredToFirestore] = React.useState(false);
   const [formInput, setFormInput] = React.useState(
     {
@@ -79,7 +80,7 @@ const QuoteDetailsModal = (props) => {
               </Typography>
             </Box>
             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="space-around" p={3} className={classes.downloadSection}>
-                <GeneratePdf template="quote" pdfAccess="download" data={data}/>
+                <GeneratePdf quoteRef={quoteRef} template="quote" pdfAccess="download" data={data}/>
             </Box>
           </DialogContent>
           <DialogActions>
@@ -98,9 +99,11 @@ const QuoteDetailsModal = (props) => {
   const handleGenerateQuote = async (event) => {
     event.preventDefault();
     dispatch(setQuoteDetails({ quoteDetails: formInput }));
+    console.log("data: ", data);
     if (data && !storedToFirestore) {
       setStoredToFirestore(true);
-      await storeQuoteToDb(data);
+      const refId = await storeQuoteToDb(data);
+      setQuoteRef(refId);
     }
     setPdfShow(true);
   };

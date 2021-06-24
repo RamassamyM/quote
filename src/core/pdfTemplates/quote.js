@@ -25,16 +25,19 @@ const styles = StyleSheet.create({
 
 export default function Quote(props) {
     const data = props.data;
+    const quoteRef = props.quoteRef;
     const totalDiscount = data.totalDiscount;
     const preDiscountedCost = data.preDiscountedCost;
     const netCost = preDiscountedCost - totalDiscount;
     const today = new Date(Date.now());
     const date = today.toLocaleDateString('en-EN', { year: 'numeric', month: 'long', day: 'numeric' });
-    const number = today.toLocaleDateString('en-EN', {year: 'numeric', month: 'numeric', day: 'numeric'}).split('/').join('');
+    // const number = today.toLocaleDateString('en-EN', {year: 'numeric', month: 'numeric', day: 'numeric'}).split('/').join('');
     const totalQtyOfBoxes = data.boxes.map((box) => box.qty ).reduce((a, b)=> a + b,0);
+    const addCompanyLogo = data.quoteDetails.addCompanyLogo && "yes" || "no";
+    const addCustomMessage = data.quoteDetails.addCustomMessage && "yes" || "no";
     const invoice = {
         id: '001',
-        invoice_no: number,
+        invoice_no: quoteRef,
         netCost: netCost,
         contact: `${data.quoteDetails.firstName} ${data.quoteDetails.lastName}`,
         position: data.quoteDetails.jobTitle,
@@ -42,13 +45,14 @@ export default function Quote(props) {
         email: data.quoteDetails.email,
         phone: data.quoteDetails.phone,
         delivery: data.quoteDetails.delivery,
+        addCompanyLogo: addCompanyLogo,
+        addCustomMessage: addCustomMessage,
         address: 'no address',
         trans_date: date,
         items: data.boxes,
         totalQty: totalQtyOfBoxes,
-    }
-    console.log("pdf props:", data);
-    console.log("totalQty:", totalQtyOfBoxes);
+    };
+    console.log("Invoice_data: ", invoice);
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -57,7 +61,7 @@ export default function Quote(props) {
                 <InvoiceNo invoice={invoice}/>
                 <BillTo invoice={invoice}/>
                 <InvoiceItemsTable invoice={invoice}/>
-                <InvoiceItemsDescription boxes={invoice.items} />
+                <InvoiceItemsDescription boxes={invoice.items} addCompanyLogo={invoice.addCompanyLogo} addCustomMessage={invoice.addCustomMessage}/>
                 <InvoiceThankYouMsg />
             </Page>
         </Document>
