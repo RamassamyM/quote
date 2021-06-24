@@ -98,11 +98,17 @@ const QuoteDetailsModal = (props) => {
   }
   const handleGenerateQuote = async (event) => {
     event.preventDefault();
-    dispatch(setQuoteDetails({ quoteDetails: formInput }));
-    console.log("data: ", data);
-    if (data && !storedToFirestore) {
+    await dispatch(setQuoteDetails({ quoteDetails: formInput }));
+    const quoteData = {
+      boxes: quote.boxes,
+      quoteDetails: formInput,
+      totalDiscount: quoteTotalDiscount,
+      preDiscountedCost: quoteTotalCost
+    };
+    console.log("QuoteData: ", quoteData);
+    if (!storedToFirestore) {
       setStoredToFirestore(true);
-      const refId = await storeQuoteToDb(data);
+      const refId = await storeQuoteToDb(quoteData);
       setQuoteRef(refId);
     }
     setPdfShow(true);
