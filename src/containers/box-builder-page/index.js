@@ -176,7 +176,7 @@ export default function BoxBuilderPage() {
               </Box>
               <Button component="a" href="mailto:sales@curakit.com" className={classes.heroMail} >
                   <MailOutlineIcon className={classes.heroMailIcon}/>
-                  I need a customized box 
+                  I need a customised box 
               </Button>
             </Box>
           </Grid>

@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Button, Grid, Zoom, Fab, useScrollTrigger, Typography 
 import { KeyboardArrowUp as KeyboardArrowUpIcon, MailOutline as MailOutlineIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector } from 'react-redux';
-import { selectBoxesInQuote, selectQuoteTotalDiscount, selectQuoteTotalCost, selectNumberOfBoxesInQuote } from './quoteSlice';
+import { selectBoxesInQuote, selectQuoteDiscountedCost, selectNumberOfBoxesInQuote } from './quoteSlice';
 import { Link as RouterLink } from 'react-router-dom'
 import BoxCard from './../../components/box-card';
 import QuoteDetailsModal from './../../components/quoteDetailsModal';
@@ -14,9 +14,9 @@ export default function BoxBuilderPage() {
   // const dispatch = useDispatch();
   // App state
   const boxes = useSelector(selectBoxesInQuote);
-  const quoteTotalCost = useSelector(selectQuoteTotalCost);
-  const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
-  const quoteNetCost = quoteTotalCost - quoteTotalDiscount;
+  // const quoteTotalCost = useSelector(selectQuotePrediscountedCost);
+  // const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
+  const quoteNetCost = Number.parseFloat(useSelector(selectQuoteDiscountedCost)).toFixed(2);
   const NumberOfBoxesInQuote = useSelector(selectNumberOfBoxesInQuote);
   // Local state
   const [scroll, setScroll] = React.useState('paper');
@@ -88,12 +88,32 @@ export default function BoxBuilderPage() {
         <Grid container>
           <Grid item xs={12}  align="center">
             <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" className={classes.emptyContent}>
-              <Box mb={4} mt={6}>
-                <Typography component="h4">
-                  Let's start by creating and adding amazing and personalized Curakit boxes !
+              <Box mb={3} mt={4}>
+                <Typography color="primary" component="h4">
+                  Let's start by creating and adding amazing and personalised Curakit boxes !
                 </Typography>
               </Box>
-              <Box mb={4}>
+              <Box mb={2}>
+                <Typography className={classes.explanationTitle} component="h4">
+                  <strong>5 steps to a bespoke quote</strong>
+                </Typography>
+                <Typography className={classes.explanation} component="h4">
+                  1. Add your first box type and choose your contents
+                </Typography>
+                <Typography className={classes.explanation} component="h4">
+                  2. Add the box to quote and add further box types if desired
+                </Typography>
+                <Typography className={classes.explanation} component="h4">
+                  3. Choose quantities of each box type
+                </Typography>
+                <Typography className={classes.explanation} component="h4">
+                  4. Select from a variety of customisable options and delivery choices
+                </Typography>
+                <Typography className={classes.explanation} component="h4">
+                  5. Enter your contact details and receive your custom quote in seconds
+                </Typography>
+              </Box>
+              <Box mb={1}>
               <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
                 Build a box
               </Button>
@@ -145,17 +165,9 @@ export default function BoxBuilderPage() {
                   Total
                 </Typography>
                 <Typography variant="subtitle1" color="primary" className={classes.quoteTotalCostTextBold}>
-                  £&nbsp;{Math.round(quoteNetCost)}
+                  £&nbsp;{quoteNetCost}
                 </Typography>
               </Box>
-              {/* { quoteNetCost !== quoteTotalCost && (
-                <Typography variant="h6" className={classes.quoteTotalCostText} >
-                  <del>£&nbsp;{quoteTotalCost}</del>
-                </Typography>
-              )}           
-              <Typography variant="h6"  className={classes.quoteTotalCostText}>
-                £&nbsp;{quoteNetCost}
-              </Typography> */}
             </Box>
             <Box display="flex" flexDirection="column" alignItems="center">
               <Button className={classes.requestQuoteButton} disableElevation disabled={NumberOfBoxesInQuote === 0} variant="contained" color="secondary" onClick={handleClickOnRequestQuote}>

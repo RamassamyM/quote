@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         <InvoiceTableHeader />
         <InvoiceTableRow items={invoice.items} />
         {/* <InvoiceTableBlankSpace rowsCount={ tableRowsCount - invoice.items.length} /> */}
-        <InvoiceTableFooter qtyOfBoxes={invoice.totalQty} netCost={invoice.netCost} delivery={invoice.delivery}/>
+        <InvoiceTableFooter qtyOfBoxes={invoice.totalQty} netCost={invoice.discountedCost} delivery={invoice.delivery}/>
     </View>
   );
   

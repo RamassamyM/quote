@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core';
 import { MailOutline as MailOutlineIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectQuote, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuoteTotalCost } from './../../containers/quote-builder-page/quoteSlice';
+import { selectQuote, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuotePrediscountedCost, selectQuoteDiscountedCost } from './../../containers/quote-builder-page/quoteSlice';
 import GeneratePdf from './../../core/services/generatePdf';
 import { storeQuoteToDb } from './../../core/services/firestore-requests';
 
@@ -17,7 +17,8 @@ const QuoteDetailsModal = (props) => {
   const reference = props.reference;
   const closeDetailsView = props.handleCloseDetailsView;
   const quote = useSelector(selectQuote);
-  const quoteTotalCost = useSelector(selectQuoteTotalCost);
+  const quotePrediscountedCost = useSelector(selectQuotePrediscountedCost);
+  const quoteDiscountedCost = useSelector(selectQuoteDiscountedCost);
   const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
   const [pdfShow, setPdfShow] = React.useState(false);
   const [quoteRef, setQuoteRef] = React.useState(null);
@@ -39,7 +40,8 @@ const QuoteDetailsModal = (props) => {
   const data = {
     ...quote,
     totalDiscount: quoteTotalDiscount,
-    preDiscountedCost: quoteTotalCost
+    preDiscountedCost: quotePrediscountedCost,
+    discountedCost: quoteDiscountedCost
   };
   const closeDownloadView = (event) => {
     event.preventDefault();
@@ -103,7 +105,8 @@ const QuoteDetailsModal = (props) => {
       boxes: quote.boxes,
       quoteDetails: formInput,
       totalDiscount: quoteTotalDiscount,
-      preDiscountedCost: quoteTotalCost
+      preDiscountedCost: quotePrediscountedCost,
+      discountedCost: quoteDiscountedCost,
     };
     console.log("QuoteData: ", quoteData);
     if (!storedToFirestore) {

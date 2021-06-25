@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   quoteContentWrapper: {
     backgroundColor: theme.palette.background.main,
     paddingTop: theme.spacing(2),
+    paddingBottom: '118px',
     minHeight: 'calc(100vh - 212px)',
     [theme.breakpoints.down('sm')]: {
       minHeight: 'calc(100vh - 208px)',
@@ -70,8 +71,6 @@ const useStyles = makeStyles((theme) => ({
     width: "200px",
   },
   addABoxButton: {
-    marginTop: '20px',
-    marginBottom: '60px',
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
@@ -79,6 +78,14 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
   },
+  explanation: {
+    fontSize: '12px',
+    textAlign: 'left',
+    paddingLeft: '10px',
+  },
+  explanationTitle: {
+    marginBottom: '10px',
+  }
 }));
 
 export default useStyles;

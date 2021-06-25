@@ -2,8 +2,8 @@ import React from 'react';
 import { TextField, Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@material-ui/core';
 import useStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBoxItems, selectBoxTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
-import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { selectBoxItems, selectBoxTotalCost, selectBoxMinTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
+import { addBoxToQuote, selectQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
 
 const BoxConfirmationModal = (props) => {
@@ -11,13 +11,18 @@ const BoxConfirmationModal = (props) => {
   const dispatch = useDispatch();
   // App state
   const boxItems = useSelector(selectBoxItems);
+  const quote = useSelector(selectQuote);
   const boxTotalCost = useSelector(selectBoxTotalCost);
+  const boxMinPrice = useSelector(selectBoxMinTotalCost);
   // Local state
-  const [boxName, setBoxName] = React.useState(null);
+  const [boxName, setBoxName] = React.useState({
+    boxName: null,
+    errors: {},
+  });
   // Other variables declaration(useRef, useStyles...)
   let history = useHistory();
   const handleAfterAddingBox = props.handleAfterAddingBox;
-  const box = {items: boxItems, unitPrice: boxTotalCost }
+  const box = {items: boxItems, unitPrice: boxTotalCost, minPrice: boxMinPrice }
   const classes = useStyles();
   const display = props.display;
   const scroll = props.scroll;
@@ -26,22 +31,42 @@ const BoxConfirmationModal = (props) => {
   // Effect(s)
   // Logic
   const handleCloseBoxConfirmationView = props.handleCloseBoxConfirmationView;
-  const handleAddBoxToQuote = (event, name) => {
+  const handleAddBoxToQuote = (event, thisBoxName) => {
     event.preventDefault();
-    dispatch(addBoxToQuote({ ...box, name: name }))
+    dispatch(addBoxToQuote({ ...box, name: thisBoxName.boxName }))
     dispatch(resetBox());
-    setBoxName(null);
+    setBoxName({
+      ...boxName,
+      boxName: null
+    });
     handleCloseBoxConfirmationView();
     handleAfterAddingBox();
     history.push("/");
   };
-  const handleChangeOnNameTextField =(event) => {
-    if (event.target.value) {
-      setBoxName(event.target.value);
+  const checkIfNameOfBoxIsTaken = (name) => {
+    const boxNamesList = quote.boxes.map((box) => box.name);
+    return boxNamesList.includes(name)
+  };
+  const validate = ({ name, value }) => {
+    const errors = boxName.errors;
+    if (name === "boxName" && (value === null || value === "")) {
+      errors.boxName = 'Please choose a name for your box.'
+    } else if (name === "boxName" && checkIfNameOfBoxIsTaken(value)) {
+      errors.boxName = 'A box has this name. Please choose another name.'
     } else {
-      setBoxName(null);
+      delete errors.boxName; 
     }
+    return errors
+  };
+  const handleChangeOnNameTextField =(event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const errors = validate({ name, value });
+    setBoxName({ ...boxName, [name]: value, errors });
   }
+
+  const boxNameErrorText = boxName.errors.hasOwnProperty("boxName") ? boxName.errors.boxName : "";
+  const boxNameError = boxName.errors.hasOwnProperty("boxName");
   // Return
   return (
     <Dialog
@@ -60,13 +85,13 @@ const BoxConfirmationModal = (props) => {
             <DialogContentText id="alert-dialog-description">
               To identify this box in your quote
             </DialogContentText>
-              <TextField className={classes.boxNameField} id="outlined-basic" label="Name" placeholder="ex: Box1, ChristmasBox, MenBox..." variant="outlined" onChange={handleChangeOnNameTextField}/>
+              <TextField name="boxName" className={classes.boxNameField} helperText={boxNameErrorText} error={boxNameError} onChange={handleChangeOnNameTextField} id="outlined-basic" label="Name" placeholder="ex: Box1, ChristmasBox, MenBox..." variant="outlined"/>
           </DialogContent>
           <DialogActions>
             <Button name='Close' onClick={handleCloseBoxConfirmationView} color="default">
               Cancel
             </Button>
-            <Button disabled={boxName === null} name='AddToQuote' onClick={(event) => handleAddBoxToQuote(event, boxName)} color="primary" variant="contained" autoFocus>
+            <Button disabled={boxNameError || boxName.boxName === null} name='AddToQuote' onClick={(event) => handleAddBoxToQuote(event, boxName)} color="primary" variant="contained" autoFocus>
               Add to quote
             </Button>
           </DialogActions>

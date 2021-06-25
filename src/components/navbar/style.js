@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     marginLeft: '10px',
     fontWeight: '600',
-    fontSize: '26px',
+    fontSize: '22px',
   }
 }));
 

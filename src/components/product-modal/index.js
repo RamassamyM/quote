@@ -15,6 +15,13 @@ const ProductModal = (props) => {
   // App state
   // Local state
   const product = props.product;
+  let images = [];
+  if (product && product.picture_urls && product.picture_urls.length > 0) {
+    images = product.picture_urls;
+  }
+  if (product && product.picture_urls && product.picture_urls.length === 0 && product.main_picture_url) {
+    images = [product.main_picture_url];
+  }
   const [variantSelection, setVariantSelection] = React.useState(null);
   const [activeStep, setActiveStep] = React.useState(1);
   // Other variables declaration(useRef, useStyles...)
@@ -23,15 +30,11 @@ const ProductModal = (props) => {
   const display = props.display;
   const scroll = props.scroll;
   const reference = props.reference;
-  let maxSteps = 1;
-  if (product && product.picture_urls && product.picture_urls.length > 1) {
-    maxSteps = product.picture_urls.length;
-  } ;
+  const maxSteps = images.length;
   // const preventDefault = (event) => event.preventDefault();
   // Effect(s)
   // Logic
   const handleSelectVariant = (value) => {
-    console.log("Select variant: ", value);
     setVariantSelection(value);
   }
   const handleAddToBoxButton = (event) => {
@@ -43,9 +46,9 @@ const ProductModal = (props) => {
       return variant.id === variantSelection.id;
     })[0] }));
     dispatch(toggleBoxPanel());
-    setTimeout(() => {
-      dispatch(toggleBoxPanel());
-    }, 3000);
+    // setTimeout(() => {
+    //   dispatch(toggleBoxPanel());
+    // }, 2000);
   };
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -54,14 +57,18 @@ const ProductModal = (props) => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  const handleCloseProductView = () => {
+    setActiveStep(1);
+    props.handleCloseProductView();
+  }
 
-  // Return
   return (
     <Dialog
       name='Product View'
       maxWidth='md'
       open={display}
       onClose={props.handleCloseProductView}
+      disableBackdropClick={false}
       scroll={scroll}
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
@@ -77,22 +84,22 @@ const ProductModal = (props) => {
                     <Box className={classes.productImageWrapper}>
                       <img
                         className={classes.productImage}
-                        src={product.picture_urls[activeStep]}
-                        alt={product.productId + '-image-' + activeStep}
+                        src={images[activeStep - 1]}
+                        alt={'image-' + activeStep}
                       />
                     <MobileStepper
                       steps={maxSteps}
                       position="static"
                       variant="text"
-                      activeStep={activeStep}
+                      activeStep={activeStep - 1}
                       nextButton={
-                        <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                        <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps}>
                           Next
                           {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
                         </Button>
                       }
                       backButton={
-                        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                        <Button size="small" onClick={handleBack} disabled={activeStep === 1}>
                           {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                           Back
                         </Button>
@@ -148,7 +155,7 @@ const ProductModal = (props) => {
               </Grid>
           </DialogContent>
           <DialogActions>
-            <Button name='Close' onClick={props.handleCloseProductView} color="primary">
+            <Button name='Close' onClick={handleCloseProductView} color="primary">
               Close
             </Button>
           </DialogActions>

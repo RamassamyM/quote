@@ -32,22 +32,29 @@ export default function BoxCard(props) {
     // }
   ];
   const setQuantity = (event, value) => {
+    console.log('setquantity triggered: ', value);
+    console.log("typeof value: ", typeof value)
     dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: value}))
   };
   const handleSliderChange = (event, newValue) => {
+    console.log('handleSliderchange triggered: ', newValue);
+    console.log("typeof value: ", typeof newValue)
     setValue(newValue);
   };
   const handleInputChange = (event) => {
     const newValue = event.target.value === '' ? 0 : Number(event.target.value);
+    console.log('handleInputChange triggered: ', newValue);
+    console.log("typeof value: ", typeof newValue)
     dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: newValue}))
   };
   const handleRemoveBoxFromQuote = (event) => {
     preventDefault(event);
     dispatch(removeBoxFromQuote({id: box.id}))
   }
-  const percentageDiscount = box.discount ? Math.round(((box.discount / (box.unitPrice * box.qty) * 100) + Number.EPSILON)): 0;
-  const discountedUnitPrice = box.discount ? Math.round(((box.unitPrice * (100 - percentageDiscount) / 100) + Number.EPSILON ) * 100) / 100 : box.unitPrice;
-  const netPrice = discountedUnitPrice * box.qty;
+  // const percentageDiscount = box.discount ? (box.discount / (box.unitPrice * box.qty) * 100) : 0;
+  const percentageDiscount = ((box.discountedCost - box.prediscountedCost) / box.prediscountedCost) * 100;
+  const discountedUnitPrice = box.discountedCost / box.qty;
+  const netPrice = box.discountedCost;
 
   const handleExpandBoxContent = () => {
     setOpenBoxContent(!openBoxContent);
@@ -145,7 +152,7 @@ export default function BoxCard(props) {
               <img
                 className={classes.boxCardCover}
                 alt="box"
-                src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/emptybox.png?alt=media&token=bcb553c5-add3-4bbe-8b36-32f583e338e3"
+                src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/Curakit%20open%20box_1.png?alt=media&token=bedd4d94-45a8-4f2a-b0d8-c5f0bdbdff10"
               />
             </Box>
             <Box flexGrow={1} display="flex" alignItems="center" justifyContent="space-around">
@@ -154,7 +161,7 @@ export default function BoxCard(props) {
                   Unit price:
                 </Typography>
                 <Typography component="h5" variant="subtitle2" color="textSecondary">
-                  £{box.unitPrice}
+                  £{Number.parseFloat(box.unitPrice).toFixed(2)}
                 </Typography>
               </Box>
               <Box>
@@ -162,7 +169,7 @@ export default function BoxCard(props) {
                   Quantity discount:
                 </Typography>
                 <Typography component="h5" variant="subtitle2" color="textSecondary">
-                  {percentageDiscount}%
+                  {Number.parseFloat(percentageDiscount).toFixed(2)}%
                 </Typography>
               </Box>
               <Box>
@@ -170,7 +177,7 @@ export default function BoxCard(props) {
                   Discounted unit price:
                 </Typography>
                 <Typography component="h5" variant="subtitle2" color="textSecondary">
-                  £{discountedUnitPrice}
+                  £{Number.parseFloat(discountedUnitPrice).toFixed(2)}
                 </Typography>
               </Box>
               <Box>
@@ -178,7 +185,7 @@ export default function BoxCard(props) {
                   Total:
                 </Typography>
                 <Typography component="h5" variant="subtitle2" color="primary" className={classes.totalText}>
-                £ {netPrice}
+                £ {Number.parseFloat(netPrice).toFixed(2)}
                 </Typography>
               </Box>
             </Box>

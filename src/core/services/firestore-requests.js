@@ -45,10 +45,10 @@ export const fetchProductsByCategory = async (category) => {
   return results;
 }
 
-export const storeQuoteToDb = async ({ boxes, quoteDetails, totalDiscount, preDiscountedCost }) => {
+export const storeQuoteToDb = async ({ boxes, quoteDetails, totalDiscount, preDiscountedCost, discountedCost }) => {
   console.log("Posting Quote to Firestore...")
   let refId = "";
-  await db.collection("quotes").add({ boxes, quoteDetails, totalDiscount, preDiscountedCost })
+  await db.collection("quotes").add({ boxes, quoteDetails, totalDiscount, preDiscountedCost, discountedCost })
   .then((docRef) => {
       console.log("Document Quote written with ID: ", docRef.id);
       refId = docRef.id;

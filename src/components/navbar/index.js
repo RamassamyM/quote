@@ -15,7 +15,6 @@ import ElevationScroll from './../elevationScroll';
 export default function PrimaryAppBar(props) {
   const classes = useStyles();
   const location = useLocation().pathname;
-  console.log('location:', location);
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems) || 0;
   const quoteNumberOfBoxTypes = useSelector(selectNumberOfBoxTypesInQuote) || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -133,7 +132,7 @@ export default function PrimaryAppBar(props) {
               </Box>
             </Link>
               <Typography component="h1" className={classes.pro}>
-                PRO
+                for business
               </Typography>
             <div className={classes.grow}></div>
             <div className={classes.sectionDesktop}>

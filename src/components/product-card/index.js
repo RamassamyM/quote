@@ -24,9 +24,9 @@ export default function ProductCard(props) {
     event.preventDefault();
     dispatch(addProductToBox({ product, variantSelected: product.variants.filter((variant) => variant.id === variantSelection.id)[0] }))
     dispatch(toggleBoxPanel());
-    setTimeout(() => {
-      dispatch(toggleBoxPanel());
-    }, 5000);
+    // setTimeout(() => {
+    //   dispatch(toggleBoxPanel());
+    // }, 2000);
   };
   
   return (

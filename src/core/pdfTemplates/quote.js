@@ -28,7 +28,7 @@ export default function Quote(props) {
     const quoteRef = props.quoteRef;
     const totalDiscount = data.totalDiscount;
     const preDiscountedCost = data.preDiscountedCost;
-    const netCost = preDiscountedCost - totalDiscount;
+    const discountedCost = data.discountedCost;
     const today = new Date(Date.now());
     const date = today.toLocaleDateString('en-EN', { year: 'numeric', month: 'long', day: 'numeric' });
     // const number = today.toLocaleDateString('en-EN', {year: 'numeric', month: 'numeric', day: 'numeric'}).split('/').join('');
@@ -38,7 +38,9 @@ export default function Quote(props) {
     const invoice = {
         id: '001',
         invoice_no: quoteRef,
-        netCost: netCost,
+        discountedCost: discountedCost,
+        preDiscountedCost: preDiscountedCost,
+        totalDiscount: totalDiscount,
         contact: `${data.quoteDetails.firstName} ${data.quoteDetails.lastName}`,
         position: data.quoteDetails.jobTitle,
         company: data.quoteDetails.companyName,

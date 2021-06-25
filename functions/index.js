@@ -67,11 +67,11 @@ const setupApiKey = async () => {
 
 const handleSendEmails = async function(snap, context) {
   try {
-    const { quoteDetails, boxes, totalDiscount, preDiscountedCost } = snap.data();
+    const { quoteDetails, boxes, totalDiscount, preDiscountedCost, discountedCost } = snap.data();
     // Access the parameter `{quoteId}` with `context.params`
     const quoteRef = context.params.quoteId;
     const quoteQty = boxes.map((box) => box.qty).reduce((a, b)=> a + b, 0);
-    const quoteNetCost = preDiscountedCost - totalDiscount;
+    const quoteNetCost = discountedCost;
     const quoteDate = (new Date()).toLocaleDateString();
     const boxesListString = getBoxesInString(boxes);
     await setupApiKey();
