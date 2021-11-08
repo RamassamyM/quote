@@ -17,8 +17,10 @@ import { HashRouter } from 'react-router-dom';
 
 // To seed database: uncomment these lines and the import lines, then launch server on local
 // after comment the lines
-// import seed from './seeder/seed-firestore';
-// seed();
+// import { seedAllProducts } from './seeder/seed-firestore';
+// import { seedAllBoxes } from './seeder/seed-firestore';
+// seedAllProducts();
+// seedAllBoxes();
 
 store.dispatch(fetchProductsAsync());
 
