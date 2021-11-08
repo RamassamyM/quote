@@ -114,9 +114,13 @@ export default function BoxBuilderPage() {
                   5. Enter your contact details and receive your custom quote in seconds
                 </Typography>
               </Box>
-              <Box mb={3}>
+              <Box mb={3} display="flex" justifyContent="center">
               <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-                Build a box
+                Build your box
+              </Button>
+              <Box width={'20px'}/>
+              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
+                Choose a theme box
               </Button>
               </Box>
               <Box mb={4}>
