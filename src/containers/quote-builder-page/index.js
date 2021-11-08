@@ -8,6 +8,7 @@ import { selectBoxesInQuote, selectQuoteDiscountedCost, selectNumberOfBoxesInQuo
 import { Link as RouterLink } from 'react-router-dom'
 import BoxCard from './../../components/box-card';
 import QuoteDetailsModal from './../../components/quoteDetailsModal';
+import ReactPlayer from 'react-player/lazy'
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -113,11 +114,20 @@ export default function BoxBuilderPage() {
                   5. Enter your contact details and receive your custom quote in seconds
                 </Typography>
               </Box>
-              <Box mb={1}>
+              <Box mb={3}>
               <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
                 Build a box
               </Button>
               </Box>
+              <Box mb={4}>
+                <ReactPlayer 
+                  url='https://www.youtube.com/watch?v=ysz5S6PUM-U' 
+                  controls={true}
+                  light={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/video_tutorial_placeholder.png?alt=media&token=cb75130f-3998-40dd-b418-64460b2e3258'}
+                  width={'400px'}
+                  height={'200px'}
+                />
+                </Box>
               <Box mb={4}>
                 <img alt="empty box" className={classes.emptyBoximage} src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/empty.png?alt=media&token=87aafaa9-20ee-4cab-8853-30017f6656d2"></img>
               </Box>
