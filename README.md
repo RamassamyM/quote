@@ -73,3 +73,15 @@ When the build folder is ready to be deployed, you may serve it with a static se
 
   yarn global add serve
   serve build
+
+
+
+  ## Working with Firebase
+
+  Need to log to Firebase
+  `firebase login`
+  Firebase has already been initialized in the app by `firebase init`
+  2 new files `.firebaserc`, `firebase.json`have been generated
+
+  To deploy app : `firebase deploy`
+  
