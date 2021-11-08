@@ -14,7 +14,14 @@ export default function ProductCard(props) {
   // const preventDefault = (event) => event.preventDefault();
   const product = props.product;
   const [variantSelection, setVariantSelection] = React.useState(product.variants[0]);
+  const [cardImageUrl, setCardImageUrl] = React.useState(product.main_picture_url);
   // const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  let secondProductPictureUrl = product.main_picture_url;
+  if (product.picture_urls && product.picture_urls[0] && product.picture_urls[0] === product.main_picture_url && product.picture_urls[1]) {
+    secondProductPictureUrl = product.picture_urls[1];
+  } else if (product.picture_urls && product.picture_urls[0] && product.picture_urls[0] !== product.main_picture_url) {
+    secondProductPictureUrl = product.picture_urls[0];
+  }
 
   const handleSelectVariant = (value) => {
     setVariantSelection(value);
@@ -29,6 +36,13 @@ export default function ProductCard(props) {
     // }, 2000);
   };
 
+  const handleMouseOnCardImage = (event) =>  {
+    setCardImageUrl(secondProductPictureUrl)
+  };
+  const handleMouseOutCardImage = (event) =>  {
+    setCardImageUrl(product.main_picture_url)
+  };
+
   return (
     <React.Fragment>
       <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -38,11 +52,13 @@ export default function ProductCard(props) {
             aria-controls={'product-content-id'}
             aria-haspopup="true"
             onClick={props.handleClickOnViewProduct}
+            onMouseOver={handleMouseOnCardImage} 
+            onMouseOut={handleMouseOutCardImage}
             className={classes.cardActionClick}
           >
             <CardMedia
               className={classes.cardMedia}
-              image={product.main_picture_url}
+              image={cardImageUrl}
               title={product.title}
             />
             <CardContent className={classes.cardContent}>
