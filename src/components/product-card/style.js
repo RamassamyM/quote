@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   productTitle: {
     // overflow: 'hidden',
     // textOverflow: 'ellipsis',
+    fontSize: '1.1rem',
   },
   variantList: {
     fontSize: '11px',

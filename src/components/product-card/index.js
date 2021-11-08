@@ -28,7 +28,7 @@ export default function ProductCard(props) {
     //   dispatch(toggleBoxPanel());
     // }, 2000);
   };
-  
+
   return (
     <React.Fragment>
       <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -46,7 +46,7 @@ export default function ProductCard(props) {
               title={product.title}
             />
             <CardContent className={classes.cardContent}>
-              <Typography noWrap variant="h6" color="textPrimary" component="h2" className={classes.productTitle}>
+              <Typography variant="h6" color="textPrimary" component="h2" className={classes.productTitle}>
                 {product.title}
               </Typography>
               <Typography  variant="body2" color="textSecondary" component="p">
