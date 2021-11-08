@@ -12,6 +12,7 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 // uncomment line below for seeding
 import { fetchProductsAsync } from './containers/box-builder-page/productsSlice';
+import { fetchBoxIdeasAsync } from './containers/box-ideas-page/boxIdeasSlice';
 // import { useDispatch } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ import { HashRouter } from 'react-router-dom';
 // seedAllBoxes();
 
 store.dispatch(fetchProductsAsync());
+store.dispatch(fetchBoxIdeasAsync());
 
 ReactDOM.render(
   <React.StrictMode>

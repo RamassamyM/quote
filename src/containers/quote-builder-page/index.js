@@ -116,11 +116,11 @@ export default function BoxBuilderPage() {
               </Box>
               <Box mb={3} display="flex" justifyContent="center">
               <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-                Build your box
+                Build a custom box
               </Button>
               <Box width={'20px'}/>
               <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-                Choose a theme box
+                Choose among our box ideas
               </Button>
               </Box>
               <Box mb={4}>

@@ -87,6 +87,10 @@ export default function PrimaryAppBar(props) {
         </IconButton>
       </Box>
       <List>
+        <ListItem button component={RouterLink} to="/box-ideas" key="Box Ideas">
+          <ListItemText primary={"Box Ideas"} className={classes.linkInMenu}/>
+          <InboxIcon color="primary"/>
+        </ListItem>
         <ListItem button component={RouterLink} to="/box-builder" key="Box Builder">
           <ListItemText primary={"Box Builder"} className={classes.linkInMenu}/>
           <Badge badgeContent={boxNumberOfItems} color="error">
@@ -138,8 +142,18 @@ export default function PrimaryAppBar(props) {
             <div className={classes.sectionDesktop}>
               <Button 
                 component={RouterLink} 
+                to="/box-ideas" 
+                aria-label="link to box ideas page" 
+                className={clsx(classes.linkWithBadge, {
+                  [classes.linkSelected]: location === "/box-ideas",
+                })}
+              >
+                Box Ideas&nbsp;&nbsp;
+              </Button>
+              <Button 
+                component={RouterLink} 
                 to="/box-builder" 
-                aria-label="show 4 new mails" 
+                aria-label="link to box builder page" 
                 className={clsx(classes.linkWithBadge, {
                   [classes.linkSelected]: location === "/box-builder",
                 })}
@@ -151,9 +165,9 @@ export default function PrimaryAppBar(props) {
               <Button 
                 component={RouterLink} 
                 to="/quote-builder" 
-                aria-label="show 17 new notifications" 
+                aria-label="link to quote builder page" 
                 className={clsx(classes.linkWithBadge, {
-                  [classes.linkSelected]: location !== "/box-builder",
+                  [classes.linkSelected]: location === "/quote-builder",
                 })}
               >
                 <Badge badgeContent={quoteNumberOfBoxTypes} color="error">
