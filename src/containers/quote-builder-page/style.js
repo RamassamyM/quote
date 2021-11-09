@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.reverted,
     fontWeight: '700',
   },
+  heroBoxTitle: {
+    minHeight: '70px',
+  },
   heroMail: {
     color: theme.palette.primary.main,
     fontSize: 12,

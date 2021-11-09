@@ -149,7 +149,7 @@ export default function BoxBuilderPage() {
       <Box className={classes.heroContent} id="back-to-top-anchor" display="flex" alignItems="center">
         <Grid container spacing={2}>
           <Grid item xs={12} className={classes.grid}>
-            <Box className={classes.heroBoxTitle}>
+            <Box className={classes.heroBoxTitle} display="flex" alignItems="center" justifyContent="center">
               <Typography component="h1" variant="h4" align="center" className={classes.heroTitle}>
                 Request a quote
               </Typography>
