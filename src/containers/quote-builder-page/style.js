@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
   addABoxButton: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
+    borderRadius: '60px',
   },
   requestQuoteButton: {
     paddingLeft: theme.spacing(3),

@@ -77,9 +77,15 @@ export default function BoxBuilderPage() {
               <BoxCard key={box.name} box={box}/>
               ))}
             </Box>
-            <Button disableElevation className={classes.addABoxButton} size="large" fullWidth={false} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-              Build another box
-            </Button>
+            <Box mb={3} mt={4} display="flex" justifyContent="center">
+              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Build a box">
+                Build another custom box
+              </Button>
+              <Box width={'20px'}/>
+              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-ideas" aria-label="Choose among our box ideas">
+                Browse our box ideas
+              </Button>
+            </Box>
           </Grid>
           <Grid item xs={1} sm={2} md={3}></Grid>
         </Grid>
@@ -115,13 +121,13 @@ export default function BoxBuilderPage() {
                 </Typography>
               </Box>
               <Box mb={3} display="flex" justifyContent="center">
-              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-                Build a custom box
-              </Button>
-              <Box width={'20px'}/>
-              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Add a box">
-                Choose among our box ideas
-              </Button>
+                <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Build a box">
+                  Build a custom box
+                </Button>
+                <Box width={'20px'}/>
+                <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-ideas" aria-label="Choose among our box ideas">
+                  Browse our box ideas
+                </Button>
               </Box>
               <Box mb={4}>
                 <ReactPlayer 

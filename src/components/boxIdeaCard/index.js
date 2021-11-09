@@ -15,7 +15,6 @@ export default function BoxIdeaCard(props) {
   let history = useHistory();
   // const preventDefault = (event) => event.preventDefault();
   const boxIdea = props.boxIdea;
-  const handleAfterAddingBox = props.handleAfterAddingBox;
   const handleClickOnViewBoxIdea = props.handleClickOnViewBoxIdea;
   const [variantSelection, setVariantSelection] = React.useState(null);
 
@@ -29,11 +28,26 @@ export default function BoxIdeaCard(props) {
     return "£ " + arrayMin(boxIdea.variants.map(v => v.boxPrice)) + " - £" + arrayMax(boxIdea.variants.map(v => v.boxPrice))
   };
 
-  const handleAddToQuoteButton = (event) => {
+  const handleAddToQuoteButton = (event, variantSelection, boxIdea) => {
     event.preventDefault();
-    const box = {items: variantSelection.items, unitPrice: 0, minPrice: 0 }
-    dispatch(addBoxToQuote({ ...box, name: boxIdea.name }))
-    handleAfterAddingBox();
+    const payload = {
+      items: variantSelection.items.map(item => {
+        const productInfos = item.productInfos;
+        return {
+          product: {
+            productId: item.productId,
+            ...productInfos,
+          },
+          variantSelected: productInfos.variants.filter(variant => variant.sku === item.variantSKU)[0],
+          qty: item.qty
+        };
+      }),
+      unitPrice: variantSelection.boxPrice, 
+      minPrice: variantSelection.minBoxPrice,
+      name: boxIdea.title + ' - ' + variantSelection.name
+    }
+    dispatch(addBoxToQuote(payload));
+    setVariantSelection(null);
     history.push("/");
   };
 
@@ -80,8 +94,9 @@ export default function BoxIdeaCard(props) {
             <IconButton
               aria-label="Add"
               edge="end"
-              onClick={handleAddToQuoteButton}
+              onClick={(event) => handleAddToQuoteButton(event, variantSelection, boxIdea)}
               color="primary"
+              disabled={!variantSelection}
               >
               <AddCircle fontSize="large"/>
             </IconButton>

@@ -32,19 +32,13 @@ export default function BoxCard(props) {
     // }
   ];
   const setQuantity = (event, value) => {
-    console.log('setquantity triggered: ', value);
-    console.log("typeof value: ", typeof value)
     dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: value}))
   };
   const handleSliderChange = (event, newValue) => {
-    console.log('handleSliderchange triggered: ', newValue);
-    console.log("typeof value: ", typeof newValue)
     setValue(newValue);
   };
   const handleInputChange = (event) => {
     const newValue = event.target.value === '' ? 0 : Number(event.target.value);
-    console.log('handleInputChange triggered: ', newValue);
-    console.log("typeof value: ", typeof newValue)
     dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: newValue}))
   };
   const handleRemoveBoxFromQuote = (event) => {
