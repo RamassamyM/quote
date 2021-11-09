@@ -11,12 +11,13 @@ import { useHistory } from "react-router-dom";
 export default function BoxIdeaCard(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
+  let history = useHistory();
   // const preventDefault = (event) => event.preventDefault();
   const boxIdea = props.boxIdea;
   const handleAfterAddingBox = props.handleAfterAddingBox;
   const handleClickOnViewBoxIdea = props.handleClickOnViewBoxIdea;
-  const [variantSelection, setVariantSelection] = React.useState(boxIdea.variants[0]);
-  let history = useHistory();
+  const initialVariantSelectionState = (boxIdea.variants && boxIdea.variants[0]) ? boxIdea.variants[0] : null
+  const [variantSelection, setVariantSelection] = React.useState(initialVariantSelectionState);
 
   const handleSelectVariant = (value) => {
     setVariantSelection(value);

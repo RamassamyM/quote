@@ -114,24 +114,35 @@ const BoxIdeaModal = (props) => {
                     <Chip variant="outlined" key={"category-chip"} label={boxIdea.category} className={classes.modalChip}/>
                   </Box>
                   <Box className={classes.modalDescription}>
-                  {boxIdea.description}
+                    <Typography component="h5" >
+                      {boxIdea.description}
+                    </Typography>
                   </Box>
                   <Box className={classes.modalWrapperChip} display="flex">
                     {boxIdea.tags.map((tag) => (
                       <Chip size="small" key={"modalChip-" + tag} label={tag} className={classes.modalChip}/>
                     ))}
                   </Box>
-                  <Box className={classes.modalDescription}>
+                  <Box mt={2} className={classes.modalDescription}>
                     { variantSelection && variantSelection.items && variantSelection.items.length > 0 && (
                       <React.Fragment>
-                        <strong>The box "{variantSelection.name}" Includes : </strong>
+                        <Typography component="h6" >
+                          The box "{variantSelection.name}" Includes :
+                        </Typography>
                         {variantSelection.items.map((item) => {
                           return (
-                            <Typography component="h4" >
-                              {item.qty} x {item.productId} {item.variantId}
-                            </Typography>
+                            <React.Fragment>
+                              <Typography component="paragraph" variant="paragraph" color='textSecondary'>
+                                - {item.qty} x {item.productInfos.title} : {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_value} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_unit} - {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].price} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].currency} max
+                              </Typography>
+                              <br/>
+                            </React.Fragment>
                           );
                         })}
+                        <br/>
+                        <Typography component="h6" color='primary'>
+                          <strong>Price : {variantSelection.boxPrice} {variantSelection.currency}</strong> before discount
+                        </Typography>
                       </React.Fragment>
                     )}
                   </Box>
@@ -139,7 +150,7 @@ const BoxIdeaModal = (props) => {
                     <Dropdown
                       placeholder="Select an option"
                       options={boxIdea.variants.map(v => v.name)}
-                      value={boxIdea.variants[0].name}
+                      value={variantSelection && variantSelection.name}
                       onChange={(value) => handleSelectVariant(value)}
                       // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
                       // onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}

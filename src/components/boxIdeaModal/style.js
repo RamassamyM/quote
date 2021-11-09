@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   modalDescription: {
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(3)
   },
   separator: {
     flexGrow: '1',

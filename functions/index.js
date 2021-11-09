@@ -1,3 +1,5 @@
+// Function to send email when requesting a quote : sending 1 email to client and 1 to sales
+
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
@@ -23,10 +25,10 @@ const getSalesEmail = async () => {
   let email = "";
   await firestore.doc("/app/salesEmail").get().then((doc) => {
     if (doc.exists) {
-      functions.logger.log("Sales_email: ", doc.data().email);
+      // functions.logger.log("Sales_email: ", doc.data().email);
       email = doc.data().email;
     } else {
-      functions.logger.log("Sales_email is default: contact@curakit.com");
+      // functions.logger.log("Sales_email is default: contact@curakit.com");
       email = "contact@curakit.com";
     }
   });
@@ -57,7 +59,7 @@ const emailData = ({ to, templateId, quoteDate, quoteDetails, quoteNetCost, quot
 const setupApiKey = async () => {
   return firestore.doc("/apis/sendgrid").get().then((doc) => {
     if (doc.exists) {
-      functions.logger.log("API_KEY: ", doc.data().key);
+      // functions.logger.log("API_KEY: ", doc.data().key);
       return sgMail.setApiKey(doc.data().key);
     } else {
       throw new Error("Could not find SendgridApiKey");
@@ -65,9 +67,9 @@ const setupApiKey = async () => {
   });    
 };
 
-const handleSendEmails = async function(snap, context) {
+const handleSendEmails = async function(event, context) {
   try {
-    const { quoteDetails, boxes, totalDiscount, preDiscountedCost, discountedCost } = snap.data();
+    const { quoteDetails, boxes, totalDiscount, preDiscountedCost, discountedCost } = event.data();
     // Access the parameter `{quoteId}` with `context.params`
     const quoteRef = context.params.quoteId;
     const quoteQty = boxes.map((box) => box.qty).reduce((a, b)=> a + b, 0);
@@ -93,7 +95,86 @@ const handleSendEmails = async function(snap, context) {
  * @param {!Object} context Metadata for the event.
  */
 exports.sendQuoteEmails = functions
-    .region("europe-west2")
-    .firestore
-    .document("/quotes/{quoteId}")
-    .onCreate(handleSendEmails);
+  .region("europe-west2")
+  .firestore
+  .document("/quotes/{quoteId}")
+  .onCreate(handleSendEmails);
+
+// Functions to fill up and update a box idea when creating a box idea or when updating or deleting a product
+// It can be called with a single ID:
+// getById('collection', 'some_id')
+// or an array of IDs:
+// getById('collection', ['some_id', 'some_other_id'])
+const getDocumentsByIds = (path, ids) => {
+  return firestore.getAll(
+    ...[].concat(ids).map(id => firestore.doc(`${path}/${id}`))
+  )
+}
+      
+// exports.updateBoxIdeaAfterProductUpdate = functions
+//   .region("europe-west2")
+//   .firestore
+//   .document('product/{productId}')
+//   .onWrite(handleUpdateBoxIdeaAfterProductUpdate)
+
+// const handleUpdateBoxIdeaAfterProductUpdate = async function(event, context) {
+
+// };
+
+// Compute totalCost and minTotalCost of Box
+const computeBoxVariantPricesWithItemsInfos = (items) => {
+  const itemsPricesDetails = items.map(item => {
+    const { min_price, price, currency } = item.productInfos.variants.filter(variant => variant.sku === item.variantSKU)[0];
+    return { qty: item.qty, minPrice: min_price, price, currency }
+  });
+  const boxPrice = itemsPricesDetails.reduce((a,b) => a + (b.price * b.qty), 0);
+  const minBoxPrice = itemsPricesDetails.reduce((a,b) => a + (b.minPrice * b.qty), 0);
+  const currency = itemsPricesDetails.reduce((a,b) => a === b.currency && '£' || 'NA', '£')
+  const boxNumberOfItems = itemsPricesDetails.reduce((a,b) => a + b.qty, 0);
+  return { boxPrice, minBoxPrice, currency, boxNumberOfItems };
+}
+
+const handleAfterWriteBoxIdea = async (change, context) => {
+  try {
+    const variants = change.after.data().variants;
+    const productIds = variants.map(variant => variant.items.map(item => item.productId)).flat(2);
+    const productSnaps = await getDocumentsByIds('products', productIds);
+    let products = {};
+    await productSnaps.forEach((snap) => { 
+      products[snap.id] = snap.data();
+    });
+    functions.logger.log("products: ", products);
+    // Get a reference to the boxIde
+    const boxIdeaRef = firestore.collection('boxIdeas').doc(context.params.boxIdeaId);
+  
+    // Update boxIdea in a transaction
+    await firestore.runTransaction(async (transaction) => {
+      // Get document
+      const boxIdeaDoc = await transaction.get(boxIdeaRef);
+      const boxIdeaData = boxIdeaDoc.data();
+      // FillUp products and variants details
+      const variants = boxIdeaData.variants;
+      functions.logger.log("variants for boxIdea ", boxIdeaData.title, " are: ", variants[0]);
+      const updatedVariants = variants.map(variant => {
+        const updatedItems = variant.items.map(item => {
+          return { ...item, productInfos: products[item.productId] }
+        });
+        functions.logger.log("updatedItems: ", updatedItems);
+        const { boxPrice, minBoxPrice, currency, boxNumberOfItems } = computeBoxVariantPricesWithItemsInfos(updatedItems);
+        return { ...variant, items: updatedItems, boxPrice, minBoxPrice, currency, boxNumberOfItems };
+      });
+      functions.logger.log("updatedVariants: ", updatedVariants);
+      // Update boxIdea infos
+      transaction.update(boxIdeaRef, { ...boxIdeaData, variants: updatedVariants });
+    });
+  } catch (error) {
+    functions.logger.error("Error while updating boxIdea with products infos: ", error);
+    return "Error";
+  }
+};
+
+exports.updateAfterWriteBoxIdea = functions
+  .region("europe-west2")
+  .firestore
+  .document('boxIdeas/{boxIdeaId}')
+  .onWrite(handleAfterWriteBoxIdea);
