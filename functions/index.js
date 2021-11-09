@@ -132,7 +132,24 @@ const computeBoxVariantPricesWithItemsInfos = (items) => {
   const currency = itemsPricesDetails.reduce((a,b) => a === b.currency && '£' || 'NA', '£')
   const boxNumberOfItems = itemsPricesDetails.reduce((a,b) => a + b.qty, 0);
   return { boxPrice, minBoxPrice, currency, boxNumberOfItems };
-}
+};
+
+const addDisplayVariantsToProduct = (data) => {
+  if (data && data["variants"]) {
+    data["variants"] = data["variants"].map((variant) => {
+      return {
+        ...variant, 
+        label: variant.property_value + " " + variant.property_unit + " - " + variant.currency +  " " + variant.price,
+        id: variant.sku,
+        value: variant.sku
+      }
+    });
+    return data;
+  } else {
+    data["variants"] = [{label: "Non Available", id: "Non Available", value: "Non Available" }];
+    return data;
+  }
+};
 
 const handleAfterWriteBoxIdea = async (change, context) => {
   try {
@@ -141,7 +158,7 @@ const handleAfterWriteBoxIdea = async (change, context) => {
     const productSnaps = await getDocumentsByIds('products', productIds);
     let products = {};
     await productSnaps.forEach((snap) => { 
-      products[snap.id] = snap.data();
+      products[snap.id] = addDisplayVariantsToProduct(snap.data());
     });
     functions.logger.log("products: ", products);
     // Get a reference to the boxIde
