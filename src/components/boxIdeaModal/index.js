@@ -1,7 +1,7 @@
 import React from 'react';
 // import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
-import { MobileStepper, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import { MobileStepper, Link, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 import { Chip, Box, Grid } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight, AddCircle } from "@material-ui/icons";
 import useStyles from './style';
@@ -49,6 +49,11 @@ const BoxIdeaModal = (props) => {
     handleAfterAddingBox();
     history.push("/");
   };
+
+  const handleClickOnViewProduct = (event, product) => {
+    event.preventDefault();
+    props.handleClickOnViewProduct(product)
+  }
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -140,7 +145,9 @@ const BoxIdeaModal = (props) => {
                           return (
                             <React.Fragment>
                               <Typography component="paragraph" variant="paragraph" color='textSecondary'>
-                                - {item.qty} x {item.productInfos.title} : {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_value} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_unit} - {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].currency}{item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].price} max
+                                <Link href="#" onClick={(event) => handleClickOnViewProduct(event, item.productInfos)}>
+                                  - {item.qty} x {item.productInfos.title} : {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_value} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_unit} - {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].currency}{item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].price} max
+                                </Link>
                               </Typography>
                               <br/>
                             </React.Fragment>

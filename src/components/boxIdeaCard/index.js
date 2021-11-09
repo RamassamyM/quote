@@ -75,7 +75,7 @@ export default function BoxIdeaCard(props) {
             />
             <div className={classes.separator}></div>
             <Typography  variant="body2" color="primary" component="p">
-                {priceToDisplay(variantSelection)}
+                max {priceToDisplay(variantSelection)}
               </Typography>
             <IconButton
               aria-label="Add"

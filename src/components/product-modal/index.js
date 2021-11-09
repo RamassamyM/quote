@@ -15,6 +15,7 @@ const ProductModal = (props) => {
   // App state
   // Local state
   const product = props.product;
+  const readOnly = props.readOnly;
   let images = [];
   if (product && product.picture_urls && product.picture_urls.length > 0) {
     images = product.picture_urls;
@@ -131,32 +132,34 @@ const ProductModal = (props) => {
                       <Chip size="small" key={"modalChip-" + tag} label={tag} className={classes.modalChip}/>
                     ))}
                   </Box>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Dropdown
-                      placeholder="Select an option"
-                      options={product.variants}
-                      value={product.variants[0].value}
-                      onChange={(value) => handleSelectVariant(value)}
-                      // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
-                      // onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
-                      // onOpen={() => console.log('opened!')}
-                    />
-                    <div className={classes.separator}></div>
-                    <Button
-                      edge="end"
-                      aria-label="add to box"
-                      onClick={handleAddToBoxButton}
-                      color="primary"
-                    >
-                      <AddCircle fontSize="large"/>
-                    </Button>
-                  </Box>
+                  {!readOnly &&
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Dropdown
+                        placeholder="Select an option"
+                        options={product.variants}
+                        value={product.variants[0].value}
+                        onChange={(value) => handleSelectVariant(value)}
+                        // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
+                        // onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
+                        // onOpen={() => console.log('opened!')}
+                      />
+                      <div className={classes.separator}></div>
+                      <Button
+                        edge="end"
+                        aria-label="add to box"
+                        onClick={handleAddToBoxButton}
+                        color="primary"
+                      >
+                        <AddCircle fontSize="large"/>
+                      </Button>
+                    </Box>
+                  }
                 </Grid>
               </Grid>
           </DialogContent>
           <DialogActions>
             <Button name='Close' onClick={handleCloseProductView} color="primary">
-              Close
+              { readOnly ? 'Back to Box' : 'Close' }
             </Button>
           </DialogActions>
         </React.Fragment>

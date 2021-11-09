@@ -3,6 +3,7 @@ import { Box, Chip, Grid, Typography, Container } from '@material-ui/core';
 import { Zoom, Fab, useScrollTrigger } from '@material-ui/core';
 import BoxIdeaCard from './../../components/boxIdeaCard';
 import BoxIdeaModal from './../../components/boxIdeaModal';
+import ProductModal from './../../components/product-modal';
 import { KeyboardArrowUp as KeyboardArrowUpIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +17,10 @@ export default function BoxIdeasPage() {
   const [scroll, setScroll] = React.useState('paper');
   const [boxIdeaViewModal, setBoxIdeaViewModal] = React.useState({
     boxIdea: null,
+    display: false
+  });
+  const [productViewModal, setProductViewModal] = React.useState({
+    product: null,
     display: false
   });
   const classes = useStyles();
@@ -54,6 +59,19 @@ export default function BoxIdeasPage() {
     setBoxIdeaViewModal({ boxIdea: null, display: false });
   };
   const modalRef = React.useRef(null);
+
+  const handleClickOnViewProduct = (product, scrollType) => {
+    console.log("product to view: ", product);
+    setProductViewModal({
+      product,
+      display: true
+    });
+    setScroll(scrollType);
+  };
+  const handleCloseProductView = (event) => {
+    setProductViewModal({ product: null, display: false });
+  };
+  const modalProductRef = React.useRef(null);
 
   const handleSelectFilter = (tag) => {
     dispatch(chooseBoxIdeaCategoryFilter(tag));
@@ -136,8 +154,17 @@ export default function BoxIdeasPage() {
         boxIdea={boxIdeaViewModal.boxIdea}
         display={boxIdeaViewModal.display}
         handleCloseBoxIdeaView={handleCloseBoxIdeaView}
+        handleClickOnViewProduct={(product) => handleClickOnViewProduct(product, 'paper')}
         reference={modalRef}
         scroll={scroll}
+      />
+      <ProductModal
+        product={productViewModal.product}
+        display={productViewModal.display}
+        handleCloseProductView={handleCloseProductView}
+        reference={modalProductRef}
+        scroll={scroll}
+        readOnly={true}
       />
       <ScrollTop/>
     </React.Fragment>
