@@ -8,13 +8,16 @@ import { selectBoxesInQuote, selectQuoteDiscountedCost, selectNumberOfBoxesInQuo
 import { Link as RouterLink } from 'react-router-dom'
 import BoxCard from './../../components/box-card';
 import QuoteDetailsModal from './../../components/quoteDetailsModal';
-import ReactPlayer from 'react-player/lazy'
+import ReactPlayer from 'react-player/lazy';
+import { scrollUp } from './../../core/services/utils';
+import { useHistory } from "react-router-dom";
 
 export default function BoxBuilderPage() {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
   // const dispatch = useDispatch();
   // App state
   const boxes = useSelector(selectBoxesInQuote);
+  let history = useHistory();
   // const quoteTotalCost = useSelector(selectQuotePrediscountedCost);
   // const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
   const quoteNetCost = Number.parseFloat(useSelector(selectQuoteDiscountedCost)).toFixed(2);
@@ -64,6 +67,17 @@ export default function BoxBuilderPage() {
     setQuoteDetailsViewModal({ display: false });
   };
 
+  const handleClickOnAddBoxButton = (event, buttonType) => {
+    event.preventDefault();
+    scrollUp(event);
+    if (buttonType === 'custom') {
+      history.push("/box-builder");
+    }
+    if (buttonType === 'boxIdea') {
+      history.push("/box-ideas");
+    }
+  };
+
   const modalRef = React.useRef(null);
 
   const BoxesWrapper = ({ boxes }) => {
@@ -78,11 +92,11 @@ export default function BoxBuilderPage() {
               ))}
             </Box>
             <Box mb={3} mt={4} display="flex" justifyContent="center">
-              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-builder" aria-label="Build a box">
+              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" onClick={(event) => handleClickOnAddBoxButton(event, 'custom')} aria-label="Build a box">
                 Build another custom box
               </Button>
               <Box width={'20px'}/>
-              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" component={RouterLink} to="/box-ideas" aria-label="Choose among our box ideas">
+              <Button disableElevation className={classes.addABoxButton} variant="outlined" color="primary" onClick={(event) => handleClickOnAddBoxButton(event, 'boxIdea')} aria-label="Choose among our box ideas">
                 Browse our box ideas
               </Button>
             </Box>

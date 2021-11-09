@@ -9,7 +9,7 @@ import { Dropdown } from 'react-dropdown-now';
 import { useDispatch } from 'react-redux';
 import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
-import { arrayMin, arrayMax } from './../../core/services/utils'
+import { arrayMin, arrayMax, scrollUp } from './../../core/services/utils';
 
 const BoxIdeaModal = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -18,7 +18,6 @@ const BoxIdeaModal = (props) => {
   // App state
   // Local state
   const boxIdea = props.boxIdea;
-  const handleAfterAddingBox = props.handleAfterAddingBox;
   let images = [];
   if (boxIdea && boxIdea.picture_urls && boxIdea.picture_urls.length > 0) {
     images = boxIdea.picture_urls;
@@ -42,11 +41,28 @@ const BoxIdeaModal = (props) => {
     const newVariant = boxIdea.variants.filter((variant) => variant.name === payload.value)[0];
     setVariantSelection(newVariant);
   }
-  const handleAddToQuoteButton = (event) => {
+
+  const handleAddToQuoteButton = (event, variantSelection, boxIdea) => {
     event.preventDefault();
-    const box = {items: variantSelection.items, unitPrice: 0, minPrice: 0 }
-    dispatch(addBoxToQuote({ ...box, name: boxIdea.name }))
-    handleAfterAddingBox();
+    const payload = {
+      items: variantSelection.items.map(item => {
+        const productInfos = item.productInfos;
+        return {
+          product: {
+            productId: item.productId,
+            ...productInfos,
+          },
+          variantSelected: productInfos.variants.filter(variant => variant.sku === item.variantSKU)[0],
+          qty: item.qty
+        };
+      }),
+      unitPrice: variantSelection.boxPrice, 
+      minPrice: variantSelection.minBoxPrice,
+      name: boxIdea.title + ' - ' + variantSelection.name
+    }
+    dispatch(addBoxToQuote(payload));
+    setVariantSelection(null);
+    scrollUp(event);
     history.push("/");
   };
 
@@ -172,10 +188,11 @@ const BoxIdeaModal = (props) => {
                     />
                     <div className={classes.separator}></div>
                     <Button
+                      aria-label="Add box to quote"
                       edge="end"
-                      aria-label="add to box"
-                      onClick={handleAddToQuoteButton}
+                      onClick={(event) => handleAddToQuoteButton(event, variantSelection, boxIdea)}
                       color="primary"
+                      disabled={!variantSelection}
                     >
                       <AddCircle fontSize="large"/>
                     </Button>

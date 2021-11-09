@@ -15,3 +15,10 @@ export function arrayMax(arr) {
     return ( p > v ? p : v );
   });
 }
+
+export function scrollUp(event) {
+  const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
+  if (anchor) {
+    anchor.scrollIntoView({ block: 'center' });
+  }
+};

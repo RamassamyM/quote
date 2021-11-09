@@ -31,6 +31,14 @@ const BoxConfirmationModal = (props) => {
   // Effect(s)
   // Logic
   const handleCloseBoxConfirmationView = props.handleCloseBoxConfirmationView;
+
+  const scrollUp = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
+    if (anchor) {
+      anchor.scrollIntoView({ block: 'center' });
+    }
+  }
+
   const handleAddBoxToQuote = (event, thisBoxName) => {
     event.preventDefault();
     dispatch(addBoxToQuote({ ...box, name: thisBoxName.boxName }))
@@ -41,6 +49,7 @@ const BoxConfirmationModal = (props) => {
     });
     handleCloseBoxConfirmationView();
     handleAfterAddingBox();
+    scrollUp(event);
     history.push("/");
   };
   const checkIfNameOfBoxIsTaken = (name) => {

@@ -7,7 +7,7 @@ import useStyles from './style';
 import { useDispatch } from 'react-redux';
 import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
-import { arrayMin, arrayMax } from './../../core/services/utils'
+import { arrayMin, arrayMax, scrollUp } from './../../core/services/utils';
 
 export default function BoxIdeaCard(props) {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ export default function BoxIdeaCard(props) {
     const newVariant = boxIdea.variants.filter((variant) => variant.name === payload.value)[0];
     setVariantSelection(newVariant);
   }
-
+  
   const priceToDisplay = (variantSelection) => {
     if (variantSelection) return variantSelection.currency + variantSelection.boxPrice + " before discount"
     return "£ " + arrayMin(boxIdea.variants.map(v => v.boxPrice)) + " - £" + arrayMax(boxIdea.variants.map(v => v.boxPrice))
@@ -48,6 +48,7 @@ export default function BoxIdeaCard(props) {
     }
     dispatch(addBoxToQuote(payload));
     setVariantSelection(null);
+    scrollUp(event);
     history.push("/");
   };
 
@@ -92,7 +93,7 @@ export default function BoxIdeaCard(props) {
                 max {priceToDisplay(variantSelection)}
               </Typography>
             <IconButton
-              aria-label="Add"
+              aria-label="Add box to quote"
               edge="end"
               onClick={(event) => handleAddToQuoteButton(event, variantSelection, boxIdea)}
               color="primary"
