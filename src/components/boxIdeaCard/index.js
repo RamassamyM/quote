@@ -7,6 +7,7 @@ import useStyles from './style';
 import { useDispatch } from 'react-redux';
 import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
+import { arrayMin, arrayMax } from './../../core/services/utils'
 
 export default function BoxIdeaCard(props) {
   const dispatch = useDispatch();
@@ -16,11 +17,16 @@ export default function BoxIdeaCard(props) {
   const boxIdea = props.boxIdea;
   const handleAfterAddingBox = props.handleAfterAddingBox;
   const handleClickOnViewBoxIdea = props.handleClickOnViewBoxIdea;
-  const initialVariantSelectionState = (boxIdea.variants && boxIdea.variants[0]) ? boxIdea.variants[0] : null
-  const [variantSelection, setVariantSelection] = React.useState(initialVariantSelectionState);
+  const [variantSelection, setVariantSelection] = React.useState(null);
 
-  const handleSelectVariant = (value) => {
-    setVariantSelection(value);
+  const handleSelectVariant = (payload) => {
+    const newVariant = boxIdea.variants.filter((variant) => variant.name === payload.value)[0];
+    setVariantSelection(newVariant);
+  }
+
+  const priceToDisplay = (variantSelection) => {
+    if (variantSelection) return variantSelection.currency + variantSelection.boxPrice + " before discount"
+    return "£ " + arrayMin(boxIdea.variants.map(v => v.boxPrice)) + " - £" + arrayMax(boxIdea.variants.map(v => v.boxPrice))
   };
 
   const handleAddToQuoteButton = (event) => {
@@ -63,11 +69,14 @@ export default function BoxIdeaCard(props) {
             <Dropdown
               placeholder="Select an option"
               options={boxIdea.variants.map(v => v.name)}
-              value={boxIdea.variants[0]}
+              value={variantSelection && variantSelection.name}
               onChange={(value) => handleSelectVariant(value)}
               className={classes.variantList}
             />
             <div className={classes.separator}></div>
+            <Typography  variant="body2" color="primary" component="p">
+                {priceToDisplay(variantSelection)}
+              </Typography>
             <IconButton
               aria-label="Add"
               edge="end"

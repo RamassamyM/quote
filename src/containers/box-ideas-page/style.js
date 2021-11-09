@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heroBoxTitle: {
     height: '100%',
+    minHeight: '70px',
     // [theme.breakpoints.up('sm')]: {
     //   marginTop: '20px',
     // },
