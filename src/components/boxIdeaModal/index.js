@@ -6,8 +6,8 @@ import { Chip, Box, Grid } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight, AddCircle } from "@material-ui/icons";
 import useStyles from './style';
 import { Dropdown } from 'react-dropdown-now';
-import { useDispatch } from 'react-redux';
-import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBoxToQuote, selectQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
 import { arrayMin, arrayMax, scrollUp } from './../../core/services/utils';
 
@@ -18,6 +18,7 @@ const BoxIdeaModal = (props) => {
   // App state
   // Local state
   const boxIdea = props.boxIdea;
+  const quote = useSelector(selectQuote);
   let images = [];
   if (boxIdea && boxIdea.picture_urls && boxIdea.picture_urls.length > 0) {
     images = boxIdea.picture_urls;
@@ -42,6 +43,22 @@ const BoxIdeaModal = (props) => {
     setVariantSelection(newVariant);
   }
 
+  const checkIfNameOfBoxIsTaken = (name) => {
+    const boxNamesList = quote.boxes.map((box) => box.name);
+    return boxNamesList.includes(name)
+  };
+
+  const defineNameForBox = (boxIdeaTitle, variantName) => {
+    let basicName = boxIdeaTitle + ' - ' + variantName;
+    let increment = 2;
+    let name = basicName;
+    while (checkIfNameOfBoxIsTaken(name)) {
+      name = basicName + '(' + increment + ')';
+      increment += 1;
+    }
+    return name;
+  }
+
   const handleAddToQuoteButton = (event, variantSelection, boxIdea) => {
     event.preventDefault();
     const payload = {
@@ -58,7 +75,7 @@ const BoxIdeaModal = (props) => {
       }),
       unitPrice: variantSelection.boxPrice, 
       minPrice: variantSelection.minBoxPrice,
-      name: boxIdea.title + ' - ' + variantSelection.name
+      name: defineNameForBox(boxIdea.title, variantSelection.name)
     }
     dispatch(addBoxToQuote(payload));
     setVariantSelection(null);

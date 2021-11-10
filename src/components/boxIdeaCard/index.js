@@ -4,8 +4,8 @@ import { AddCircle } from '@material-ui/icons';
 import { Dropdown } from 'react-dropdown-now';
 import 'react-dropdown-now/style.css';
 import useStyles from './style';
-import { useDispatch } from 'react-redux';
-import { addBoxToQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBoxToQuote, selectQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
 import { arrayMin, arrayMax, scrollUp } from './../../core/services/utils';
 
@@ -15,6 +15,7 @@ export default function BoxIdeaCard(props) {
   let history = useHistory();
   // const preventDefault = (event) => event.preventDefault();
   const boxIdea = props.boxIdea;
+  const quote = useSelector(selectQuote);
   const handleClickOnViewBoxIdea = props.handleClickOnViewBoxIdea;
   const [variantSelection, setVariantSelection] = React.useState(null);
 
@@ -27,6 +28,22 @@ export default function BoxIdeaCard(props) {
     if (variantSelection) return variantSelection.currency + variantSelection.boxPrice + " before discount"
     return "£ " + arrayMin(boxIdea.variants.map(v => v.boxPrice)) + " - £" + arrayMax(boxIdea.variants.map(v => v.boxPrice))
   };
+
+  const checkIfNameOfBoxIsTaken = (name) => {
+    const boxNamesList = quote.boxes.map((box) => box.name);
+    return boxNamesList.includes(name)
+  };
+
+  const defineNameForBox = (boxIdeaTitle, variantName) => {
+    let basicName = boxIdeaTitle + ' - ' + variantName;
+    let increment = 2;
+    let name = basicName;
+    while (checkIfNameOfBoxIsTaken(name)) {
+      name = basicName + '(' + increment + ')';
+      increment += 1;
+    }
+    return name;
+  }
 
   const handleAddToQuoteButton = (event, variantSelection, boxIdea) => {
     event.preventDefault();
@@ -44,7 +61,7 @@ export default function BoxIdeaCard(props) {
       }),
       unitPrice: variantSelection.boxPrice, 
       minPrice: variantSelection.minBoxPrice,
-      name: boxIdea.title + ' - ' + variantSelection.name
+      name: defineNameForBox(boxIdea.title, variantSelection.name)
     }
     dispatch(addBoxToQuote(payload));
     setVariantSelection(null);
