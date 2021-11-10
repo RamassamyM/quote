@@ -24,37 +24,37 @@ const addDisplayVariantsToProducts = (data) => {
 export const fetchBoxIdeas = async () => {
   let results = [];
   await db.collection("boxIdeas").get().then((querySnapshot) => {
-    console.log("Firestore fetched!");
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       results.push({boxIdeaId: doc.id, ...data});
     });
   });
-  console.log("results: ", results);
+  console.log("Firestore fetched!");
+  // console.log("results: ", results);
   return results;
 }
 
 export const fetchProducts = async () => {
   let results = [];
   await db.collection("products").get().then((querySnapshot) => {
-    console.log("Firestore fetched!");
     querySnapshot.forEach((doc) => {
       const data = addDisplayVariantsToProducts(doc.data());
       results.push({productId: doc.id, ...data});
     });
   });
+  console.log("Firestore fetched!");
   return results;
 }
 
 export const fetchProductsByCategory = async (category) => {
   let results = [];
   await db.collection("products").where("category", "==", category).get().then((querySnapshot) => {
-    console.log("Firestore fetched for category!");
     querySnapshot.forEach((doc) => {
       const data = addDisplayVariantsToProducts(doc.data());
       results.push({productId: doc.id, ...data});
     });
   });
+  console.log("Firestore fetched for category!");
   return results;
 }
 

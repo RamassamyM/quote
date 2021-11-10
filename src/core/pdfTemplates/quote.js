@@ -33,8 +33,8 @@ export default function Quote(props) {
     const date = today.toLocaleDateString('en-EN', { year: 'numeric', month: 'long', day: 'numeric' });
     // const number = today.toLocaleDateString('en-EN', {year: 'numeric', month: 'numeric', day: 'numeric'}).split('/').join('');
     const totalQtyOfBoxes = data.boxes.map((box) => box.qty ).reduce((a, b)=> a + b,0);
-    const addCompanyLogo = data.quoteDetails.addCompanyLogo && "yes" || "no";
-    const addCustomMessage = data.quoteDetails.addCustomMessage && "yes" || "no";
+    const addCompanyLogo = data.quoteDetails.addCompanyLogo ? "yes" : "no";
+    const addCustomMessage = data.quoteDetails.addCustomMessage ? "yes" : "no";
     const invoice = {
         id: '001',
         invoice_no: quoteRef,

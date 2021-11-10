@@ -10,9 +10,9 @@ const seedBoxes = [
       {
         "name": "Basic",
         "items": [
-          {"productId": "KX4z2CZxzmUfSbiEsP30", "variantSKU": "CKHC002-50" , "qty": 2, "productInfos": {} },
-          {"productId": "Z83Ya2tX7yNSUlCvysbD", "variantSKU": "CKPB-MIX3", "qty": 1, "productInfos": {} },
-          {"productId": "DDK5v1KHzawISSP3ZZqA", "variantSKU": "CKACB0013", "qty": 1, "productInfos": {} }
+          {"productId": "I1oaY4hna7WJPTd5eyFl", "variantSKU": "CKPFS04", "qty": 3, "productInfos": {}},
+          {"productId": "J7xm2RJInDES9EB3po5i", "variantSKU": "CKTEA002-100", "qty": 1, "productInfos": {}},
+          {"productId": "KXYLvvhXJOqNsM1vH6uA", "variantSKU": "CKACB007", "qty": 1, "productInfos": {}}
         ],
         "sku": "B-CH-001-01",
         "boxPrice": null,
@@ -22,9 +22,9 @@ const seedBoxes = [
       {
         "name": "Premium",
         "items": [
-          {"productId": "KX4z2CZxzmUfSbiEsP30", "variantSKU": "CKHC002-50" , "qty": 3, "productInfos": {} },
-          {"productId": "Z83Ya2tX7yNSUlCvysbD", "variantSKU": "CKPB-MIX3", "qty": 2, "productInfos": {} },
-          {"productId": "DDK5v1KHzawISSP3ZZqA", "variantSKU": "CKACB0013", "qty": 1, "productInfos": {} }
+          {"productId": "I1oaY4hna7WJPTd5eyFl", "variantSKU": "CKPFS04", "qty": 4, "productInfos": {}},
+          {"productId": "J7xm2RJInDES9EB3po5i", "variantSKU": "CKTEA002-100", "qty": 2, "productInfos": {}},
+          {"productId": "KXYLvvhXJOqNsM1vH6uA", "variantSKU": "CKACB007", "qty": 1, "productInfos": {}}
         ],
         "sku": "B-CH-001-02",
         "boxPrice": null,
@@ -44,9 +44,9 @@ const seedBoxes = [
       {
         "name": "Basic",
         "items": [
-          {"productId": "KX4z2CZxzmUfSbiEsP30", "variantSKU": "CKHC002-50", "qty": 2, "productInfos": {}},
-          {"productId": "Z83Ya2tX7yNSUlCvysbD", "variantSKU": "CKPB-MIX3", "qty": 1, "productInfos": {}},
-          {"productId": "DDK5v1KHzawISSP3ZZqA", "variantSKU": "CKACB0013", "qty": 1, "productInfos": {}}
+          {"productId": "I1oaY4hna7WJPTd5eyFl", "variantSKU": "CKPFS04", "qty": 2, "productInfos": {}},
+          {"productId": "J7xm2RJInDES9EB3po5i", "variantSKU": "CKTEA002-100", "qty": 1, "productInfos": {}},
+          {"productId": "KXYLvvhXJOqNsM1vH6uA", "variantSKU": "CKACB007", "qty": 1, "productInfos": {}}
         ],
         "sku": "B-CH-001-01",
         "boxPrice": null,
@@ -56,9 +56,9 @@ const seedBoxes = [
       {
         "name": "Premium",
         "items": [
-          {"productId": "KX4z2CZxzmUfSbiEsP30", "variantSKU": "CKHC002-50", "qty": 3, "productInfos": {}},
-          {"productId": "Z83Ya2tX7yNSUlCvysbD", "variantSKU": "CKPB-MIX3", "qty": 2, "productInfos": {}},
-          {"productId": "DDK5v1KHzawISSP3ZZqA", "variantSKU": "CKACB0013", "qty": 1, "productInfos": {}}
+          {"productId": "I1oaY4hna7WJPTd5eyFl", "variantSKU": "CKPFS04", "qty": 3, "productInfos": {}},
+          {"productId": "J7xm2RJInDES9EB3po5i", "variantSKU": "CKTEA002-100", "qty": 2, "productInfos": {}},
+          {"productId": "KXYLvvhXJOqNsM1vH6uA", "variantSKU": "CKACB007", "qty": 1, "productInfos": {}}
         ],
         "sku": "B-CH-001-02",
         "boxPrice": null,

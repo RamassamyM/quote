@@ -176,8 +176,8 @@ const BoxIdeaModal = (props) => {
                         </Typography>
                         {variantSelection.items.map((item) => {
                           return (
-                            <React.Fragment>
-                              <Typography component="paragraph" variant="paragraph" color='textSecondary'>
+                            <React.Fragment key={item.variantSKU}>
+                              <Typography component="h6" variant="body2" color='textSecondary'>
                                 <Link href="#" onClick={(event) => handleClickOnViewProduct(event, item.productInfos)}>
                                   - {item.qty} x {item.productInfos.title} : {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_value} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_unit} - {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].currency}{item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].price} max
                                 </Link>
@@ -199,9 +199,6 @@ const BoxIdeaModal = (props) => {
                       options={boxIdea.variants.map(v => v.name)}
                       value={variantSelection && variantSelection.name}
                       onChange={(value) => handleSelectVariant(value)}
-                      // onSelect={(value) => console.log('selected!', value)} // always fires once a selection happens even if there is no change
-                      // onClose={(closedBySelection) => console.log('closedBySelection?:', closedBySelection)}
-                      // onOpen={() => console.log('opened!')}
                     />
                     <div className={classes.separator}></div>
                     <Button

@@ -8,7 +8,7 @@ import seedBoxes from './seed-boxes';
 const db = fire.firestore();
 // db.useEmulator("localhost", 8080);
 
-const seedAllProducts = () => {
+export const seedAllProducts = () => {
   seedProducts.forEach(element => {
     console.log("Adding product to Firestore: ", element.title)
     db.collection("products").add(element).then((docRef) => {
@@ -19,8 +19,6 @@ const seedAllProducts = () => {
     });
   });
 };
-
-export default seedAllProducts;
 
 export const seedAllBoxes = () => {
   seedBoxes.forEach(element => {

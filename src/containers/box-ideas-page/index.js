@@ -61,7 +61,6 @@ export default function BoxIdeasPage() {
   const modalRef = React.useRef(null);
 
   const handleClickOnViewProduct = (product, scrollType) => {
-    console.log("product to view: ", product);
     setProductViewModal({
       product,
       display: true
