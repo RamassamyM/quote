@@ -111,15 +111,61 @@ const getDocumentsByIds = (path, ids) => {
   )
 }
       
-// exports.updateBoxIdeaAfterProductUpdate = functions
-//   .region("europe-west2")
-//   .firestore
-//   .document('product/{productId}')
-//   .onWrite(handleUpdateBoxIdeaAfterProductUpdate)
+const handleUpdateBoxIdeaAfterProductUpdate = async function(change, context) {
+  try {
+    const productData = change.after.exists ? change.after.data() : null;
+    const boxIdeasRef = firestore.collection('boxIdeas');
+    const updatedDocs = await firestore.runTransaction(async (transaction) => {
+      transaction.get(boxIdeasRef).then(res => {
+      });
+      return transaction.get(boxIdeasRef)
+      .then(res => {
+        let updatedBoxIdeas = [];
+        res.docs.forEach(boxIdea => {
+          const boxIdeaData = boxIdea.data(); 
+          let updatedVariants = [];
+          let boxIdeaNeedsUpdate = false;
+          boxIdeaData.variants.forEach(variant => {
+            let updatedItems = [];
+            variant.items.forEach(item => {
+              let updatedItem = item;
+              if (item.productId === context.params.productId) {
+                updatedItem = { ...item, productInfos: productData};
+                boxIdeaNeedsUpdate = true;
+                if (productData && productData.variants.filter(v => v.sku === item.variantSKU).length > 0) {
+                  updatedItems.push(updatedItem);
+                } else {
+                  functions.logger.log("A product or a variant of the product included in a box idea has been deleted, so the Box Idea ", boxIdeaData.title ," will be recomputed without the product ", change.before.data().title);
+                }
+              } else {
+                updatedItems.push(updatedItem); 
+              }
+            });
+            const { boxPrice, minBoxPrice, currency, boxNumberOfItems } = computeBoxVariantPricesWithItemsInfos(updatedItems);
+            updatedVariants.push({ ...variant, items: updatedItems, boxPrice, minBoxPrice, currency, boxNumberOfItems });
+          });
+          const updatedDoc = { ...boxIdeaData, variants: updatedVariants };
+          if (boxIdeaNeedsUpdate) {
+            transaction.update(boxIdea.ref, updatedDoc);
+            updatedBoxIdeas.push(boxIdea.id);
+          }
+        });
+        return updatedBoxIdeas;
+      });
+    });
+    functions.logger.log("Updated box ideas:", updatedDocs);
+  
+  } catch (error) {
+    functions.logger.error("Error while updating boxIdea after update on product: ", error);
+    return "Error";
+  }
+};
 
-// const handleUpdateBoxIdeaAfterProductUpdate = async function(event, context) {
-
-// };
+exports.updateBoxIdeaAfterProductUpdate = functions
+  .region("europe-west2")
+  .firestore
+  .document('products/{productId}')
+  .onWrite(handleUpdateBoxIdeaAfterProductUpdate)
 
 // Compute totalCost and minTotalCost of Box
 const computeBoxVariantPricesWithItemsInfos = (items) => {
@@ -153,37 +199,38 @@ const addDisplayVariantsToProduct = (data) => {
 
 const handleAfterWriteBoxIdea = async (change, context) => {
   try {
-    const variants = change.after.data().variants;
-    const productIds = variants.map(variant => variant.items.map(item => item.productId)).flat(2);
-    const productSnaps = await getDocumentsByIds('products', productIds);
-    let products = {};
-    await productSnaps.forEach((snap) => { 
-      products[snap.id] = addDisplayVariantsToProduct(snap.data());
-    });
-    functions.logger.log("products: ", products);
-    // Get a reference to the boxIde
-    const boxIdeaRef = firestore.collection('boxIdeas').doc(context.params.boxIdeaId);
-  
-    // Update boxIdea in a transaction
-    await firestore.runTransaction(async (transaction) => {
-      // Get document
-      const boxIdeaDoc = await transaction.get(boxIdeaRef);
-      const boxIdeaData = boxIdeaDoc.data();
-      // FillUp products and variants details
-      const variants = boxIdeaData.variants;
-      functions.logger.log("variants for boxIdea ", boxIdeaData.title, " are: ", variants[0]);
-      const updatedVariants = variants.map(variant => {
-        const updatedItems = variant.items.map(item => {
-          return { ...item, productInfos: products[item.productId] }
-        });
-        functions.logger.log("updatedItems: ", updatedItems);
-        const { boxPrice, minBoxPrice, currency, boxNumberOfItems } = computeBoxVariantPricesWithItemsInfos(updatedItems);
-        return { ...variant, items: updatedItems, boxPrice, minBoxPrice, currency, boxNumberOfItems };
+    if (change.after.exists) {
+      const variants = change.after.data().variants;
+      const productIds = variants.map(variant => variant.items.map(item => item.productId)).flat(2);
+      const productSnaps = await getDocumentsByIds('products', productIds);
+      let products = {};
+      await productSnaps.forEach((snap) => { 
+        products[snap.id] = addDisplayVariantsToProduct(snap.data());
       });
-      functions.logger.log("updatedVariants: ", updatedVariants);
-      // Update boxIdea infos
-      transaction.update(boxIdeaRef, { ...boxIdeaData, variants: updatedVariants });
-    });
+      // Get a reference to the boxIde
+      const boxIdeaRef = firestore.collection('boxIdeas').doc(context.params.boxIdeaId);
+    
+      // Update boxIdea in a transaction
+      await firestore.runTransaction(async (transaction) => {
+        // Get document
+        const boxIdeaDoc = await transaction.get(boxIdeaRef);
+        const boxIdeaData = boxIdeaDoc.data();
+        // FillUp products and variants details
+        const variants = boxIdeaData.variants;
+        const updatedVariants = variants.map(variant => {
+          const updatedItems = variant.items.map(item => {
+            return { ...item, productInfos: products[item.productId] }
+          });
+          const { boxPrice, minBoxPrice, currency, boxNumberOfItems } = computeBoxVariantPricesWithItemsInfos(updatedItems);
+          return { ...variant, items: updatedItems, boxPrice, minBoxPrice, currency, boxNumberOfItems };
+        });
+        functions.logger.log("updatedVariants: ", updatedVariants);
+        // Update boxIdea infos
+        transaction.update(boxIdeaRef, { ...boxIdeaData, variants: updatedVariants });
+      });
+    } else {
+      functions.logger.log("Nothing filled up for deleted document.");
+    }
   } catch (error) {
     functions.logger.error("Error while updating boxIdea with products infos: ", error);
     return "Error";
