@@ -1,9 +1,9 @@
 import React from 'react';
-import { Tooltip, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
-import { DeleteOutline as DeleteIcon, Help as HelpIcon, ExpandLess, ExpandMore } from '@material-ui/icons';
+import { Tooltip, Button, Paper, ButtonGroup, InputBase, TextField, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
+import { Delete as DeleteIcon, Done as DoneIcon, Inbox as InboxIcon, Edit as EditIcon, Help as HelpIcon, ExpandLess, ExpandMore } from '@material-ui/icons';
 import useStyles from './style';
 import { useDispatch } from 'react-redux';
-import { setQuantityOfBoxesInQuote, removeBoxFromQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { setQuantityOfBoxesInQuote, removeBoxFromQuote, changeNameOfBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
 
 export default function BoxCard(props) {
   const dispatch = useDispatch();
@@ -11,6 +11,8 @@ export default function BoxCard(props) {
   const box = props.box;
   const items = box.items.map(i => i.qty + 'x ' + i.product.title + ' ' + i.variantSelected.label);
   const [value, setValue] = React.useState(box.qty);
+  const [displayEditName, setDisplayEditName] = React.useState(false);
+  // const [newName, setNewName] = React.useState('');
   const [openBoxContent, setOpenBoxContent] = React.useState(false);
   const preventDefault = (event) => event.preventDefault();
   const marks = [
@@ -54,6 +56,55 @@ export default function BoxCard(props) {
     setOpenBoxContent(!openBoxContent);
   };
 
+  const handleSubmitNameForm = (event) => {
+    event.preventDefault();
+    console.log(textFieldRef.current.value);
+    setDisplayEditName(!displayEditName);
+    dispatch(changeNameOfBoxInQuote({ oldName: box.name, newName: textFieldRef.current.value }));
+  };
+  const textFieldRef = React.useRef(null);
+
+  const NameBlock = () => {
+    if (displayEditName) {
+      return (
+        <Box p={1} flexGrow={1}>
+          <Paper component="form" onSubmit={handleSubmitNameForm}>
+            <Box ml={2} display="flex" alignItems="center" justifyContent="space-between" >
+              <InputBase
+                className={classes.inputEditName}
+                placeholder={box.name}
+                aria-label="edit name of box"
+                inputRef={textFieldRef}
+                required
+              />
+              <Button
+                size="small"
+                aria-label="validate new name"
+                type="submit"
+                className={classes.buttonEditForm}
+              >
+                <DoneIcon className={classes.actionIcon}/>
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
+      );
+    } else {
+      return (
+        <Box flexGrow={1} className={classes.boxCardHeader}>
+          <Typography component="h2" variant="h6" className={classes.boxCardContentTitle}>
+            {box.name}
+          </Typography>
+        </Box>
+      );
+    }
+  };
+
+  const handleClickOnEditNameButton = (event) => {
+    event.preventDefault();
+    setDisplayEditName(true);
+  };
+
   const ContentList = () => {
     return (
       <List dense className={classes.contentList} >
@@ -78,26 +129,18 @@ export default function BoxCard(props) {
     <Card className={classes.boxCard} elevation={0}>
       <Box flexGrow={1}>
         <CardContent className={classes.cardContentArea}>
-          <Box display="flex" alignItems="center" className={classes.boxCardHeaderBar}>
-            <Box flexGrow={1} display="flex" justifyContent="space-between">
-              <Box p={1} display="flex" alignItems="center" className={classes.boxCardHeader}>
-                {/* <InboxIcon fontSize="large" color="primary" className={classes.boxIcon} /> */}
-                <Typography align="left" component="h3" variant="h5" className={classes.boxCardContentTitle}>
-                  {box.name}
-                </Typography>
-              </Box>
-            </Box>
-            <Box display="flex" alignItems="center">
-              {/* <Box className={classes.boxCardControls}>
-                <IconButton aria-label="Edit Item" onClick={preventDefault}>
-                <EditIcon className={classes.playIcon} />
-                </IconButton>
-              </Box> */}
-              <Box className={classes.boxCardControls}>
-                <IconButton aria-label="Remove Item" onClick={handleRemoveBoxFromQuote}>
-                  <DeleteIcon className={classes.deleteIcon} />
-                </IconButton>
-              </Box>
+          <Box display="flex" flexWrap="wrap" alignItems="center" justifyContent="flex-end" className={classes.boxCardHeaderBar}>
+            <NameBlock/>
+            <Box flexGrow={1}  className={classes.boxCardControls}>
+              <IconButton aria-label="Edit Name" onClick={handleClickOnEditNameButton}>
+                <EditIcon fontSize={'small'} className={classes.actionIcon} />
+              </IconButton>
+              <IconButton aria-label="Edit Name" onClick={preventDefault}>
+                <InboxIcon fontSize={'small'} className={classes.actionIcon} />
+              </IconButton>
+              <IconButton aria-label="Remove Item" onClick={handleRemoveBoxFromQuote}>
+                <DeleteIcon fontSize={'small'} className={classes.actionIcon} />
+              </IconButton>
             </Box>
           </Box>
           <ContentList/>

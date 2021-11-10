@@ -54,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
       top: '0',
       bottom: 'auto',
     },
+    marginLeft: '10px',
+    marginTop: '5px',
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
   boxIcon: {
     marginRight: '5px',
@@ -62,10 +68,21 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
+  buttonEditForm: {
+    borderRadius: '0px 4px 4px 0px',
+    width: '50px',
+    backgroundColor: theme.palette.primary.variant,
+  },
+  inputEditName: {
+    textAlign: 'left',
+    paddingLeft: '8px',
+    paddingRight: '8px',
+  },
   boxCardControls: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: "row-reverse",
+    textAlign: 'right',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
   boxCardIcon: {
     height: 38,
@@ -100,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     fontSize: '12px',
   },
-  deleteIcon: {
+  actionIcon: {
     color: theme.palette.text.reverted,
   },
   contentList: {

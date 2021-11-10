@@ -41,6 +41,10 @@ export const quoteSlice = createSlice({
         return box.id !== action.payload.id;
       });
     },
+    changeNameOfBoxInQuote: (state, action) => {
+      const box = state.boxes.find(e => e.name === action.payload.oldName);
+      box.name = action.payload.newName;
+    },
     setQuantityOfBoxesInQuote: (state, action) => {
       const box = state.boxes.find(e => e.name === action.payload.name);
       box.qty = action.payload.qty;
@@ -58,7 +62,7 @@ export const quoteSlice = createSlice({
   },
 });
 
-export const { addBoxToQuote, removeBoxFromQuote, setQuantityOfBoxesInQuote, setQuoteDetails, deleteQuote } = quoteSlice.actions;
+export const { addBoxToQuote, changeNameOfBoxInQuote, removeBoxFromQuote, setQuantityOfBoxesInQuote, setQuoteDetails, deleteQuote } = quoteSlice.actions;
 
 export const selectBoxesInQuote = (state) => state.quote.boxes;
 export const selectQuote = (state) => state.quote;
