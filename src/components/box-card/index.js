@@ -59,8 +59,10 @@ export default function BoxCard(props) {
   const handleSubmitNameForm = (event) => {
     event.preventDefault();
     console.log(textFieldRef.current.value);
+    if (!!textFieldRef.current.value) {
+      dispatch(changeNameOfBoxInQuote({ oldName: box.name, newName: textFieldRef.current.value }));
+    }
     setDisplayEditName(!displayEditName);
-    dispatch(changeNameOfBoxInQuote({ oldName: box.name, newName: textFieldRef.current.value }));
   };
   const textFieldRef = React.useRef(null);
 
@@ -75,7 +77,6 @@ export default function BoxCard(props) {
                 placeholder={box.name}
                 aria-label="edit name of box"
                 inputRef={textFieldRef}
-                required
               />
               <Button
                 size="small"
