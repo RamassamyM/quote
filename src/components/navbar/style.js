@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     }
   },
+  freeSample: {
+    width: '20px',
+    height: '20px'
+  },
   link: {
     '& a': {
       color: theme.palette.text.reverted,

@@ -67,6 +67,12 @@ export default function PrimaryAppBar(props) {
   );
   
   const menuMobileId = 'mobile-menu';
+
+  const handleGetFreeSampleClick = (event) => {
+    event.preventDefault(); 
+    console.log('clicked on Free sample link');
+  };
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -102,6 +108,12 @@ export default function PrimaryAppBar(props) {
           <Badge badgeContent={quoteNumberOfBoxTypes} color="error">
             <InboxIcon color="primary"/>
           </Badge>
+        </ListItem>
+        <ListItem button onClick={handleGetFreeSampleClick} key="Free Sample Popup">
+          <ListItemText primary={"Get a free Sample"} className={classes.linkInMenu}/>
+          <Box>
+            <img src={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/gift.png?alt=media&token=b9eee068-ab40-41c0-8cb4-edd6d513c3f8'} alt='free-sample-button' className={classes.freeSample}/>
+          </Box>
         </ListItem>
         <ListItem button href="https://www.curakit.com" key="Back to Curakit Website" onClick={handleRedirectToWebsite}>
           <ListItemText primary={"Back to Curakit website"} className={classes.linkInMenu}/>
@@ -174,6 +186,11 @@ export default function PrimaryAppBar(props) {
                   Quote Builder&nbsp;&nbsp;
                 </Badge>
               </Button>
+              <Link onClick={handleGetFreeSampleClick}>
+                <Box>
+                  <img src={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/gift.png?alt=media&token=b9eee068-ab40-41c0-8cb4-edd6d513c3f8'} alt='free-sample-button' className={classes.freeSample}/>
+                </Box>
+              </Link>
               <Button 
                 color="inherit" 
                 style={{display: isLoggedIn ? 'none' : 'block' }} 
