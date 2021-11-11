@@ -75,7 +75,7 @@ export default function BoxCard(props) {
       return (
         <Box p={1} flexGrow={1}>
           <Paper component="form" onSubmit={handleSubmitNameForm}>
-            <Box ml={2} display="flex" alignItems="center" justifyContent="space-between" >
+            <Box display="flex" alignItems="center" justifyContent="space-between" >
               <InputBase
                 className={classes.inputEditName}
                 placeholder={box.name}

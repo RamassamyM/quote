@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   image: {
     width: "100px",
   },
+  imageFreeSample: {
+    height: "200px",
+  },
   imageWrapper: {
     // maxWidth: "300px",
   },

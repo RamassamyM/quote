@@ -75,8 +75,9 @@ const useStyles = makeStyles((theme) => ({
   },
   inputEditName: {
     textAlign: 'left',
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    width: '100%'
   },
   boxCardControls: {
     textAlign: 'right',

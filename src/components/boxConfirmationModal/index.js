@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField, Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@material-ui/core';
 import useStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBoxItems, selectBoxOptions, selectBoxTotalCost, selectBoxMinTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
+import { toggleBoxPanel, selectBoxItems, selectBoxOptions, selectBoxTotalCost, selectBoxMinTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
 import { addBoxToQuote, selectQuote, updateBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
 import { scrollUp } from './../../core/services/utils';
@@ -48,6 +48,7 @@ const BoxConfirmationModal = (props) => {
       boxName: ''
     });
     handleCloseBoxConfirmationView();
+    dispatch(toggleBoxPanel());
     handleAfterAddingBox();
     scrollUp(event);
     history.push("/");
@@ -81,7 +82,7 @@ const BoxConfirmationModal = (props) => {
     <Dialog
       name='Box Confirmation View'
       open={display}
-      onClose={props.handleCloseBoxConfirmationView}
+      onClose={handleCloseBoxConfirmationView}
       scroll={scroll}
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"

@@ -22,3 +22,7 @@ export function scrollUp(event) {
     anchor.scrollIntoView({ block: 'center' });
   }
 };
+
+export function isEmptyObject(obj) {
+  return obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
+}

@@ -6,6 +6,7 @@ import { MailOutline as MailOutlineIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectQuote, setQuoteDetails, deleteQuote, selectQuoteTotalDiscount, selectQuotePrediscountedCost, selectQuoteDiscountedCost } from './../../containers/quote-builder-page/quoteSlice';
+import { resetBox } from './../../containers/box-builder-page/boxSlice';
 import GeneratePdf from './../../core/services/generatePdf';
 import { storeQuoteToDb } from './../../core/services/firestore-requests';
 
@@ -21,6 +22,7 @@ const QuoteDetailsModal = (props) => {
   const quoteDiscountedCost = useSelector(selectQuoteDiscountedCost);
   const quoteTotalDiscount = useSelector(selectQuoteTotalDiscount);
   const [pdfShow, setPdfShow] = React.useState(false);
+  const [freeSampleModalShow, setFreeSampleModalShow] = React.useState(false);
   const [quoteRef, setQuoteRef] = React.useState(null);
   const [storedToFirestore, setStoredToFirestore] = React.useState(false);
   const [formInput, setFormInput] = React.useState(
@@ -53,6 +55,8 @@ const QuoteDetailsModal = (props) => {
     dispatch(deleteQuote(null));
     setPdfShow(false);
     setStoredToFirestore(false);
+    // in case an update box is waiting in the box builder view panel, it is better to reset everything
+    dispatch(resetBox());
     closeDetailsView();
   };
   const handleChangeDelivery = (event) => {
@@ -65,7 +69,11 @@ const QuoteDetailsModal = (props) => {
     setFormInput({ ...formInput, addCustomMessage: !formInput.addCustomMessage });
   };
 
-  const PdfSection = () => {
+  // distinguish the two modals => not necerssary
+  const generateQuoteModalRef = React.createRef();
+  const getFreeSampleModalRef = React.createRef();
+
+  const PdfSection = React.forwardRef((props, ref) => {
     if (pdfShow) {
       return (
         <React.Fragment>
@@ -97,7 +105,8 @@ const QuoteDetailsModal = (props) => {
       );
     }
     return null;
-  }
+  });
+
   const handleGenerateQuote = async (event) => {
     event.preventDefault();
     await dispatch(setQuoteDetails({ quoteDetails: formInput }));
@@ -117,6 +126,42 @@ const QuoteDetailsModal = (props) => {
     setPdfShow(true);
   };
 
+  const closeFreeSampleModal = (event) => {
+    event.preventDefault();
+    setFreeSampleModalShow(false);
+  };
+
+  const GetFreeSampleModal = React.forwardRef((props, ref) => {
+    if (freeSampleModalShow) {
+      return (
+        <React.Fragment>
+          <DialogTitle id="free-sample-infos-modal">WE RECEIVED YOUR REQUEST !</DialogTitle>
+          <Divider/>
+          <DialogContent>
+            <Box p={1} textAlign="center" display="flex" flexDirection="column" alignItems="center" justifyContent="center" className={classes.imageWrapper}>
+              <img alt="congratulations" className={classes.imageFreeSample} src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/CURAKIT_Original_2.png?alt=media&token=eb1bbec3-4c36-4d47-a2b6-ecf39f203508"></img>
+              <Typography  variant="h6" color="primary">
+                Our Team will call you in a very short time to discuss your needs and organize the shipping of your free sample box.
+              </Typography>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+                <Button name='Close' onClick={closeFreeSampleModal} variant="contained" color="primary">
+                  See your quote
+                </Button>
+          </DialogActions>
+        </React.Fragment>
+      );
+    }
+    return null;
+  });
+
+  const handleGetMyFreeSample = (event) => {
+    event.preventDefault();
+    setFreeSampleModalShow(true);
+    handleGenerateQuote(event);
+  };
+
   const validate = ({ name, value }) => {
     const errors = formInput.errors;
     if (
@@ -124,8 +169,14 @@ const QuoteDetailsModal = (props) => {
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ) {
       errors.email = 'Invalid email address'
-    } else {
+    } else if ( name === 'email') {
       delete errors.email; 
+    }
+    // validate all other errors because all are required field
+    if (name !== "email" && value === '') {
+      errors[name] = 'Field is required'
+    } else if (name !== 'email') {
+      delete errors[name];
     }
     return errors
   };
@@ -137,8 +188,20 @@ const QuoteDetailsModal = (props) => {
     setFormInput({ ...formInput, [name]: value, errors });
   };
 
+  // For all errors, the submit action will check that all required fields are filled up 
+  // but to allow action only if email are validated, then button will be disabled if email is invalid.
   const emailError = formInput.errors.hasOwnProperty("email");
   const emailErrorText = formInput.errors.hasOwnProperty("email") ? formInput.errors.email : "";
+
+  const handleSubmitDetailsForm = (event) => {
+    event.preventDefault();
+    // There are 2 submit buttons : to distinguish between actions, we checked the button that was activated
+    if (document.activeElement.getAttribute('name') === 'getFreeSampleButton') {
+      handleGetMyFreeSample(event);
+    } else {
+      handleGenerateQuote(event);
+    }
+  };
 
   return (
     <Dialog
@@ -154,7 +217,7 @@ const QuoteDetailsModal = (props) => {
         <React.Fragment>
           <DialogTitle id="quote-details-modal-title">REQUEST YOUR QUOTE - STEP 2</DialogTitle>
           <Divider/>
-          <form onSubmit={handleGenerateQuote}>
+          <form onSubmit={handleSubmitDetailsForm}>
             <DialogContent dividers={scroll === 'paper'}>
               <Box display="flex" justifyContent="center" className={classes.detailsFormContent}>
                 <Box>
@@ -187,30 +250,36 @@ const QuoteDetailsModal = (props) => {
                   </Box>
                   <Box mb={3}>
                     <FormLabel color="primary" component="legend">CONTACT INFOS</FormLabel>
-                    <TextField fullWidth name="firstName" value={formInput.firstName} onChange={handleInput} required id="first-name-required" label="First name"/>
-                    <TextField fullWidth name="lastName" value={formInput.lastName} onChange={handleInput} required id="last-name-required" label="Last name"/>
-                    <TextField fullWidth name="companyName" value={formInput.companyName} onChange={handleInput} required id="company-name-required" label="Company name"/>
-                    <TextField fullWidth name="jobTitle" value={formInput.jobTitle} onChange={handleInput} required id="job-title-required" label="Job title"/>
+                    <TextField fullWidth name="firstName" value={formInput.firstName} helperText={formInput.errors.firstName} error={formInput.errors.hasOwnProperty('firstName')}onChange={handleInput} required id="first-name-required" label="First name"/>
+                    <TextField fullWidth name="lastName" value={formInput.lastName} helperText={formInput.errors.lastName} error={formInput.errors.hasOwnProperty('lastName')}onChange={handleInput} required id="last-name-required" label="Last name"/>
+                    <TextField fullWidth name="companyName" value={formInput.companyName} helperText={formInput.errors.companyName} error={formInput.errors.hasOwnProperty('companyName')}onChange={handleInput} required id="company-name-required" label="Company name"/>
+                    <TextField fullWidth name="jobTitle" value={formInput.jobTitle} helperText={formInput.errors.jobTitle} error={formInput.errors.hasOwnProperty('phone')}onChange={handleInput} required id="job-title-required" label="Job title"/>
                     <TextField fullWidth name="email" value={formInput.email} helperText={emailErrorText} error={emailError} onChange={handleInput} required id="email-required" label="Email"/>
-                    <TextField fullWidth name="phone" value={formInput.phone} onChange={handleInput} required id="phone-required" label="Phone"/>
+                    <TextField fullWidth name="phone" value={formInput.phone} helperText={formInput.errors.phone} error={formInput.errors.hasOwnProperty('phone')} onChange={handleInput} required id="phone-required" label="Phone"/>
                   </Box>
                 </Box>
               </Box>
             </DialogContent>
             <Divider />
             <DialogActions>
-              <Button name='Close' onClick={closeDetailsView} >
-                Cancel
+              <Button name='getFreeSampleButton' disabled={emailError} variant="contained" type="submit" color="secondary">
+                Get my Free Sample
               </Button>
-              <Button type="submit" disabled={emailError} name='Generate' variant="contained" color="primary">
+              <Button type="submit" disabled={emailError} name='GenerateMyQuoteButton' variant="contained" color="primary">
                 Generate my quote
+              </Button>
+              <Button name='closeButton' onClick={closeDetailsView} >
+                Cancel
               </Button>
             </DialogActions>
           </form>
         </React.Fragment>
       )}
-      { display && pdfShow && (
-        <PdfSection />
+      { display && pdfShow && !freeSampleModalShow && (
+        <PdfSection ref={generateQuoteModalRef} />
+      )}
+      { display && freeSampleModalShow && (
+        <GetFreeSampleModal ref={getFreeSampleModalRef} />
       )}
     </Dialog>
   );
