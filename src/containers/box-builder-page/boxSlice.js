@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   items: [],
   display: false,
+  options: {},
 };
 
 export const boxSlice = createSlice({
@@ -19,6 +20,11 @@ export const boxSlice = createSlice({
       } else {
         state.items.push({product: action.payload.product, variantSelected: action.payload.variantSelected, qty: 1});
       }
+    },
+    setBoxBuilderStateForBoxUpdate(state, action) {
+      state.items = action.payload.items;
+      state.options = action.payload.options;
+      state.display = action.payload.display;
     },
     removeProductFromBox: (state, action) => {
       state.items = state.items.filter((item) => {
@@ -39,7 +45,7 @@ export const boxSlice = createSlice({
     },
   },
 });
-export const { toggleBoxPanel, resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
+export const { toggleBoxPanel, setBoxBuilderStateForBoxUpdate, resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
 export const selectBoxItems = (state) => state.box.items;
 export const selectDisplayBoxPanel = (state) => state.box.display;
 export const selectBoxTotalCost = (state) => {

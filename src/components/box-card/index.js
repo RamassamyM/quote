@@ -1,14 +1,19 @@
 import React from 'react';
-import { Tooltip, Button, Paper, ButtonGroup, InputBase, TextField, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
+import { Tooltip, Button, Paper, InputBase, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
 import { Delete as DeleteIcon, Done as DoneIcon, Inbox as InboxIcon, Edit as EditIcon, Help as HelpIcon, ExpandLess, ExpandMore } from '@material-ui/icons';
 import useStyles from './style';
 import { useDispatch } from 'react-redux';
 import { setQuantityOfBoxesInQuote, removeBoxFromQuote, changeNameOfBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { resetBox, setBoxBuilderStateForBoxUpdate } from './../../containers/box-builder-page/boxSlice';
+import { scrollUp } from './../../core/services/utils';
+import { useHistory } from "react-router-dom";
 
 export default function BoxCard(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
+  let history = useHistory();
   const box = props.box;
+  const boxIndex = props.boxIndex
   const items = box.items.map(i => i.qty + 'x ' + i.product.title + ' ' + i.variantSelected.label);
   const [value, setValue] = React.useState(box.qty);
   const [displayEditName, setDisplayEditName] = React.useState(false);
@@ -105,6 +110,23 @@ export default function BoxCard(props) {
     event.preventDefault();
     setDisplayEditName(true);
   };
+  
+  const handleEditBoxFromQuote = (event) => {
+    event.preventDefault();
+    dispatch(resetBox());
+    const payload = {
+      items: box.items,
+      display: true,
+      options : {
+        update : true,
+        indexInQuote: boxIndex,
+        boxName: box.name,
+      },
+    };
+    dispatch(setBoxBuilderStateForBoxUpdate(payload));
+    scrollUp(event);
+    history.push("/box-builder");
+  };
 
   const ContentList = () => {
     return (
@@ -136,7 +158,7 @@ export default function BoxCard(props) {
               <IconButton aria-label="Edit Name" onClick={handleClickOnEditNameButton}>
                 <EditIcon fontSize={'small'} className={classes.actionIcon} />
               </IconButton>
-              <IconButton aria-label="Edit Name" onClick={preventDefault}>
+              <IconButton aria-label="Edit Name" onClick={handleEditBoxFromQuote}>
                 <InboxIcon fontSize={'small'} className={classes.actionIcon} />
               </IconButton>
               <IconButton aria-label="Remove Item" onClick={handleRemoveBoxFromQuote}>
