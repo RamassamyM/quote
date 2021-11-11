@@ -9,6 +9,7 @@ import './core/theme/index.css';
 import theme from './theme';
 // import reportWebVitals from './reportWebVitals';
 import Navbar from './components/navbar';
+import PopupBannerFreeSample from './components/popup-banner-free-sample';
 import Footer from './components/footer';
 // uncomment line below for seeding
 import { fetchProductsAsync } from './containers/box-builder-page/productsSlice';
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Navbar />
         <App />
         <Footer />
+        <PopupBannerFreeSample />
         </HashRouter>
       </Provider>
     </ThemeProvider>

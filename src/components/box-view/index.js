@@ -137,8 +137,8 @@ const BoxView = (props) => {
                 onClick={handleCloseBoxPanel}
                 className={classes.iconClose}
               >
-              <ClearIcon fontSize="large"/>
-            </IconButton>
+                <ClearIcon fontSize="large"/>
+              </IconButton>
             </Toolbar>
           </AppBar>
         </ElevationScroll>
