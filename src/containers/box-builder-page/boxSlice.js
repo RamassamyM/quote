@@ -33,6 +33,8 @@ export const boxSlice = createSlice({
     },
     resetBox: (state) => {
       state.items = [];
+      state.display = false;
+      state.options = {};
     },
     addOneQuantityOfProductInBox: (state, action) => {
       state.items.find(e => e.variantSelected.id === action.payload.variantSelected.id).qty += 1;
@@ -47,6 +49,7 @@ export const boxSlice = createSlice({
 });
 export const { toggleBoxPanel, setBoxBuilderStateForBoxUpdate, resetBox, addProductToBox, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox, setQuantityOfProductInBox } = boxSlice.actions;
 export const selectBoxItems = (state) => state.box.items;
+export const selectBoxOptions = (state) => state.box.options;
 export const selectDisplayBoxPanel = (state) => state.box.display;
 export const selectBoxTotalCost = (state) => {
   if (state.box.items.length === 0) {

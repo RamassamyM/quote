@@ -2,21 +2,24 @@ import React from 'react';
 import { TextField, Button, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@material-ui/core';
 import useStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectBoxItems, selectBoxTotalCost, selectBoxMinTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
-import { addBoxToQuote, selectQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { selectBoxItems, selectBoxOptions, selectBoxTotalCost, selectBoxMinTotalCost, resetBox } from './../../containers/box-builder-page/boxSlice';
+import { addBoxToQuote, selectQuote, updateBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { useHistory } from "react-router-dom";
+import { scrollUp } from './../../core/services/utils';
 
 const BoxConfirmationModal = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
   const dispatch = useDispatch();
   // App state
   const boxItems = useSelector(selectBoxItems);
+  const boxOptions = useSelector(selectBoxOptions);
   const quote = useSelector(selectQuote);
   const boxTotalCost = useSelector(selectBoxTotalCost);
   const boxMinPrice = useSelector(selectBoxMinTotalCost);
   // Local state
+  const initalBoxName = boxOptions.update && boxOptions.boxName ? boxOptions.boxName : '';
   const [boxName, setBoxName] = React.useState({
-    boxName: null,
+    boxName: initalBoxName,
     errors: {},
   });
   // Other variables declaration(useRef, useStyles...)
@@ -32,20 +35,17 @@ const BoxConfirmationModal = (props) => {
   // Logic
   const handleCloseBoxConfirmationView = props.handleCloseBoxConfirmationView;
 
-  const scrollUp = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
-    if (anchor) {
-      anchor.scrollIntoView({ block: 'center' });
-    }
-  }
-
   const handleAddBoxToQuote = (event, thisBoxName) => {
     event.preventDefault();
-    dispatch(addBoxToQuote({ ...box, name: thisBoxName.boxName }))
+    if (boxOptions.update && boxOptions.hasOwnProperty('indexInQuote')) {
+      dispatch(updateBoxInQuote({ box:{ ...box, name: thisBoxName.boxName}, boxIndex: boxOptions.indexInQuote }))
+    } else {
+      dispatch(addBoxToQuote({ ...box, name: thisBoxName.boxName }))
+    }
     dispatch(resetBox());
     setBoxName({
       ...boxName,
-      boxName: null
+      boxName: ''
     });
     handleCloseBoxConfirmationView();
     handleAfterAddingBox();
@@ -94,14 +94,14 @@ const BoxConfirmationModal = (props) => {
             <DialogContentText id="alert-dialog-description">
               To identify this box in your quote
             </DialogContentText>
-              <TextField name="boxName" className={classes.boxNameField} helperText={boxNameErrorText} error={boxNameError} onChange={handleChangeOnNameTextField} id="outlined-basic" label="Name" placeholder="ex: Box1, ChristmasBox, MenBox..." variant="outlined"/>
+              <TextField name="boxName" className={classes.boxNameField} helperText={boxNameErrorText} error={boxNameError} onChange={handleChangeOnNameTextField} id="outlined-basic" label="Name" value={boxName.boxName} placeholder={"ex: Box1, ChristmasBox, MenBox..."} variant="outlined"/>
           </DialogContent>
           <DialogActions>
             <Button name='Close' onClick={handleCloseBoxConfirmationView} color="default">
               Cancel
             </Button>
             <Button disabled={boxNameError || boxName.boxName === null} name='AddToQuote' onClick={(event) => handleAddBoxToQuote(event, boxName)} color="primary" variant="contained" autoFocus>
-              Add to quote
+              { boxOptions.update ? 'Update box in quote' : 'Add box to quote' }
             </Button>
           </DialogActions>
         </React.Fragment>

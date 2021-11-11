@@ -4,7 +4,7 @@ import { Toolbar, AppBar, Typography, Box, IconButton, Card, CardContent, CardMe
 import { Clear as ClearIcon, Delete as DeleteIcon, AddCircle as AddCircleIcon, RemoveCircle as RemoveCircleIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectBoxItems, selectBoxMinTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
+import { selectBoxItems, selectBoxOptions, selectBoxMinTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
 import ElevationScroll from './../elevationScroll';
 import BoxConfirmationModal from './../boxConfirmationModal';
 
@@ -14,6 +14,7 @@ const BoxView = (props) => {
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems);
   // const boxTotalCost = useSelector(selectBoxTotalCost);
   const boxMinTotalCost = useSelector(selectBoxMinTotalCost);
+  const boxOptions = useSelector(selectBoxOptions);
   const dispatch = useDispatch();
   // App state
   // Local state
@@ -157,7 +158,7 @@ const BoxView = (props) => {
               </Typography>
             </Box>
             <Button disableElevation className={classes.addToQuoteButton} disabled={boxNumberOfItems === 0} variant="contained" color="secondary" onClick={() => handleClickOnAddBox('paper')}>
-              Add box to quote
+              { boxOptions.update ? 'Update box in quote' : 'Add box to quote' }
             </Button>
           </Box>
           {/* <div className={classes.grow} /> */}

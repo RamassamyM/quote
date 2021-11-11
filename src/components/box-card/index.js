@@ -13,7 +13,6 @@ export default function BoxCard(props) {
   const classes = useStyles();
   let history = useHistory();
   const box = props.box;
-  const boxIndex = props.boxIndex
   const items = box.items.map(i => i.qty + 'x ' + i.product.title + ' ' + i.variantSelected.label);
   const [value, setValue] = React.useState(box.qty);
   const [displayEditName, setDisplayEditName] = React.useState(false);
@@ -119,7 +118,7 @@ export default function BoxCard(props) {
       display: true,
       options : {
         update : true,
-        indexInQuote: boxIndex,
+        indexInQuote: box.id,
         boxName: box.name,
       },
     };

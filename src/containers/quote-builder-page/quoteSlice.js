@@ -36,6 +36,24 @@ export const quoteSlice = createSlice({
         id: state.next_index});
       state.next_index = state.next_index + 1;
     },
+    updateBoxInQuote(state, action) {
+      const boxIndex = action.payload.boxIndex;
+      const boxes = state.boxes;
+      const initialBoxQty = boxes[boxIndex].qty;
+      const unitPrice = action.payload.box.unitPrice;
+      const minPrice = action.payload.box.minPrice;
+      const prediscountedCost = Number(Number.parseFloat(unitPrice * initialBoxQty).toFixed(2));
+      const discount = Number(Number.parseFloat(calculateTotalDiscount(unitPrice, minPrice, initialBoxQty)).toFixed(2));
+      const discountedCost = Number(Number.parseFloat(prediscountedCost - discount).toFixed(2));
+      boxes[boxIndex] = {
+        ...action.payload.box,
+        qty: initialBoxQty,
+        prediscountedCost: prediscountedCost,
+        discount: discount,
+        discountedCost: discountedCost,
+        id: boxIndex,
+      };
+    },
     removeBoxFromQuote: (state, action) => {
       state.boxes = state.boxes.filter((box) => {
         return box.id !== action.payload.id;
@@ -62,7 +80,7 @@ export const quoteSlice = createSlice({
   },
 });
 
-export const { addBoxToQuote, changeNameOfBoxInQuote, removeBoxFromQuote, setQuantityOfBoxesInQuote, setQuoteDetails, deleteQuote } = quoteSlice.actions;
+export const { addBoxToQuote, updateBoxInQuote, changeNameOfBoxInQuote, removeBoxFromQuote, setQuantityOfBoxesInQuote, setQuoteDetails, deleteQuote } = quoteSlice.actions;
 
 export const selectBoxesInQuote = (state) => state.quote.boxes;
 export const selectQuote = (state) => state.quote;
