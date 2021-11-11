@@ -2,6 +2,7 @@ import React from 'react';
 import { Paper, Box, Button, IconButton, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { Clear as ClearIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import Zoom from '@material-ui/core/Zoom';
 
 const useStyles = props => makeStyles((theme) => ({
   root: {
@@ -13,13 +14,25 @@ const useStyles = props => makeStyles((theme) => ({
   message: {
     color: theme.palette.text.reverted,
     fontSize: '2rem',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1.8rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.5rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: '5px',
+    },
   },
-  button: {
+  buttonAction: {
     backgroundColor: props.buttonColor,
     "&:hover": {
       backgroundColor: props.buttonColorHover,
     },
     color: theme.palette.text.reverted,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '0.8rem',
+    },
   },
   paper: {
     position: 'sticky', 
@@ -42,7 +55,7 @@ const useStyles = props => makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    width: '100%',
+    width: '70%',
     height: '100%',
   },
   middlePicture: {
@@ -52,14 +65,26 @@ const useStyles = props => makeStyles((theme) => ({
     width: '30%',
     height: '100%',
     position: 'relative',
-    left: '-20px',
+    left: '-40px',
     top: '0px',
     marginTop: '2px',
     marginBottom: '20px',
+    [theme.breakpoints.down('sm')]: {
+      left: '-10px',
+    },
   },
   pictureWrapper: {
     width: '35%',
-    height: '100%'
+    height: '100%',
+    [theme.breakpoints.down('md')]: {
+      width: '30%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '25%',
+    },
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   cardContent: {
   },
@@ -85,39 +110,43 @@ export default function PopupBanner({display, messageText, leftPictureUrl, middl
   };
 
   return (
-    <Box className={classes.paper} display={display}>
-    <Paper elevation={3} >
-      <Card className={classes.card}>
-        <Box display="flex" alignItems="center" justifyContent="center" className={classes.pictureWrapper}>
-          <CardMedia
-            className={classes.leftPicture}
-            image={leftPictureUrl}
-          />
-          <CardMedia
-            className={classes.middlePicture}
-            image={middlePictureUrl}
-          />
-        </Box>
-        <CardContent className={classes.content}>
-          <Typography component="h2" variant="h4" className={classes.message}>
-            <strong>{messageText}</strong>
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button disableElevation className={classes.button} variant="contained" onClick={handleClickOnButton}>
-            {buttonText}
-          </Button>
-          <IconButton
-            aria-label="Close"
-            edge="end"
-            onClick={handleCloseBannerPopup}
-            className={classes.iconClose}
-          >
-            <ClearIcon fontSize="large"/>
-          </IconButton>
-        </CardActions>
-      </Card>
-    </Paper>
-    </Box>
+    <Zoom in={display}>
+      <Box className={classes.paper} >
+        <Paper elevation={3} >
+          <Card className={classes.card}>
+            <Box display="flex" alignItems="center" justifyContent="flex-start" className={classes.pictureWrapper}>
+              <CardMedia
+                className={classes.leftPicture}
+                image={leftPictureUrl}
+              />
+              <CardMedia
+                className={classes.middlePicture}
+                image={middlePictureUrl}
+              />
+            </Box>
+            <Box flexGrow={1} display="flex" alignItems="center" justifyContent="space-between" >
+            <CardContent flexShrink={1} className={classes.content}>
+              <Typography component="h2" variant="h4" className={classes.message}>
+                <strong>{messageText}</strong>
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button disableElevation className={classes.buttonAction} variant="contained" onClick={handleClickOnButton}>
+                {buttonText}
+              </Button>
+              <IconButton
+                aria-label="Close"
+                edge="end"
+                onClick={handleCloseBannerPopup}
+                className={classes.iconClose}
+              >
+                <ClearIcon fontSize="large"/>
+              </IconButton>
+            </CardActions>
+            </Box>
+          </Card>
+        </Paper>
+      </Box>
+    </Zoom>
   )
 };
