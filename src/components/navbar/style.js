@@ -14,7 +14,12 @@ const useStyles = makeStyles((theme) => ({
   },
   freeSample: {
     width: '20px',
-    height: '20px'
+    height: '20px',
+    '&:hover': {
+      cursor: 'pointer',
+      position: 'relative',
+      top: '-2px',
+    },
   },
   link: {
     '& a': {
