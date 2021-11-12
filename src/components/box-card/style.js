@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
   buttonEditForm: {
     borderRadius: '0px 4px 4px 0px',
     width: '50px',
+    minHeight: '55px',
     backgroundColor: theme.palette.primary.variant,
   },
   inputEditName: {

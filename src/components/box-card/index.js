@@ -1,9 +1,9 @@
 import React from 'react';
-import { Tooltip, Button, Paper, InputBase, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
+import { Tooltip, Button, Paper, TextField, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
 import { Delete as DeleteIcon, Done as DoneIcon, Inbox as InboxIcon, Edit as EditIcon, Help as HelpIcon, ExpandLess, ExpandMore } from '@material-ui/icons';
 import useStyles from './style';
-import { useDispatch } from 'react-redux';
-import { setQuantityOfBoxesInQuote, removeBoxFromQuote, changeNameOfBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setQuantityOfBoxesInQuote, selectQuote, removeBoxFromQuote, changeNameOfBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
 import { resetBox, setBoxBuilderStateForBoxUpdate } from './../../containers/box-builder-page/boxSlice';
 import { scrollUp } from './../../core/services/utils';
 import { useHistory } from "react-router-dom";
@@ -12,9 +12,11 @@ export default function BoxCard(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   let history = useHistory();
+  const quote = useSelector(selectQuote);
   const box = props.box;
   const items = box.items.map(i => i.qty + 'x ' + i.product.title + ' ' + i.variantSelected.label);
   const [value, setValue] = React.useState(box.qty);
+  const [boxNameError, setBoxNameError] = React.useState(false);
   const [displayEditName, setDisplayEditName] = React.useState(false);
   // const [newName, setNewName] = React.useState('');
   const [openBoxContent, setOpenBoxContent] = React.useState(false);
@@ -40,9 +42,11 @@ export default function BoxCard(props) {
   const setQuantity = (event, value) => {
     dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: value}))
   };
+
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
   };
+
   const handleInputChange = (event) => {
     const newValue = event.target.value === '' ? 0 : Number(event.target.value);
     dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: newValue}))
@@ -60,15 +64,26 @@ export default function BoxCard(props) {
     setOpenBoxContent(!openBoxContent);
   };
 
+  const checkIfNameOfBoxIsTaken = (name) => {
+    const boxNamesList = quote.boxes.map((box) => box.name);
+    return boxNamesList.includes(name)
+  };
+
   const handleSubmitNameForm = (event) => {
     event.preventDefault();
-    console.log(textFieldRef.current.value);
-    if (!!textFieldRef.current.value) {
-      dispatch(changeNameOfBoxInQuote({ oldName: box.name, newName: textFieldRef.current.value }));
+    const newName = textFieldRef.current.value
+    if (checkIfNameOfBoxIsTaken(newName)) {
+      setBoxNameError(true)
+    } else {
+      setBoxNameError(false)
+      if (!!textFieldRef.current.value) {
+        dispatch(changeNameOfBoxInQuote({ oldName: box.name, newName: newName }));
+      }
+      setDisplayEditName(!displayEditName);
     }
-    setDisplayEditName(!displayEditName);
   };
   const textFieldRef = React.useRef(null);
+  const boxNameErrorHelpText = boxNameError ? 'Name already exists' : '';
 
   const NameBlock = () => {
     if (displayEditName) {
@@ -76,8 +91,10 @@ export default function BoxCard(props) {
         <Box p={1} flexGrow={1}>
           <Paper component="form" onSubmit={handleSubmitNameForm}>
             <Box display="flex" alignItems="center" justifyContent="space-between" >
-              <InputBase
+              <TextField
                 className={classes.inputEditName}
+                helperText={boxNameErrorHelpText} 
+                error={boxNameError} 
                 placeholder={box.name}
                 aria-label="edit name of box"
                 inputRef={textFieldRef}
