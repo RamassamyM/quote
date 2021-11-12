@@ -5,6 +5,7 @@ import boxIdeaCategoriesReducer from '../../containers/box-ideas-page/categories
 import boxIdeasReducer from '../../containers/box-ideas-page/boxIdeasSlice';
 import boxReducer from '../../containers/box-builder-page/boxSlice';
 import quoteReducer from '../../containers/quote-builder-page/quoteSlice';
+import freeSampleReducer from '../../components/popup-banner-free-sample/freeSampleSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     quote: quoteReducer,
     categories: categoriesReducer,
     boxIdeaCategories: boxIdeaCategoriesReducer,
-    boxIdeas: boxIdeasReducer
+    boxIdeas: boxIdeasReducer,
+    freeSample: freeSampleReducer
   },
 });

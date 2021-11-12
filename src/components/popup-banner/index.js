@@ -101,12 +101,13 @@ export default function PopupBanner({display, messageText, leftPictureUrl, middl
   const handleClickOnButton = (event) => {
     event.preventDefault();
     console.log('Action Button Clicked');
+    handleButtonClick(event);
   };
 
   const handleCloseBannerPopup = (event) => {
     event.preventDefault();
     console.log('Close Button Clicked');
-    handleClose();
+    handleClose(event);
   };
 
   return (

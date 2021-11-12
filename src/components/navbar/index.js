@@ -6,14 +6,16 @@ import { Link, Box, Button, List, ListItem, ListItemText, Drawer } from '@materi
 import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
 import { Home as HomeIcon, Clear as ClearIcon, Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
 import logo from './../../assets/curakit-logo-blue.png'; 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
 import { selectNumberOfBoxTypesInQuote } from './../../containers/quote-builder-page/quoteSlice';
+import { toggleVideoModalDisplay } from '../popup-banner-free-sample/freeSampleSlice';
 import { Link as RouterLink } from 'react-router-dom'
 import ElevationScroll from './../elevationScroll';
 
 export default function PrimaryAppBar(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const location = useLocation().pathname;
   const boxNumberOfItems = useSelector(selectBoxNumberOfItems) || 0;
   const quoteNumberOfBoxTypes = useSelector(selectNumberOfBoxTypesInQuote) || 0;
@@ -71,6 +73,7 @@ export default function PrimaryAppBar(props) {
   const handleGetFreeSampleClick = (event) => {
     event.preventDefault(); 
     console.log('clicked on Free sample link');
+    dispatch(toggleVideoModalDisplay());
   };
 
   const list = (anchor) => (

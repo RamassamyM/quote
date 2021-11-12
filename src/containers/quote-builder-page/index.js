@@ -151,7 +151,7 @@ export default function BoxBuilderPage() {
                   width={'400px'}
                   height={'200px'}
                 />
-                </Box>
+              </Box>
               <Box mb={4}>
                 <img alt="empty box" className={classes.emptyBoximage} src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/empty.png?alt=media&token=87aafaa9-20ee-4cab-8853-30017f6656d2"></img>
               </Box>
