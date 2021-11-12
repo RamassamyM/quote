@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import useStyles from './style';
 import { useLocation } from "react-router-dom";
-import { Link, Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
+import { Link, Tooltip, Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
 import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
 import { Home as HomeIcon, Clear as ClearIcon, Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
 import logo from './../../assets/curakit-logo-blue.png'; 
@@ -189,11 +189,13 @@ export default function PrimaryAppBar(props) {
                   Quote Builder&nbsp;&nbsp;
                 </Badge>
               </Button>
-              <Link onClick={handleGetFreeSampleClick}>
-                <Box>
-                  <img src={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/gift.png?alt=media&token=b9eee068-ab40-41c0-8cb4-edd6d513c3f8'} alt='free-sample-button' className={classes.freeSample}/>
-                </Box>
-              </Link>
+              <Tooltip title="Get a free sample box" aria-label="Get a free sample box">
+                <Link onClick={handleGetFreeSampleClick}>
+                  <Box>
+                    <img src={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/gift.png?alt=media&token=b9eee068-ab40-41c0-8cb4-edd6d513c3f8'} alt='free-sample-button' className={classes.freeSample}/>
+                  </Box>
+                </Link>
+              </Tooltip>
               <Button 
                 color="inherit" 
                 style={{display: isLoggedIn ? 'none' : 'block' }} 
