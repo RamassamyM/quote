@@ -5,6 +5,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+    match /boxIdeas/{boxIdea} {
+      allow read: if true;
+      allow write: if false;
+    }
     match /quotes/{quote} {
       allow write: if true;
     }
