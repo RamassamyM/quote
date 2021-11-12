@@ -15,6 +15,8 @@ export const fetchProductsAsync = createAsyncThunk(
   'products/fetchProducts',
   async () => {
     const products = await fetchProducts();
+    // const productIdsAndNames = products.map(p => `${p.title}: ${p.productId}`);
+    // console.log(productIdsAndNames);
     return products;
   }
 );

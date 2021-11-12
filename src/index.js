@@ -36,8 +36,8 @@ ReactDOM.render(
         <CssBaseline />
         <Navbar />
         <App />
-        <Footer />
         <PopupBannerFreeSample />
+        <Footer />
         </HashRouter>
       </Provider>
     </ThemeProvider>

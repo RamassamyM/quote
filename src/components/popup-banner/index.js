@@ -6,7 +6,7 @@ import Zoom from '@material-ui/core/Zoom';
 
 const useStyles = props => makeStyles((theme) => ({
   root: {
-    position: 'fixed',
+    position: 'sticky',
     bottom: 'Opx',
     zIndex: '100',
     width: '100%',

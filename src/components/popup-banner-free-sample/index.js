@@ -17,8 +17,8 @@ const PopupBannerFreeSample= () => {
   displayPopupSmooth();
 
   const handleClose = async () => {
+    await setCookie({name: COOKIENAME, value: 'false', maxAge: MAXAGECOOKIEINSEC});
     setDisplayPopup(false);
-    setCookie({name: COOKIENAME, value: 'false', maxAge: MAXAGECOOKIEINSEC});
   };
 
   const handleButtonClick = (event) => {
@@ -38,7 +38,7 @@ const PopupBannerFreeSample= () => {
         backgroundColor="#a3daf1"
         handleClose={handleClose}
         handleButtonClick={handleButtonClick}
-        display={displayPopup === true}
+        display={displayPopup}
       />
   );
 };
