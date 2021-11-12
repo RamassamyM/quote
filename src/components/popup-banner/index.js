@@ -125,7 +125,7 @@ export default function PopupBanner({display, messageText, leftPictureUrl, middl
               />
             </Box>
             <Box flexGrow={1} display="flex" alignItems="center" justifyContent="space-between" >
-            <CardContent flexShrink={1} className={classes.content}>
+            <CardContent className={classes.content}>
               <Typography component="h2" variant="h4" className={classes.message}>
                 <strong>{messageText}</strong>
               </Typography>

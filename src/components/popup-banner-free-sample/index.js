@@ -1,20 +1,24 @@
 import React from 'react';
 import PopupBanner from '../popup-banner';
+import { checkACookieExists, retrieveCookieValue, setCookie } from './../../core/services/utils';
+
+const COOKIENAME = 'displayFreeSamplePopup';
+const MAXAGECOOKIEINSEC = 345600;
+const TIMEBEFOREDISPLAYINMS = 4000;
 
 const PopupBannerFreeSample= () => {
-  const [displayPopup, setDisplayPopup] = React.useState('pending');
-
+  
+  const [displayPopup, setDisplayPopup] = React.useState(false);
   const displayPopupSmooth = async () => {
-    if (displayPopup === 'pending') {
-      await setTimeout(() => {
-        setDisplayPopup(true);
-      }, 4000);
+    if (!checkACookieExists(COOKIENAME) || (checkACookieExists(COOKIENAME) && retrieveCookieValue(COOKIENAME) !== 'false')) {
+      await setTimeout(() => { setDisplayPopup(true); }, TIMEBEFOREDISPLAYINMS);
     }
   };
   displayPopupSmooth();
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setDisplayPopup(false);
+    setCookie({name: COOKIENAME, value: 'false', maxAge: MAXAGECOOKIEINSEC});
   };
 
   const handleButtonClick = (event) => {
