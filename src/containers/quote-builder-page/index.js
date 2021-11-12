@@ -88,7 +88,7 @@ export default function BoxBuilderPage() {
           <Grid item xs={10} sm={8} md={6} align="center">
             <Box>
             {boxes.map((box) => (
-              <BoxCard key={`boxCard-${box.id}`} box={box}/>
+              <BoxCard key={`${box.name}-${box.id}`} box={box}/>
               ))}
             </Box>
             <Box mb={3} mt={4} display="flex" justifyContent="center">

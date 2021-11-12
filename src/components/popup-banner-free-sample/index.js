@@ -7,7 +7,7 @@ import { toggleVideoModalDisplay, selectDisplayVideo } from './freeSampleSlice';
 import ReactPlayer from 'react-player/lazy';
 
 const COOKIENAME = 'displayFreeSamplePopup';
-const MAXAGECOOKIEINSEC = 345600;
+const MAXAGECOOKIEINSEC = 86400;
 const TIMEBEFOREDISPLAYINMS = 4000;
 
 const PopupBannerFreeSample= () => {

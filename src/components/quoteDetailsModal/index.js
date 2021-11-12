@@ -250,10 +250,10 @@ const QuoteDetailsModal = (props) => {
                   </Box>
                   <Box mb={3}>
                     <FormLabel color="primary" component="legend">CONTACT INFOS</FormLabel>
-                    <TextField fullWidth name="firstName" value={formInput.firstName} helperText={formInput.errors.firstName} error={formInput.errors.hasOwnProperty('firstName')}onChange={handleInput} required id="first-name-required" label="First name"/>
-                    <TextField fullWidth name="lastName" value={formInput.lastName} helperText={formInput.errors.lastName} error={formInput.errors.hasOwnProperty('lastName')}onChange={handleInput} required id="last-name-required" label="Last name"/>
-                    <TextField fullWidth name="companyName" value={formInput.companyName} helperText={formInput.errors.companyName} error={formInput.errors.hasOwnProperty('companyName')}onChange={handleInput} required id="company-name-required" label="Company name"/>
-                    <TextField fullWidth name="jobTitle" value={formInput.jobTitle} helperText={formInput.errors.jobTitle} error={formInput.errors.hasOwnProperty('phone')}onChange={handleInput} required id="job-title-required" label="Job title"/>
+                    <TextField fullWidth name="firstName" value={formInput.firstName} helperText={formInput.errors.firstName} error={formInput.errors.hasOwnProperty('firstName')} onChange={handleInput} required id="first-name-required" label="First name"/>
+                    <TextField fullWidth name="lastName" value={formInput.lastName} helperText={formInput.errors.lastName} error={formInput.errors.hasOwnProperty('lastName')} onChange={handleInput} required id="last-name-required" label="Last name"/>
+                    <TextField fullWidth name="companyName" value={formInput.companyName} helperText={formInput.errors.companyName} error={formInput.errors.hasOwnProperty('companyName')} onChange={handleInput} required id="company-name-required" label="Company name"/>
+                    <TextField fullWidth name="jobTitle" value={formInput.jobTitle} helperText={formInput.errors.jobTitle} error={formInput.errors.hasOwnProperty('phone')} onChange={handleInput} required id="job-title-required" label="Job title"/>
                     <TextField fullWidth name="email" value={formInput.email} helperText={emailErrorText} error={emailError} onChange={handleInput} required id="email-required" label="Email"/>
                     <TextField fullWidth name="phone" value={formInput.phone} helperText={formInput.errors.phone} error={formInput.errors.hasOwnProperty('phone')} onChange={handleInput} required id="phone-required" label="Phone"/>
                   </Box>
