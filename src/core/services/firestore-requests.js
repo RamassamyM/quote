@@ -22,6 +22,7 @@ const addDisplayVariantsToProducts = (data) => {
 };
 
 export const fetchBoxIdeas = async () => {
+  console.log("Start fetch box ideas");
   let results = [];
   await db.collection("boxIdeas").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
@@ -29,8 +30,7 @@ export const fetchBoxIdeas = async () => {
       results.push({boxIdeaId: doc.id, ...data});
     });
   });
-  console.log("Firestore fetched!");
-  // console.log("results: ", results);
+  console.log("Firestore boxIdeas fetched!");
   return results;
 }
 
@@ -42,7 +42,7 @@ export const fetchProducts = async () => {
       results.push({productId: doc.id, ...data});
     });
   });
-  console.log("Firestore fetched!");
+  console.log("Firestore products fetched!");
   return results;
 }
 
