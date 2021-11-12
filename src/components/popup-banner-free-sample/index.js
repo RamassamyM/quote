@@ -64,6 +64,7 @@ const PopupBannerFreeSample= () => {
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
             ref={freeSampleVideoModalRef}
+            fullWidth
           >
             <DialogTitle id="scroll-dialog-title">How to get your free sample box ?</DialogTitle>
             <DialogContent>
@@ -72,8 +73,8 @@ const PopupBannerFreeSample= () => {
                   url='https://www.youtube.com/watch?v=ysz5S6PUM-U' 
                   controls={true}
                   light={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/video_tutorial_placeholder.png?alt=media&token=cb75130f-3998-40dd-b418-64460b2e3258'}
-                  width={'400px'}
-                  height={'200px'}
+                  width={'100%'}
+                  height={'220px'}
                 />
               </Box>
             </DialogContent>
