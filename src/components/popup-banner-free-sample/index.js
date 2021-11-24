@@ -44,7 +44,7 @@ const PopupBannerFreeSample= () => {
   return (
     <React.Fragment>
       <PopupBanner
-        messageText="Get a free sample box now"
+        messageText="Get a free sample box"
         leftPictureUrl="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/hero.jpg?alt=media&token=2c618b41-3bdc-41f4-b86e-75c8a0163064"
         middlePictureUrl="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/lights.png?alt=media&token=7961ab7a-176d-44ee-90fd-d81de03092b8"
         buttonText="Discover"

@@ -132,7 +132,10 @@ export default function PopupBanner({display, messageText, leftPictureUrl, middl
               </Typography>
             </CardContent>
             <CardActions>
-              <Button disableElevation className={classes.buttonAction} variant="contained" onClick={handleClickOnButton}>
+              {/* <Button disableElevation className={classes.buttonAction} variant="contained" onClick={handleClickOnButton}>
+                {buttonText}
+              </Button> */}
+              <Button type="link" disableElevation className={classes.buttonAction} variant="contained" href="https://curakit.com/free-sample" target="_blank">
                 {buttonText}
               </Button>
               <IconButton
