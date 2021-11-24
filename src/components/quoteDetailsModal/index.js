@@ -226,25 +226,25 @@ const QuoteDetailsModal = (props) => {
                       <FormLabel component="legend">DELIVERY</FormLabel>
                       <RadioGroup aria-label="delivery" name="delivery" value={formInput.delivery} onChange={handleChangeDelivery}>
                         <FormControlLabel value="company" control={<Radio />} label="Company delivery (one drop-off)" />
-                        <FormControlLabel value="individual" control={<Radio />} label="Individual deliveries" />
+                        <FormControlLabel value="individual" control={<Radio />} label="Individual deliveries (direct to recipients)" />
                       </RadioGroup>
                       <FormHelperText>
                         <Button size="small" component="a" href="mailto:sales@curakit.com" className={classes.contactLink} startIcon={<MailOutlineIcon />}>
-                          Contact us for mixed deliveries 
+                          Contact us for additional delivery options 
                         </Button>
                       </FormHelperText>
                     </FormControl>
                   </Box>
                   <Box mb={4}>
                     <FormControl component="fieldset">
-                      <FormLabel component="legend">CUSTOMIZATION</FormLabel>
+                      <FormLabel component="legend">CUSTOMISATION</FormLabel>
                         <FormControlLabel
                           control={<Checkbox checked={formInput.addCompanyLogo} onChange={handleChangeOptionCompanyLogo} name="Company Logo Option" />}
-                          label="Add my company logo"
+                          label="Add my company logo to box (£ poa)"
                           />
                         <FormControlLabel
                           control={<Checkbox checked={formInput.addCustomMessage} onChange={handleChangeOptionCustomMessage} name="Custom Message Option" />}
-                          label="Add a custom message in each box"
+                          label="Add a custom message in each box (£ free)"
                           />
                     </FormControl>
                   </Box>
