@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Link, Tooltip, Box, Button, List, ListItem, ListItemText, Drawer } from '@material-ui/core';
 import { AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
 import { Home as HomeIcon, Clear as ClearIcon, Menu as MenuIcon, ExitToApp as ExitToAppIcon, Inbox as InboxIcon, AccountCircle } from '@material-ui/icons';
-import logo from './../../assets/curakit-logo-blue.png'; 
+// import logo from './../../assets/curakit-logo-blue.png'; 
 import { useSelector, useDispatch } from 'react-redux';
 import { selectBoxNumberOfItems } from './../../containers/box-builder-page/boxSlice';
 import { selectNumberOfBoxTypesInQuote } from './../../containers/quote-builder-page/quoteSlice';
@@ -112,12 +112,12 @@ export default function PrimaryAppBar(props) {
             <InboxIcon color="primary"/>
           </Badge>
         </ListItem>
-        <ListItem button onClick={handleGetFreeSampleClick} key="Free Sample Popup">
+        {/* <ListItem button onClick={handleGetFreeSampleClick} key="Free Sample Popup">
           <ListItemText primary={"Get a free Sample"} className={classes.linkInMenu}/>
           <Box>
             <img src={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/gift.png?alt=media&token=b9eee068-ab40-41c0-8cb4-edd6d513c3f8'} alt='free-sample-button' className={classes.freeSample}/>
           </Box>
-        </ListItem>
+        </ListItem> */}
         <ListItem button href="https://www.curakit.com" key="Back to Curakit Website" onClick={handleRedirectToWebsite}>
           <ListItemText primary={"Back to Curakit website"} className={classes.linkInMenu}/>
           <ExitToAppIcon color="primary"/>
@@ -145,9 +145,9 @@ export default function PrimaryAppBar(props) {
       <ElevationScroll {...props}>
         <AppBar position="fixed" color="inherit">
           <Toolbar>
-            <Link href="https://www.curakit.com">
+            <Link href="https://www.curakit.com" target="_blank">
               <Box>
-                <img src={logo} alt='curakit-logo' className={classes.logo}/>
+                <img src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/Curakit%20logotype%20v2%20blue.png?alt=media&token=f087db76-8205-4e88-890f-2210227dff7e" alt='curakit-logo' className={classes.logo}/>
               </Box>
             </Link>
               <Typography component="h1" className={classes.pro}>
@@ -189,13 +189,13 @@ export default function PrimaryAppBar(props) {
                   Quote Builder&nbsp;&nbsp;
                 </Badge>
               </Button>
-              <Tooltip title="Get a free sample box" aria-label="Get a free sample box">
+              {/* <Tooltip title="Get a free sample box" aria-label="Get a free sample box">
                 <Link onClick={handleGetFreeSampleClick}>
                   <Box>
                     <img src={'https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/gift.png?alt=media&token=b9eee068-ab40-41c0-8cb4-edd6d513c3f8'} alt='free-sample-button' className={classes.freeSample}/>
                   </Box>
                 </Link>
-              </Tooltip>
+              </Tooltip> */}
               <Button 
                 color="inherit" 
                 style={{display: isLoggedIn ? 'none' : 'block' }} 

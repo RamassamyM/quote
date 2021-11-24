@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     // height: '100%',
-    // maxHeight: '24px',
+    maxHeight: '26px',
   },
   pro: {
     fontFamily: 'Montserrat',
