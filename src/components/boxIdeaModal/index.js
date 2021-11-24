@@ -101,8 +101,8 @@ const BoxIdeaModal = (props) => {
   }
 
   const priceToDisplay = (variantSelection) => {
-    if (variantSelection) return variantSelection.currency + variantSelection.boxPrice
-    return "£ " + arrayMin(boxIdea.variants.map(v => v.boxPrice)) + " - £" + arrayMax(boxIdea.variants.map(v => v.boxPrice))
+    if (variantSelection) return "From " + variantSelection.currency + Number.parseFloat(variantSelection.minBoxPrice).toFixed(2);
+    return "From £" + Number.parseFloat(arrayMin(boxIdea.variants.map(v => v.minBoxPrice))).toFixed(2) + " to £" + Number.parseFloat(arrayMax(boxIdea.variants.map(v => v.boxPrice))).toFixed(2);
   };
 
   return (
@@ -179,7 +179,7 @@ const BoxIdeaModal = (props) => {
                             <React.Fragment key={item.variantSKU}>
                               <Typography component="h6" variant="body2" color='textSecondary'>
                                 <Link href="#" onClick={(event) => handleClickOnViewProduct(event, item.productInfos)}>
-                                  - {item.qty} x {item.productInfos.title} : {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_value} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_unit} - {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].currency}{item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].price} max
+                                  - {item.qty} x {item.productInfos.title} : {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_value} {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].property_unit} - min {item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].currency}{item.productInfos.variants.filter(v => v.sku === item.variantSKU)[0].min_price.toFixed(2)}
                                 </Link>
                               </Typography>
                               <br/>
@@ -190,7 +190,7 @@ const BoxIdeaModal = (props) => {
                       </React.Fragment>
                     )}
                     <Typography component="h6" color='primary'>
-                      <strong>Price : {priceToDisplay(variantSelection)}</strong> before discount
+                      <strong>Price : {priceToDisplay(variantSelection)}</strong>
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between" alignItems="center">

@@ -8,18 +8,24 @@ const initialState = {
 };
 
 const calculateTotalDiscount = (unitPrice, minCost, qty) => {
-  let discount = 0;
-  if (qty >= 10 && qty < 100) {
-    discount = unitPrice * 0.05;
+  const maxDiscount = unitPrice - minCost;
+  let discountRate = 0;
+  if (qty >= 1000) {
+    discountRate = 1;
+  } else if (qty > 500) {
+    discountRate = 0.70;
+  } else if (qty > 250) {
+    discountRate = 0.50;
+  } else if (qty > 100) {
+    discountRate = 0.35;
+  } else if (qty > 50) {
+    discountRate = 0.20;
+  } else if (qty > 25) {
+    discountRate = 0.10;
+  } else {
+    discountRate = 0;
   }
-  if (qty >= 100 && qty < 500) {
-    discount = unitPrice * 0.1;
-  }
-  if (qty >= 500) {
-    discount = unitPrice * 0.15;
-  }
-  discount = (unitPrice - discount) < minCost ? (unitPrice - minCost) : discount;
-  return discount * qty;
+  return discountRate * maxDiscount * qty;
 };
 
 export const quoteSlice = createSlice({

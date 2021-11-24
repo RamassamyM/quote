@@ -25,8 +25,8 @@ export default function BoxIdeaCard(props) {
   }
   
   const priceToDisplay = (variantSelection) => {
-    if (variantSelection) return variantSelection.currency + variantSelection.boxPrice + " before discount"
-    return "£ " + arrayMin(boxIdea.variants.map(v => v.boxPrice)) + " - £" + arrayMax(boxIdea.variants.map(v => v.boxPrice))
+    if (variantSelection) return "From " + variantSelection.currency + Number.parseFloat(variantSelection.minBoxPrice).toFixed(2);
+    return "From £" + Number.parseFloat(arrayMin(boxIdea.variants.map(v => v.minBoxPrice))).toFixed(2) + " to £" + Number.parseFloat(arrayMax(boxIdea.variants.map(v => v.boxPrice))).toFixed(2);
   };
 
   const checkIfNameOfBoxIsTaken = (name) => {
@@ -107,7 +107,7 @@ export default function BoxIdeaCard(props) {
             />
             <div className={classes.separator}></div>
             <Typography  variant="body2" color="primary" component="p">
-                max {priceToDisplay(variantSelection)}
+                {priceToDisplay(variantSelection)}
               </Typography>
             <IconButton
               aria-label="Add box to quote"

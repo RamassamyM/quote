@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectBoxItems, selectBoxOptions, selectBoxMinTotalCost, selectBoxNumberOfItems, removeProductFromBox, addOneQuantityOfProductInBox, removeOneQuantityOfProductInBox } from './../../containers/box-builder-page/boxSlice';
 import ElevationScroll from './../elevationScroll';
 import BoxConfirmationModal from './../boxConfirmationModal';
+import { displayDecimalIfNecessary } from '../../core/services/utils'
 
 const BoxView = (props) => {
   // Hooks init (useDispatch, useHistory, useLocation, etc.)
@@ -154,7 +155,7 @@ const BoxView = (props) => {
           <Box className={classes.bottomBarContentWrapper}>
             <Box display="flex" alignItems="center" justifyContent="space-around">
               <Typography color="primary" className={classes.boxTotalCostText} paragraph>
-                min&nbsp;£&nbsp;{boxMinTotalCost}&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems}&nbsp;ITEM(S)
+              price from&nbsp;£&nbsp;{displayDecimalIfNecessary(boxMinTotalCost)}&nbsp;&nbsp;|&nbsp;&nbsp;{boxNumberOfItems}&nbsp;ITEM(S)
               </Typography>
             </Box>
             <Button disableElevation className={classes.addToQuoteButton} disabled={boxNumberOfItems === 0} variant="contained" color="secondary" onClick={() => handleClickOnAddBox('paper')}>

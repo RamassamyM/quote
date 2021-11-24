@@ -9,7 +9,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import BoxCard from './../../components/box-card';
 import QuoteDetailsModal from './../../components/quoteDetailsModal';
 import ReactPlayer from 'react-player/lazy';
-import { scrollUp } from './../../core/services/utils';
+import { scrollUp, numberWithCommas } from './../../core/services/utils';
 import { useHistory } from "react-router-dom";
 
 export default function BoxBuilderPage() {
@@ -87,8 +87,8 @@ export default function BoxBuilderPage() {
           <Grid item xs={1} sm={2} md={3}></Grid>
           <Grid item xs={10} sm={8} md={6} align="center">
             <Box>
-            {boxes.map((box) => (
-              <BoxCard key={`${box.name}-${box.id}`} box={box}/>
+            {boxes.map((box, index) => (
+              <BoxCard key={box.name} box={box}/>
               ))}
             </Box>
             <Box mb={3} mt={4} display="flex" justifyContent="center">
@@ -143,7 +143,7 @@ export default function BoxBuilderPage() {
                   Browse our box ideas
                 </Button>
               </Box>
-              <Box mb={4}>
+              {/* <Box mb={4}>
                 <ReactPlayer 
                   url='https://www.youtube.com/watch?v=ysz5S6PUM-U' 
                   controls={true}
@@ -151,7 +151,7 @@ export default function BoxBuilderPage() {
                   width={'400px'}
                   height={'200px'}
                 />
-              </Box>
+              </Box> */}
               <Box mb={4}>
                 <img alt="empty box" className={classes.emptyBoximage} src="https://firebasestorage.googleapis.com/v0/b/curakit-7e00d.appspot.com/o/empty.png?alt=media&token=87aafaa9-20ee-4cab-8853-30017f6656d2"></img>
               </Box>
@@ -199,7 +199,7 @@ export default function BoxBuilderPage() {
                   Total
                 </Typography>
                 <Typography variant="subtitle1" color="primary" className={classes.quoteTotalCostTextBold}>
-                  £&nbsp;{quoteNetCost}
+                  £&nbsp;{numberWithCommas(quoteNetCost)}
                 </Typography>
               </Box>
             </Box>

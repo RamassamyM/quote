@@ -4,6 +4,18 @@ export function arrayRemove(arr, value) {
   });
 }
 
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function displayDecimalIfNecessary(num) {
+  if (num % 1 > 0) {
+    return Number.parseFloat(num).toFixed(2)
+  } else {
+    return num
+  }
+};
+
 export function arrayMin(arr) {
   return arr.reduce(function (p, v) {
     return ( p < v ? p : v );

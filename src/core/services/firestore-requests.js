@@ -1,15 +1,17 @@
 import fire from './../../fire';
+import { displayDecimalIfNecessary } from './utils'
 
 const db = fire.firestore();
 // uncomment this line to use online firebase
 // db.useEmulator("localhost", 8080);
+
 
 const addDisplayVariantsToProducts = (data) => {
   if (data && data["variants"]) {
     data["variants"] = data["variants"].map((variant) => {
       return {
         ...variant, 
-        label: variant.property_value + " " + variant.property_unit + " - " + variant.currency +  " " + variant.price,
+        label: variant.property_value + " " + variant.property_unit + " - " + variant.currency +  " " + displayDecimalIfNecessary(variant.price),
         id: variant.sku,
         value: variant.sku
       }
