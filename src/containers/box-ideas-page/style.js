@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     //   }
     // },
   },
+  heroSubtitle: {
+    color: theme.palette.text.reverted,
+    fontSize: '0.8rem',
+  },
   heroMail: {
     color: theme.palette.text.reverted,
     // margin: theme.spacing(1),

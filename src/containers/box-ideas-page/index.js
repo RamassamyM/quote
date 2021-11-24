@@ -132,9 +132,12 @@ export default function BoxIdeasPage() {
       <div className={classes.heroContent} id="back-to-top-anchor">
         <Grid container spacing={2}>
           <Grid item xs={12} className={classes.grid}>
-            <Box className={classes.heroBoxTitle} display="flex" alignItems="center" justifyContent="center">
+            <Box className={classes.heroBoxTitle} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
               <Typography component="h1" variant="h4" align="center" className={classes.heroTitle}>
                 Browse our box ideas
+              </Typography>
+              <Typography align="center" className={classes.heroSubtitle}>
+                Start with our ideas and edit the content in the quote page if you wish
               </Typography>
             </Box>
           </Grid>
