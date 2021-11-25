@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, Button, Paper, TextField, List, ListItem, Collapse, ListItemText, Slider, Input, Box, Grid, IconButton, Card, CardContent, Typography } from '@material-ui/core';
-import { Delete as DeleteIcon, Done as DoneIcon, Inbox as InboxIcon, Edit as EditIcon, Help as HelpIcon, ExpandLess, ExpandMore } from '@material-ui/icons';
+import { Delete as DeleteIcon, Done as DoneIcon, Inbox as InboxIcon, Edit as EditIcon, Help as HelpIcon, ExpandLess as ExpandLessIcon, ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import useStyles from './style';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuantityOfBoxesInQuote, selectQuote, removeBoxFromQuote, changeNameOfBoxInQuote } from './../../containers/quote-builder-page/quoteSlice';
@@ -8,17 +8,20 @@ import { resetBox, setBoxBuilderStateForBoxUpdate } from './../../containers/box
 import { scrollUp } from './../../core/services/utils';
 import { useHistory } from "react-router-dom";
 
-export default function BoxCard(props) {
+const BoxCard = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   let history = useHistory();
   const quote = useSelector(selectQuote);
   const box = props.box;
+  const textFieldRef = React.useRef(null);
+  const qtyFieldRef = React.useRef(null);
+  const [qty, setQty] = React.useState(box.qty);
+  console.log("qty in local state: ", qty);
+  const [displayEditQty, setDisplayEditQty] = React.useState(false);
   const items = box.items.map(i => i.qty + 'x ' + i.product.title + ' ' + i.variantSelected.label);
-  const [value, setValue] = React.useState(box.qty);
   const [boxNameError, setBoxNameError] = React.useState(false);
   const [displayEditName, setDisplayEditName] = React.useState(false);
-  // const [newName, setNewName] = React.useState('');
   const [openBoxContent, setOpenBoxContent] = React.useState(false);
   const preventDefault = (event) => event.preventDefault();
   const marks = [
@@ -39,29 +42,21 @@ export default function BoxCard(props) {
     //   label: '1000',
     // }
   ];
-  const setQuantity = (event, value) => {
-    dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: value}))
-  };
 
-  const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
-  const handleInputChange = (event) => {
-    const newValue = event.target.value === '' ? 0 : Number(event.target.value);
-    dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: newValue}))
-  };
   const handleRemoveBoxFromQuote = (event) => {
     preventDefault(event);
     dispatch(removeBoxFromQuote({id: box.id}))
   }
-  // const percentageDiscount = box.discount ? (box.discount / (box.unitPrice * box.qty) * 100) : 0;
   const percentageDiscount = ((box.discountedCost - box.prediscountedCost) / box.prediscountedCost) * 100;
   const discountedUnitPrice = box.discountedCost / box.qty;
   const netPrice = box.discountedCost;
 
-  const handleExpandBoxContent = () => {
-    setOpenBoxContent(!openBoxContent);
+  // Edit Name functions and component
+
+  const handleClickOnEditNameButton = (event) => {
+    event.preventDefault();
+    setDisplayEditName(true);
   };
 
   const checkIfNameOfBoxIsTaken = (name) => {
@@ -82,7 +77,6 @@ export default function BoxCard(props) {
       setDisplayEditName(!displayEditName);
     }
   };
-  const textFieldRef = React.useRef(null);
   const boxNameErrorHelpText = boxNameError ? 'Name already exists' : '';
 
   const NameBlock = () => {
@@ -97,7 +91,7 @@ export default function BoxCard(props) {
                 error={boxNameError} 
                 placeholder={box.name}
                 aria-label="edit name of box"
-                inputRef={textFieldRef}
+                ref={textFieldRef}
               />
               <Button
                 size="small"
@@ -122,11 +116,72 @@ export default function BoxCard(props) {
     }
   };
 
-  const handleClickOnEditNameButton = (event) => {
-    event.preventDefault();
-    setDisplayEditName(true);
+  // Edit Quantity functions and component
+
+
+  const setQuantityInQuote = (event, value) => {
+    preventDefault(event);
+    dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: qty}))
   };
-  
+
+  const handleSliderChange = (event, newValue) => {
+    preventDefault(event);
+    setQty(newValue);
+  };
+
+  const handleSubmitQtyForm = (event) => {
+    event.preventDefault();
+    const newQty = parseInt(qtyFieldRef.current.value);
+    if (newQty === 0 || !!newQty) {
+      dispatch(setQuantityOfBoxesInQuote({name: box.name, qty: newQty}));
+    }
+    setDisplayEditQty(!displayEditQty);
+  };
+
+  const QtyBlock = () => {
+    if (displayEditQty) {
+      return (
+        <Box component="form" onSubmit={handleSubmitQtyForm} display="flex" alignItems="center" justifyContent="space-between" >
+          <Input
+              className={classes.inputEditQty}
+              placeholder={typeof qty === 'number' ? qty.toString() : '0'}
+              margin="none"
+              inputRef={qtyFieldRef}
+              inputProps={{
+                min: 0,
+                max: 1000,
+                type: 'number',
+                'aria-labelledby': 'input-linked-to-slider',
+              }}
+          />
+          <IconButton
+            size="small"
+            aria-label="validate new qty"
+            type="submit"
+            className={classes.buttonValidateQty}
+          >
+            <DoneIcon/>
+          </IconButton>
+        </Box>
+      );
+    } else {
+      return (
+        <Button
+          variant="outlined" 
+          color="primary"
+          size="small"
+          aria-label="qty of boxes"
+          className={classes.buttonQtyForm}
+          onClick={() => setDisplayEditQty(!displayEditQty)}
+        >
+          <Typography component="h6" variant="h6" className={classes.boxQtyFieldText}>
+            {typeof qty === 'number' ? qty.toString() : 0}
+          </Typography>
+        </Button>
+      );
+    }
+  };
+
   const handleEditBoxFromQuote = (event) => {
     event.preventDefault();
     dispatch(resetBox());
@@ -144,12 +199,18 @@ export default function BoxCard(props) {
     history.push("/box-builder");
   };
 
+  // Show content of box
+
+  const handleExpandBoxContent = () => {
+    setOpenBoxContent(!openBoxContent);
+  };
+
   const ContentList = () => {
     return (
       <List dense className={classes.contentList} >
         <ListItem button onClick={handleExpandBoxContent} className={classes.boxContent}>
           <ListItemText align="right" primary="Show the box content" color="primary" className={classes.boxContentTitle}/>
-          {openBoxContent ? <ExpandLess /> : <ExpandMore />}
+          {openBoxContent ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse in={openBoxContent} timeout="auto" unmountOnExit>
           <List component="div" disablePadding className={classes.boxExpanded}>
@@ -171,53 +232,51 @@ export default function BoxCard(props) {
           <Box display="flex" flexWrap="wrap" alignItems="center" justifyContent="flex-end" className={classes.boxCardHeaderBar}>
             <NameBlock/>
             <Box flexGrow={1}  className={classes.boxCardControls}>
-              <IconButton aria-label="Edit Name" onClick={handleClickOnEditNameButton}>
-                <EditIcon fontSize={'small'} className={classes.actionIcon} />
-              </IconButton>
-              <IconButton aria-label="Edit Name" onClick={handleEditBoxFromQuote}>
-                <InboxIcon fontSize={'small'} className={classes.actionIcon} />
-              </IconButton>
-              <IconButton aria-label="Remove Item" onClick={handleRemoveBoxFromQuote}>
-                <DeleteIcon fontSize={'small'} className={classes.actionIcon} />
-              </IconButton>
+              <Tooltip arrow title="Edit the name of the box" placement="bottom-end">
+                <IconButton aria-label="Edit Name" onClick={handleClickOnEditNameButton}>
+                  <EditIcon fontSize={'small'} className={classes.actionIcon} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow title="See and edit the content of the box" placement="bottom-end">
+                <IconButton aria-label="Edit Content" onClick={handleEditBoxFromQuote}>
+                  <InboxIcon fontSize={'small'} className={classes.actionIcon} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow title="Remove this box" placement="bottom-end">
+                <IconButton aria-label="Remove Item" onClick={handleRemoveBoxFromQuote}>
+                  <DeleteIcon fontSize={'small'} className={classes.actionIcon} />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
           <ContentList/>
           <Box mt={1} p={1} className={classes.qtySlider}>
             <Grid container spacing={2}>
               <Grid item xs>
-                <Slider
-                  value={typeof value === 'number' ? value : 0}
-                  onChange={handleSliderChange}
-                  onChangeCommitted={setQuantity}
-                  aria-labelledby="input-slider"
-                  marks={marks}
-                  step={10}
-                  max={1000}
-                />
-              </Grid>
-              <Grid item>
-                <Input
-                  className={classes.input}
-                  value={value}
-                  margin="none"
-                  onChange={handleInputChange}
-                  inputProps={{
-                    step: 1,
-                    min: 0,
-                    max: 1000,
-                    type: 'number',
-                    'aria-labelledby': 'input-linked-to-slider',
-                  }}
+                <Box display="flex" alignItems="center" className={classes.fullHeightBox}>
+                  <Slider
+                    value={typeof qty === 'number' ? qty : 0}
+                    onChange={handleSliderChange}
+                    onChangeCommitted={setQuantityInQuote}
+                    aria-labelledby="input-slider"
+                    marks={marks}
+                    step={10}
+                    max={1000}
                   />
+                </Box>
               </Grid>
               <Grid item>
-                <Typography className={classes.boxLabel}>
-                  box(es)
-                </Typography>
+                <QtyBlock/>
               </Grid>
               <Grid item>
-                <Tooltip arrow title="Contact us for bigger quantity of boxes" placement="bottom-end">
+                <Box display="flex" alignItems="center" className={classes.fullHeightBox}>
+                  <Typography className={classes.boxLabel}>
+                    box(es)
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Tooltip arrow title="Choose the number of boxes using the slider to give an indicated price. We will formalise prices directly with you, and offer any additional discounts based on quantity in a formal quote." placement="bottom-end">
                   <HelpIcon color="primary"/>
                 </Tooltip>
               </Grid>
@@ -271,3 +330,5 @@ export default function BoxCard(props) {
     </Card>
   );
 };
+
+export default BoxCard;

@@ -13,8 +13,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.main,
     borderRadius: '3px',
     border: '1px solid',
-    // borderColor: theme.palette.surface.border,
     borderColor: 'transparent',
+  },
+  boxQtyField: {
+    border: '1px solid',
+    borderColor: theme.palette.primary.main,
+    borderRadius: '5px',
+    minWidth: '50px'
+  },
+  boxQtyFieldText: {
+    fontSize: '14px',
   },
   cardContentArea: {
     '&:last-child': {
@@ -27,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
   boxCardDetails: {
     display: 'flex',
     flexGrow: '1',
-    // overflow: 'hidden',
-    // whiteSpace: 'nowrap',
   },
   boxCardContentTitle: {
     overflow: 'hidden',
@@ -110,13 +116,22 @@ const useStyles = makeStyles((theme) => ({
   qtySlider: {
     // width: 250,
   },
-  input: {
-    marginLeft: '10px',
-    width: 50,
-    fontSize: '14px'
+  fullHeightBox: {
+    height: '100%',
+  },
+  inputEditQty: {
+    fontSize: '14px',
+  },
+  buttonValidateQty: {
+    border: '1px solid blue',
+    color: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.main,
+    '&:hover': {
+      backgroundColor: 'rgba(0, 148, 202, 0.04)',
+    }
   },
   boxLabel: {
-    marginTop: theme.spacing(1),
     fontSize: '12px',
   },
   actionIcon: {
